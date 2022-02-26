@@ -1074,8 +1074,8 @@ pretty-hrtime@^1.0.3:
   resolved "https://registry.nlark.com/pretty-hrtime/download/pretty-hrtime-1.0.3.tgz"
 
 prismjs@^1.17.1:
-  version "1.25.0"
-  resolved "https://registry.nlark.com/prismjs/download/prismjs-1.25.0.tgz"
+  version "1.27.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.27.0.tgz#bb6ee3138a0b438a3653dd4d6ce0cc6510a45057"
 
 psl@^1.1.33:
   version "1.8.0"
