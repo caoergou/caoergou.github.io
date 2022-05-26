@@ -82,12 +82,6 @@ archy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.nlark.com/archy/download/archy-1.0.0.tgz"
 
-argparse@^1.0.7:
-  version "1.0.10"
-  resolved "https://registry.nlark.com/argparse/download/argparse-1.0.10.tgz"
-  dependencies:
-    sprintf-js "~1.0.2"
-
 argparse@^2.0.1:
   version "2.0.1"
   resolved "https://registry.nlark.com/argparse/download/argparse-2.0.1.tgz"
@@ -122,7 +116,7 @@ binary-extensions@^2.0.0:
   version "2.2.0"
   resolved "https://registry.nlark.com/binary-extensions/download/binary-extensions-2.2.0.tgz"
 
-bluebird@^3.2.2, bluebird@^3.5.1, bluebird@^3.5.2, bluebird@^3.5.5:
+bluebird@^3.2.2, bluebird@^3.5.1, bluebird@^3.5.2, bluebird@^3.5.5, bluebird@^3.7.2:
   version "3.7.2"
   resolved "https://registry.nlark.com/bluebird/download/bluebird-3.7.2.tgz"
 
@@ -139,7 +133,7 @@ brace-expansion@^2.0.1:
   dependencies:
     balanced-match "^1.0.0"
 
-braces@^3.0.1, braces@~3.0.2:
+braces@^3.0.2, braces@~3.0.2:
   version "3.0.2"
   resolved "https://registry.nlark.com/braces/download/braces-3.0.2.tgz"
   dependencies:
@@ -357,9 +351,15 @@ domexception@^2.0.1:
   dependencies:
     webidl-conversions "^5.0.0"
 
-domhandler@^4.0.0, domhandler@^4.2.0:
+domhandler@^4.2.0:
   version "4.2.2"
   resolved "https://registry.nlark.com/domhandler/download/domhandler-4.2.2.tgz?cache=0&sync_timestamp=1630247056568&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdomhandler%2Fdownload%2Fdomhandler-4.2.2.tgz"
+  dependencies:
+    domelementtype "^2.2.0"
+
+domhandler@^4.2.2:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-4.3.1.tgz#8d792033416f59d68bc03a5aa7b018c1ca89279c"
   dependencies:
     domelementtype "^2.2.0"
 
@@ -367,7 +367,7 @@ dompurify@^2.3.0:
   version "2.3.3"
   resolved "https://registry.nlark.com/dompurify/download/dompurify-2.3.3.tgz?cache=0&sync_timestamp=1632141094906&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdompurify%2Fdownload%2Fdompurify-2.3.3.tgz"
 
-domutils@^2.5.2:
+domutils@^2.8.0:
   version "2.8.0"
   resolved "https://registry.nlark.com/domutils/download/domutils-2.8.0.tgz?cache=0&sync_timestamp=1630106535879&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdomutils%2Fdownload%2Fdomutils-2.8.0.tgz"
   dependencies:
@@ -393,6 +393,10 @@ entities@^2.0.0:
   version "2.2.0"
   resolved "https://registry.nlark.com/entities/download/entities-2.2.0.tgz?cache=0&sync_timestamp=1628508126700&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fentities%2Fdownload%2Fentities-2.2.0.tgz"
 
+entities@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-3.0.1.tgz#2b887ca62585e96db3903482d336c1006c3001d4"
+
 escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.nlark.com/escape-html/download/escape-html-1.0.3.tgz"
@@ -408,7 +412,7 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-esprima@^4.0.0, esprima@^4.0.1:
+esprima@^4.0.1:
   version "4.0.1"
   resolved "https://registry.nlark.com/esprima/download/esprima-4.0.1.tgz"
 
@@ -423,6 +427,10 @@ esutils@^2.0.2:
 etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.nlark.com/etag/download/etag-1.8.1.tgz?cache=0&sync_timestamp=1618847044821&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fetag%2Fdownload%2Fetag-1.8.1.tgz"
+
+fast-equals@^3.0.1:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/fast-equals/-/fast-equals-3.0.3.tgz#8e6cb4e51ca1018d87dd41982ef92758b3e4197f"
 
 fast-levenshtein@~2.0.6:
   version "2.0.6"
@@ -518,9 +526,9 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hexo-cli@^4.0.0:
+hexo-cli@^4.3.0:
   version "4.3.0"
-  resolved "https://registry.nlark.com/hexo-cli/download/hexo-cli-4.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/hexo-cli/-/hexo-cli-4.3.0.tgz#4bb2bf11a30fae601f2f53ac0cb833fee3187649"
   dependencies:
     abbrev "^1.1.1"
     bluebird "^3.5.5"
@@ -533,11 +541,11 @@ hexo-cli@^4.0.0:
     resolve "^1.11.0"
     tildify "^2.0.0"
 
-hexo-front-matter@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.nlark.com/hexo-front-matter/download/hexo-front-matter-2.0.0.tgz"
+hexo-front-matter@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/hexo-front-matter/-/hexo-front-matter-3.0.0.tgz#b9a473c6cb910c73f9fea49f506e98540fcea6cb"
   dependencies:
-    js-yaml "^3.13.1"
+    js-yaml "^4.1.0"
 
 hexo-fs@^3.0.1, hexo-fs@^3.1.0:
   version "3.1.0"
@@ -584,6 +592,12 @@ hexo-log@^2.0.0:
   resolved "https://registry.npmmirror.com/hexo-log/download/hexo-log-2.0.0.tgz"
   dependencies:
     chalk "^4.0.0"
+
+hexo-log@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/hexo-log/-/hexo-log-3.0.0.tgz#bbdb75eabef3bf7aee83400a3969db06d5539b61"
+  dependencies:
+    nanocolors "^0.2.12"
 
 hexo-pagination@1.0.0:
   version "1.0.0"
@@ -632,49 +646,51 @@ hexo-theme-landscape@^0.0.3:
   version "0.0.3"
   resolved "https://registry.nlark.com/hexo-theme-landscape/download/hexo-theme-landscape-0.0.3.tgz"
 
-hexo-util@^2.0.0, hexo-util@^2.4.0, hexo-util@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.nlark.com/hexo-util/download/hexo-util-2.5.0.tgz?cache=0&sync_timestamp=1620209007934&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fhexo-util%2Fdownload%2Fhexo-util-2.5.0.tgz"
+hexo-util@^2.0.0, hexo-util@^2.5.0, hexo-util@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/hexo-util/-/hexo-util-2.6.1.tgz#19b79a1ec751a735ffe34766b65d8e2039c00519"
   dependencies:
     bluebird "^3.5.2"
     camel-case "^4.0.0"
     cross-spawn "^7.0.0"
     deepmerge "^4.2.2"
-    highlight.js "^10.7.1"
-    htmlparser2 "^6.0.0"
+    highlight.js "^11.0.1"
+    htmlparser2 "^7.0.0"
     prismjs "^1.17.1"
     strip-indent "^3.0.0"
 
-hexo@^5.0.0:
-  version "5.4.0"
-  resolved "https://registry.nlark.com/hexo/download/hexo-5.4.0.tgz"
+hexo@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/hexo/-/hexo-6.2.0.tgz#5a62a4c731bf89431d2004326b07af0ec0490242"
   dependencies:
     abbrev "^1.1.1"
     archy "^1.0.0"
-    bluebird "^3.5.2"
-    chalk "^4.0.0"
-    hexo-cli "^4.0.0"
-    hexo-front-matter "^2.0.0"
+    bluebird "^3.7.2"
+    hexo-cli "^4.3.0"
+    hexo-front-matter "^3.0.0"
     hexo-fs "^3.1.0"
     hexo-i18n "^1.0.0"
-    hexo-log "^2.0.0"
-    hexo-util "^2.4.0"
-    js-yaml "^4.0.0"
-    micromatch "^4.0.2"
-    moment "^2.22.2"
-    moment-timezone "^0.5.21"
-    nunjucks "^3.2.1"
+    hexo-log "^3.0.0"
+    hexo-util "^2.6.1"
+    js-yaml "^4.1.0"
+    js-yaml-js-types "^1.0.0"
+    micromatch "^4.0.4"
+    moize "^6.1.0"
+    moment "^2.29.1"
+    moment-timezone "^0.5.34"
+    nunjucks "^3.2.3"
+    picocolors "^1.0.0"
     pretty-hrtime "^1.0.3"
-    resolve "^1.8.1"
+    resolve "^1.22.0"
     strip-ansi "^6.0.0"
     text-table "^0.2.0"
     tildify "^2.0.0"
-    titlecase "^1.1.2"
-    warehouse "^4.0.0"
+    titlecase "^1.1.3"
+    warehouse "^4.0.1"
 
-highlight.js@^10.7.1:
-  version "10.7.3"
-  resolved "https://registry.npmmirror.com/highlight.js/download/highlight.js-10.7.3.tgz"
+highlight.js@^11.0.1:
+  version "11.5.1"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-11.5.1.tgz#027c24e4509e2f4dcd00b4a6dda542ce0a1f7aea"
 
 html-encoding-sniffer@^2.0.1:
   version "2.0.1"
@@ -682,14 +698,14 @@ html-encoding-sniffer@^2.0.1:
   dependencies:
     whatwg-encoding "^1.0.5"
 
-htmlparser2@^6.0.0:
-  version "6.1.0"
-  resolved "https://registry.npmmirror.com/htmlparser2/download/htmlparser2-6.1.0.tgz?cache=0&sync_timestamp=1636640862971&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fhtmlparser2%2Fdownload%2Fhtmlparser2-6.1.0.tgz"
+htmlparser2@^7.0.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-7.2.0.tgz#8817cdea38bbc324392a90b1990908e81a65f5a5"
   dependencies:
     domelementtype "^2.0.1"
-    domhandler "^4.0.0"
-    domutils "^2.5.2"
-    entities "^2.0.0"
+    domhandler "^4.2.2"
+    domutils "^2.8.0"
+    entities "^3.0.1"
 
 http-errors@~1.7.2:
   version "1.7.3"
@@ -739,9 +755,9 @@ is-binary-path@~2.1.0:
   dependencies:
     binary-extensions "^2.0.0"
 
-is-core-module@^2.2.0:
-  version "2.8.0"
-  resolved "https://registry.npmmirror.com/is-core-module/download/is-core-module-2.8.0.tgz?cache=0&sync_timestamp=1634236702465&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fis-core-module%2Fdownload%2Fis-core-module-2.8.0.tgz"
+is-core-module@^2.8.1:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.9.0.tgz#e1c34429cd51c6dd9e09e0799e396e27b19a9c69"
   dependencies:
     has "^1.0.3"
 
@@ -763,9 +779,9 @@ is-number@^7.0.0:
   version "7.0.0"
   resolved "https://registry.nlark.com/is-number/download/is-number-7.0.0.tgz"
 
-is-plain-object@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.nlark.com/is-plain-object/download/is-plain-object-3.0.1.tgz"
+is-plain-object@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-5.0.0.tgz#4427f50ab3429e9025ea7d52e9043a9ef4159344"
 
 is-potential-custom-element-name@^1.0.1:
   version "1.0.1"
@@ -790,16 +806,15 @@ jake@^10.8.5:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-js-yaml@^3.13.1:
-  version "3.14.1"
-  resolved "https://registry.npmmirror.com/js-yaml/download/js-yaml-3.14.1.tgz?cache=0&sync_timestamp=1632811730083&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fjs-yaml%2Fdownload%2Fjs-yaml-3.14.1.tgz"
+js-yaml-js-types@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/js-yaml-js-types/-/js-yaml-js-types-1.0.0.tgz#bf17cb75c7587c698294d15bbfa5f9b8b10b874b"
   dependencies:
-    argparse "^1.0.7"
-    esprima "^4.0.0"
+    esprima "^4.0.1"
 
-js-yaml@^4.0.0:
+js-yaml@^4.1.0:
   version "4.1.0"
-  resolved "https://registry.npmmirror.com/js-yaml/download/js-yaml-4.1.0.tgz?cache=0&sync_timestamp=1632811730083&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fjs-yaml%2Fdownload%2Fjs-yaml-4.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
   dependencies:
     argparse "^2.0.1"
 
@@ -860,12 +875,16 @@ marked@^2.1.3:
   version "2.1.3"
   resolved "https://registry.npmmirror.com/marked/download/marked-2.1.3.tgz?cache=0&sync_timestamp=1637331372886&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fmarked%2Fdownload%2Fmarked-2.1.3.tgz"
 
-micromatch@^4.0.2:
-  version "4.0.4"
-  resolved "https://registry.npm.taobao.org/micromatch/download/micromatch-4.0.4.tgz?cache=0&sync_timestamp=1618054841521&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmicromatch%2Fdownload%2Fmicromatch-4.0.4.tgz"
+micro-memoize@^4.0.9:
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/micro-memoize/-/micro-memoize-4.0.10.tgz#cedf7682df990cd2290700af4537afa6dba7d4e9"
+
+micromatch@^4.0.4:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-4.0.5.tgz#bc8999a7cbbf77cdc89f132f6e467051b49090c6"
   dependencies:
-    braces "^3.0.1"
-    picomatch "^2.2.3"
+    braces "^3.0.2"
+    picomatch "^2.3.1"
 
 mime-db@1.51.0, "mime-db@>= 1.43.0 < 2":
   version "1.51.0"
@@ -921,13 +940,20 @@ mkdirp@~1.0.4:
   version "1.0.4"
   resolved "https://registry.npmmirror.com/mkdirp/download/mkdirp-1.0.4.tgz"
 
-moment-timezone@^0.5.21:
+moize@^6.1.0:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/moize/-/moize-6.1.1.tgz#e75f18734fcb22aec30205681eb97cd7eb3ffa51"
+  dependencies:
+    fast-equals "^3.0.1"
+    micro-memoize "^4.0.9"
+
+moment-timezone@^0.5.34:
   version "0.5.34"
-  resolved "https://registry.npmmirror.com/moment-timezone/download/moment-timezone-0.5.34.tgz?cache=0&sync_timestamp=1636519563529&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fmoment-timezone%2Fdownload%2Fmoment-timezone-0.5.34.tgz"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.34.tgz#a75938f7476b88f155d3504a9343f7519d9a405c"
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0", moment@^2.22.2:
+"moment@>= 2.9.0", moment@^2.29.1:
   version "2.29.3"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.3.tgz#edd47411c322413999f7a5940d526de183c031f3"
 
@@ -953,6 +979,10 @@ ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.npmmirror.com/ms/download/ms-2.1.2.tgz"
 
+nanocolors@^0.2.12:
+  version "0.2.13"
+  resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.2.13.tgz#dfd1ed0bfab05e9fe540eb6874525f0a1684099b"
+
 negotiator@0.6.2:
   version "0.6.2"
   resolved "https://registry.npm.taobao.org/negotiator/download/negotiator-0.6.2.tgz"
@@ -974,9 +1004,9 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
   resolved "https://registry.nlark.com/normalize-path/download/normalize-path-3.0.0.tgz"
 
-nunjucks@^3.2.1:
+nunjucks@^3.2.3:
   version "3.2.3"
-  resolved "https://registry.npmmirror.com/nunjucks/download/nunjucks-3.2.3.tgz"
+  resolved "https://registry.yarnpkg.com/nunjucks/-/nunjucks-3.2.3.tgz#1b33615247290e94e28263b5d855ece765648a31"
   dependencies:
     a-sync-waterfall "^1.0.0"
     asap "^2.0.3"
@@ -1043,13 +1073,21 @@ path-key@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/path-key/download/path-key-3.1.1.tgz?cache=0&sync_timestamp=1617971691339&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpath-key%2Fdownload%2Fpath-key-3.1.1.tgz"
 
-path-parse@^1.0.6:
+path-parse@^1.0.7:
   version "1.0.7"
-  resolved "https://registry.nlark.com/path-parse/download/path-parse-1.0.7.tgz"
+  resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
 
-picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
+picocolors@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
+
+picomatch@^2.0.4, picomatch@^2.2.1:
   version "2.3.0"
   resolved "https://registry.nlark.com/picomatch/download/picomatch-2.3.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fpicomatch%2Fdownload%2Fpicomatch-2.3.0.tgz"
+
+picomatch@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -1085,12 +1123,13 @@ resolve-url@^0.2.1:
   version "0.2.1"
   resolved "https://registry.npmmirror.com/resolve-url/download/resolve-url-0.2.1.tgz"
 
-resolve@^1.11.0, resolve@^1.8.1:
-  version "1.20.0"
-  resolved "https://registry.nlark.com/resolve/download/resolve-1.20.0.tgz"
+resolve@^1.11.0, resolve@^1.22.0:
+  version "1.22.0"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.22.0.tgz#5e0b8c67c15df57a89bdbabe603a002f21731198"
   dependencies:
-    is-core-module "^2.2.0"
-    path-parse "^1.0.6"
+    is-core-module "^2.8.1"
+    path-parse "^1.0.7"
+    supports-preserve-symlinks-flag "^1.0.0"
 
 rfdc@^1.1.4:
   version "1.3.0"
@@ -1195,10 +1234,6 @@ sprintf-js@^1.0.3:
   version "1.1.2"
   resolved "https://registry.nlark.com/sprintf-js/download/sprintf-js-1.1.2.tgz"
 
-sprintf-js@~1.0.2:
-  version "1.0.3"
-  resolved "https://registry.nlark.com/sprintf-js/download/sprintf-js-1.0.3.tgz"
-
 "statuses@>= 1.5.0 < 2", statuses@~1.5.0:
   version "1.5.0"
   resolved "https://registry.nlark.com/statuses/download/statuses-1.5.0.tgz"
@@ -1245,6 +1280,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
+supports-preserve-symlinks-flag@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
+
 symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://registry.nlark.com/symbol-tree/download/symbol-tree-3.2.4.tgz"
@@ -1265,9 +1304,9 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.nlark.com/timsort/download/timsort-0.3.0.tgz"
 
-titlecase@^1.1.2:
+titlecase@^1.1.3:
   version "1.1.3"
-  resolved "https://registry.nlark.com/titlecase/download/titlecase-1.1.3.tgz"
+  resolved "https://registry.yarnpkg.com/titlecase/-/titlecase-1.1.3.tgz#fc6d65ff582b0602410768ef1a09b70506313dc3"
 
 to-regex-range@^5.0.1:
   version "5.0.1"
@@ -1335,15 +1374,16 @@ w3c-xmlserializer@^2.0.0:
   dependencies:
     xml-name-validator "^3.0.0"
 
-warehouse@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.nlark.com/warehouse/download/warehouse-4.0.0.tgz"
+warehouse@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/warehouse/-/warehouse-4.0.1.tgz#4d552b2635a2412ee0970c97e3bf12986b041e61"
   dependencies:
     JSONStream "^1.0.7"
     bluebird "^3.2.2"
     cuid "^2.1.4"
     graceful-fs "^4.1.3"
-    is-plain-object "^3.0.0"
+    hexo-log "^3.0.0"
+    is-plain-object "^5.0.0"
     rfdc "^1.1.4"
 
 webidl-conversions@^5.0.0:
