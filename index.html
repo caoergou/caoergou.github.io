@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title>truer.ai</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url("https://source.unsplash.com/1600x900/?earth");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .title {
+            font-size: 48px;
+            color: white;
+            text-shadow: 2px 2px 4px black;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: white;
+        }
+
+        @media (min-width: 768px) {
+            .title {
+                font-size: 64px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Truer.ai - AGI 时代更值得信赖的 AI 模型 </h1>
+        <script>
+            // Detect the user's language and change the title accordingly
+            var lang = navigator.language || navigator.userLanguage;
+            var title = document.querySelector(".title");
+            var footer = document.querySelector("body > div.footer > p");
+            if (lang.startsWith("en")) { // If the language is English
+                title.textContent = "truer.ai - The more trustworthy AI model in the AGI era";
+                footer.textContent = "This domain is for sale, please contact itsericsmail@gmail.com";
+            }
+        </script>
+    </div>
+    <div class="footer">
+        <p>本域名正在出售中，请与 itsericsmail@gmail.com 联系</p>
+    </div>
+</body>
+
+</html>
