@@ -1,3 +1,9 @@
 [submodule "quickstart/themes/ananke"]
 	path = quickstart/themes/ananke
-	url = https://github.com/theNewDynamic/gohugo-theme-ananke
+	url = https://github.com/shenweiyan/WebStack-Hugo
+[submodule "themes/WebStack-Hugo"]
+	path = themes/WebStack-Hugo
+	url = https://github.com/shenweiyan/WebStack-Hugo
+[submodule "site/themes/WebStack-Hugo"]
+	path = site/themes/WebStack-Hugo
+	url = https://github.com/shenweiyan/WebStack-Hugo
