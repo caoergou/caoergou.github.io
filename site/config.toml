@@ -1,4 +1,3 @@
 baseURL = 'https://truer.ai/'
 languageCode = 'zh_CN'
 title = 'Truer.AI | AI Application Navigation Station | Show you more truer AI practical application'
-theme = ['WebStack-Hugo']
