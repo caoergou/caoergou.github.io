@@ -1,6 +1,6 @@
-name: "🌍 提交网站"
-description: 向 Truer.ai 提交你的网站.
-title: "🌍 [SITE] - <title>"
+name: "提交网站"
+description: 向 Truer.ai 提交你的网站
+title: "[SITE]"
 labels: [
   "site"
 ]

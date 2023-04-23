@@ -30,7 +30,7 @@ Truer.ai 是一个收集实用的 AGI (Artificial General Intelligence, 通用�
 
 ## 致谢
 
-感谢互联网和 ChatGPT 帮我水了这篇 readme。    
+感谢互联网和 ChatGPT 帮我水了这篇 readme。  
 同时感谢以下开源项目和服务：
 
 - [Hugo](https://gohugo.io/)，一个快速的静态网站生成器。

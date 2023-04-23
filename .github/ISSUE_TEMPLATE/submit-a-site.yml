@@ -1,6 +1,6 @@
-name: "🌍 Submit a site"
+name: "Submit a site"
 description: Submit your site to Truer.ai.
-title: "🐛 [SITE] - <title>"
+title: "[SITE]"
 labels: [
   "site"
 ]
