@@ -6,7 +6,6 @@
     - title: ChatGPT
       logo: https://chat.openai.com/favicon-32x32.png
       url: https://ai.com
-      qrcode: assets/images/logos/qrcode.jpg
       description: OpenAI 推出的划时代产品：ChatGPT
     - title: Anthropic, PBC
       logo: https://www.anthropic.com/images/icons/favicon-32x32.png
