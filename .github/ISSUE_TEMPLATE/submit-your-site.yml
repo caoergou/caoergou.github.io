@@ -30,7 +30,7 @@ body:
     attributes:
       label: "short-description"
       description: Please enter an short description of your site
-      placeholder: OpenAI's groundbreaking product: ChatGPT
+      placeholder: "OpenAI's groundbreaking product: ChatGPT"
     validations:
       required: true
   - type: dropdown
