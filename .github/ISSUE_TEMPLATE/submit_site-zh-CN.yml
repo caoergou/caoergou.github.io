@@ -1,0 +1,46 @@
+name: "🌍 提交网站"
+description: 向 Truer.ai 提交你的网站.
+title: "🌍 [SITE] - <title>"
+labels: [
+  "site"
+]
+body:
+  - type: input
+    id: site-url
+    attributes:
+      label: "Site URL"
+      description: 请输入你的网址.
+      placeholder: https://oepnai.com
+    validations:
+      required: true
+  - type: input
+    id: logo-url
+    attributes:
+      label: "Logo URL"
+      description: 网站 Logo URL.
+      placeholder: https://chat.openai.com/favicon-32x32.png
+    validations:
+      required: true
+  - type: textarea
+    id: short-description
+    attributes:
+      label: "short-description"
+      description: 网站的简要描述
+      placeholder: OpenAI's groundbreaking product: ChatGPT
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: "kind"
+      description: 你的网站属于哪种类型？
+      multiple: true
+      options:
+        - Browser Plugin
+        - Desktop App
+        - Model
+        - Web App
+        - API
+        - Paper
+    validations:
+      required: false
