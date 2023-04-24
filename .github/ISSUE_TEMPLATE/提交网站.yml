@@ -21,7 +21,7 @@ body:
     attributes:
       label: "Logo URL"
       description: "网站 Logo URL"
-      placeholder: https://chat.openai.com/favicon-32x32.png
+      placeholder: "https://chat.openai.com/favicon-32x32.png"
     validations:
       required: true
   - type: input
