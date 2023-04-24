@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: View issue information
-      run: |
-        echo ${{ github.event.issue.title }}
-        echo ${{ github.event.issue.body }}
+        run: |
+          echo ${{ github.event.issue.title }}
+          echo ${{ github.event.issue.body }}
       - name: View the github context
         run: echo "$GITHUB_CONTEXT"
         env:
