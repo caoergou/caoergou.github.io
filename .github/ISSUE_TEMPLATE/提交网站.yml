@@ -12,7 +12,7 @@ body:
     id: site-url
     attributes:
       label: "Site URL"
-      description: 请输入你的网址
+      description: "请输入你的网址"
       placeholder: https://oepnai.com
     validations:
       required: true
@@ -20,7 +20,7 @@ body:
     id: logo-url
     attributes:
       label: "Logo URL"
-      description: 网站 Logo URL
+      description: "网站 Logo URL"
       placeholder: https://chat.openai.com/favicon-32x32.png
     validations:
       required: true
@@ -28,7 +28,7 @@ body:
     id: short-description
     attributes:
       label: "short-description"
-      description: 网站的简要描述
+      description: "网站的简要描述"
       placeholder: "OpenAI's groundbreaking product: ChatGPT"
     validations:
       required: true
@@ -36,7 +36,7 @@ body:
     id: kind
     attributes:
       label: "kind"
-      description: 你的网站属于哪种类型？
+      description: "你的网站属于哪种类型？"
       multiple: true
       options:
         - Browser Plugin
