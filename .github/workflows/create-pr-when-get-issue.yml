@@ -8,6 +8,10 @@ jobs:
   extract-issue-content-and-echo:
     runs-on: ubuntu-latest
     steps:
+      - name: View issue information
+        run: |
+        echo "Issue title: ${{ issue.title }}"
+        echo "Issue body: ${{ issue.body }}"
       - name: View the github context
         run: echo "$GITHUB_CONTEXT"
         env:
