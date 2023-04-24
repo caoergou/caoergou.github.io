@@ -25,7 +25,7 @@ body:
       placeholder: https://chat.openai.com/favicon-32x32.png
     validations:
       required: true
-  - type: textarea
+  - type: input
     id: short-description
     attributes:
       label: "short-description"
