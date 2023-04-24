@@ -7,7 +7,7 @@ labels: [
 body:
   - type: markdown
     attributes:
-      value: "## Thanks for your sibmit!"
+      value: "## Thanks for your submit!"
   - type: input
     id: site-url
     attributes:
