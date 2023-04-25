@@ -27,3 +27,10 @@
       logo: https://github.com/fluidicon.png
       url: https://github.com/features/copilot
       description: GitHub 推出的编程辅助工具，基于 ChatGPT 4.
+
+- taxonomy: Browser Plugin
+  icon: far ffa-chrome
+    - title: ChatHub
+      logo: https://chat.openai.com/favicon-32x32.png
+      url: https://chrome.google.com/webstore/detail/chathub-all-in-one-chatbo/iaakpnchhognanibcahlpcplchdfmgma
+      description: Chatbot聚合客户端，支持ChatGPT, new Bing Chat, Google Bard, Claude等多个
