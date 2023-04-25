@@ -29,8 +29,9 @@
       description: GitHub 推出的编程辅助工具，基于 ChatGPT 4.
 
 - taxonomy: Browser Plugin
-  icon: far ffa-chrome
+  icon: fab fa-chrome fa-lg
+  links: 
     - title: ChatHub
-      logo: https://chat.openai.com/favicon-32x32.png
-      url: https://chrome.google.com/webstore/detail/chathub-all-in-one-chatbo/iaakpnchhognanibcahlpcplchdfmgma
-      description: Chatbot聚合客户端，支持ChatGPT, new Bing Chat, Google Bard, Claude等多个
+      logo: https://github.com/chathub-dev/chathub/blob/main/src/assets/icon.png?raw=true
+      url: https://chathub.gg/
+      description: Chatbot聚合客户端，支持ChatGPT, new Bing Chat, Google Bard, Claude等多个聊天机器人

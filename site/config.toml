@@ -44,4 +44,4 @@ publishDir            = "public"					# 站点静态文件保存目录
     unsafe = true
 
 [params.footer]
-    copyright = '本站内容源自互联网，如有内容侵犯了你的权益，请联系删除相关内容，联系邮箱：shumlab@foxmail.com <br/>&copy; 2022 - ∞ By [truer.ai](https://github.com/caoergou/caoergou.github.io)  <br/>'
+    copyright = '本站内容源自互联网，如有内容侵犯了你的权益，请联系删除相关内容，联系邮箱：itsercismail@gmail.com <br/>&copy; 2022 - ∞ By [truer.ai](https://github.com/caoergou/caoergou.github.io)  <br/>'
