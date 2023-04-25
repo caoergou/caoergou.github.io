@@ -1,0 +1,54 @@
+{
+    "常用推荐": {
+        "icon": "far fa-star",
+        "links": [
+            {
+                "title": "ChatGPT",
+                "logo": "https://chat.openai.com/favicon-32x32.png",
+                "url": "https://ai.com",
+                "description": "OpenAI 推出的划时代产品：ChatGPT"
+            },
+            {
+                "title": "Anthropic, PBC",
+                "logo": "https://www.anthropic.com/images/icons/favicon-32x32.png",
+                "url": "https://anthropic.com/",
+                "description": "一家人工智能安全研究公司，知名产品：Claude."
+            },
+            {
+                "title": "Chatbot",
+                "logo": "对话机器人.png",
+                "url": "https://chatbot.com/",
+                "description": "一个寻找和评估沟通机器人的平台。"
+            },
+            {
+                "title": "New Bing",
+                "logo": "https://www.bing.com/rp/A-DlT7O6ldDj3OkHZKRsEUftOGA.png",
+                "url": "https://new.bing.com/",
+                "description": "结合搜索引擎和 ChatGPT 4."
+            },
+            {
+                "title": "Chatfuel",
+                "logo": "https://chatfuel.com/favicons/favicon-32x32.png",
+                "url": "https://chatfuel.com/",
+                "description": "对话机器人和自动聊天机器人的平台."
+            },
+            {
+                "title": "GitHub Copilot",
+                "logo": "https://github.com/fluidicon.png",
+                "url": "https://github.com/features/copilot",
+                "description": "GitHub 推出的编程辅助工具，基于 ChatGPT 4."
+            }
+        ]
+    },
+    "Browser Plugin": {
+        "icon": "fab fa-chrome fa-lg",
+        "links": [
+            {
+                "title": "ChatHub",
+                "logo": "https://github.com/chathub-dev/chathub/blob/main/src/assets/icon.png?raw=true",
+                "url": "https://chathub.gg/",
+                "description": "Chatbot聚合客户端，支持ChatGPT, new Bing Chat, Google Bard, Claude等多个聊天机器人"
+            }
+        ]
+    }
+}
