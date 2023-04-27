@@ -269,6 +269,12 @@
                 "description": "首家检测文本是否由 AI 生成的工具"
             },
             {
+                "title": "AI帮小忙",
+                "logo": "https://aibang.run/favicon-16x16.png",
+                "url": "https://aibang.run/",
+                "description": "提供多个针对不同场景的文案生成网站"
+            },
+            {
                 "title": "左脉梦幻师",
                 "logo": "http://www.aispacelab.cn/favicon.ico",
                 "url": "http://www.aispacelab.cn",
