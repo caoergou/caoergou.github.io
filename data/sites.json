@@ -114,10 +114,16 @@
                 "description": "结合区块链技术，对AI作品进行版权登记与保护的 AI 绘画平台"
             },
             {
+                "title": "PixelMe",
+                "logo": "https://pixel-me.tokyo/favicon.ico",
+                "url": "https://pixel-me.tokyo",
+                "description": "网站可以在线生成像素风格头像，同时还可以自行选择大小，同时还支持宠物模式"
+            }
+            {
                 "title": "神采PromeAI",
                 "logo": "https://www.promeai.com/favicon.ico",
                 "url": "https://www.promeai.com",
-                "description": "可以直接将涂鸦和照片转化为插画，自动识别人物姿势并生成插画；将线稿转化为完整的上色稿，并提供多种配色方案；自动识别图片景深信息以生成具有相同景深结构的图片，识别建筑及室内图片线段并生成新的设计方案；读取图片法线信息以辅助快速建模，利用图片语义分割识别生成具有相同构图和内容的不同风格图片。"
+                "description": "可以直接将涂鸦和照片转化为插画，自动识别人物姿势并生成插画；"
             },
             {
                 "title": "NovelAI",
@@ -204,6 +210,24 @@
                 "description": "基于 AI 快速从照片中删除对象"
             },
             {
+                "title": "G-Lab人脸生成实验",
+                "logo": "http://www.seeprettyface.com/favicon.ico",
+                "url": "http://www.seeprettyface.com",
+                "description": "如你所知，我是被计算机画出来的"
+            },
+            {
+                "title": "looka",
+                "logo": "https://looka.com/favicon.ico",
+                "url": "https://looka.com",
+                "description": "用人工智能设计Logo商标，带来了标志设计的全新方式,利用人工智能和机器学习的力量帮你完成所有的工作"
+            },
+            {
+                "title": "鹿班",
+                "logo": "https://g.alicdn.com/acca/resource/luban/image/favicon.png",
+                "url": "https://luban.aliyun.com",
+                "description": "阿里出品的鹿班设计网站，能根据商品图批量设计各类场景图片"
+            },
+            {
                 "title": "PhotoKit",
                 "logo": "https://photokit.com/favicon.ico",
                 "url": "https://photokit.com",
@@ -269,6 +293,12 @@
                 "description": "为英文考试作文打分，支持从小学到雅思8大考试"
             },
             {
+                "title": "小论文生成器",
+                "logo": "https://essay.1ts.fun/favicon.ico",
+                "url": "https://essay.1ts.fun",
+                "description": "—键生成，随意更新段落内容，标准格式下载"
+            },
+            {
                 "title": "Giiso写作机器人",
                 "logo": "https://www.giiso.com/favicon.ico",
                 "url": "https://www.giiso.com",
@@ -325,6 +355,12 @@
                 "logo": "https://ttsmaker.com/favicon.ico",
                 "url": "https://ttsmaker.com",
                 "description": "基于微软Azure内核的在线文本转语音工具，号称永久免费"
+            },
+            {
+                "title": "网易见外",
+                "logo": "https://sight.youdao.com/favicon.ico",
+                "url": "https://sight.youdao.com",
+                "description": "网易出品，集视频听翻、直播听翻、语音转写、文档直翻功能为一体的AI智能语音转写听翻平台"
             },
             {
                 "title": "讯飞智作",
