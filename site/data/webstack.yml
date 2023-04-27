@@ -1,0 +1,327 @@
+- icon: far fa-star
+  links:
+  - description: OpenAI 推出的划时代产品：ChatGPT
+    logo: https://chat.openai.com/favicon-32x32.png
+    title: ChatGPT
+    url: https://ai.com
+  - description: 支持多国语言的免费在线音频合成平台，支持语音和语速调节
+    logo: https://storage.googleapis.com/ondoku3/img/icons/favicon.ico
+    title: Ondoku
+    url: https://ondoku3.com/zh-hans
+  - description: 最火的 AI 绘画平台。通过Discord的机器人指令进行操作
+    logo: https://www.midjourney.com/favicon.ico
+    title: Midjourney
+    url: https://www.midjourney.com
+  - description: 首家检测文本是否由 AI 生成的工具
+    logo: https://gptzero.me/favicon.ico
+    title: GPTZero
+    url: https://gptzero.me/
+  - description: 结合搜索引擎和 ChatGPT 4.
+    logo: https://www.bing.com/rp/A-DlT7O6ldDj3OkHZKRsEUftOGA.png
+    title: New Bing
+    url: https://new.bing.com/
+  taxonomy: 常用推荐
+- icon: fab fa-github fa-lg
+  links:
+  - description: ChatGPT Prompts
+    logo: https://github.githubassets.com/favicons/favicon.png
+    title: awesome-chatgpt-prompts
+    url: https://github.com/f/awesome-chatgpt-prompts
+  - description: ChatGPT 中文 Prompts
+    logo: https://github.githubassets.com/favicons/favicon.png
+    title: ChatGPT 中文指南，指令指南
+    url: https://github.com/yzfly/awesome-chatgpt-zh
+  - description: 针对学术研究场景优化的 ChatGPT
+    logo: https://github.githubassets.com/favicons/favicon.png
+    title: 学术版 ChatGPT
+    url: https://github.com/binary-husky/chatgpt_academic
+  - description: 精选 ChatGPT 应用程序和工具列表
+    logo: https://github.githubassets.com/favicons/favicon.png
+    title: awesome-chatgpt-api
+    url: https://github.com/reorx/awesome-chatgpt-api/blob/master/README.cn.md
+  - description: 一个开源的 ChatGPT Web UI 应用，为 ChatGPT API 提供了一个 Web 图形界面。
+    logo: https://github.githubassets.com/favicons/favicon.png
+    title: 川虎 ChatGPT
+    url: https://github.com/GaiZhenbiao/ChuanhuChatGPT
+  taxonomy: Github Repos
+- icon: fab fa-chrome fa-lg
+  links:
+  - description: Chatbot聚合客户端，支持ChatGPT, new Bing Chat, Google Bard, Claude等多个聊天机器人
+    logo: https://github.com/chathub-dev/chathub/blob/main/src/assets/icon.png?raw=true
+    title: ChatHub
+    url: https://chathub.gg/
+  taxonomy: Browser Plugin
+- icon: fa fa-image fa-lg
+  links:
+  - description: 详细的中文Midjourney教程
+    logo: https://cdn.nlark.com/yuque/0/2023/png/124536/1680504502035-avatar/26eacb12-50ca-49e2-84ce-3a0b5229f958.png
+    title: Midjourney 知识库｜语雀
+    url: https://tob-design.yuque.com/kxcufk/mj
+  - description: 最火的 AI 绘画平台。通过Discord的机器人指令进行操作
+    logo: https://www.midjourney.com/favicon.ico
+    title: Midjourney
+    url: https://www.midjourney.com
+  - description: 'OpenAI 出品的AI绘画模型 DALL·E '
+    logo: https://labs.openai.com/favicon.ico
+    title: DALL·E
+    url: https://labs.openai.com
+  - description: AI绘画模型及作品分享社区
+    logo: https://civitai.com/favicon.ico
+    title: Civitai
+    url: https://civitai.com/
+  - description: 结合区块链技术，对AI作品进行版权登记与保护的 AI 绘画平台
+    logo: https://www.wujieai.com/favicon.ico
+    title: 无界AI
+    url: https://www.wujieai.com
+  - description: 可以直接将涂鸦和照片转化为插画，自动识别人物姿势并生成插画；将线稿转化为完整的上色稿，并提供多种配色方案；自动识别图片景深信息以生成具有相同景深结构的图片，识别建筑及室内图片线段并生成新的设计方案；读取图片法线信息以辅助快速建模，利用图片语义分割识别生成具有相同构图和内容的不同风格图片。
+    logo: https://www.promeai.com/favicon.ico
+    title: 神采PromeAI
+    url: https://www.promeai.com
+  - description: 使用AI绘画和语言模型来描绘小说场景
+    logo: https://novelai.net/icons/novelai-round.png
+    title: NovelAI
+    url: https://novelai.net/
+  - description: 一家在线 AI 绘画与 prompt 分享平台
+    logo: https://playgroundai.com/favicon.ico
+    title: Playground AI
+    url: https://playgroundai.com
+  - description: 识别中文关键词，创作你的艺术作品！
+    logo: https://edit-static-1307270943.cos.ap-beijing.myqcloud.com/logo.ico
+    title: Vega Al创作平台
+    url: https://rightbrain.art/
+  - description: 国内一家公司出品的 AI 绘画平台
+    logo: https://www.aizuohua.com/favicon.ico
+    title: 爱作画AIGC开放平台
+    url: https://www.aizuohua.com
+  - description: 中文 AI 绘画平台，支持DiscoDiffusion, Stable Diffusion等多款模型
+    logo: https://6pen.art/favicon.svg
+    title: 6pen Art
+    url: https://6pen.art/
+  - description: 万兴出品的 AI绘画平台
+    logo: https://www.wondershare.cn/favicon.ico
+    title: 万兴AI绘画
+    url: https://aigc.wondershare.cn
+  - description: 西湖心辰和西湖大学深度学习实验室共同推出的中文 AI 绘画平台。
+    logo: https://printidea.art/favicon.ico
+    title: 盗梦师Printidea
+    url: https://printidea.art
+  - description: 百度出品的 AI 艺术和创意辅助平台
+    logo: https://yige.baidu.com/favicon.ico
+    title: 文心一格
+    url: https://yige.baidu.com
+  - description: AI 免费生成3D卡通头像，可调整风格
+    logo: https://toonme.com/favicon.ico
+    title: Toonme
+    url: https://toonme.com
+  - description: AI 在线生成油画风格的肖像画
+    logo: https://ai-art.tokyo/favicon.ico
+    title: AI画伯—在线生成艺术图片
+    url: https://ai-art.tokyo
+  - description: logo在线设计生成器
+    logo: https://www.logosc.cn/img/logo-icons/logosc.svg?v=1
+    title: 标小智LOGO神器
+    url: https://www.logosc.cn
+  - description: 美图出品，能够实现智能生成海报、键换色、高清修复、图片无损放大、一键去水印、一键换装等功能
+    logo: https://pc.meitudata.com/web-xiuxiu-offical/release/ccd747eb11/_next/static/media/favicon.8bd739fc.ico
+    title: 美图设计室
+    url: https://design.meitu.com/
+  - description: 万能图片在线编辑器，可修复模糊图片、AI智能抠图、AI去水印等多种功能图片工具聚合类网站。
+    logo: https://img.logosc.cn/favicon.ico
+    title: AI改图神器
+    url: https://img.logosc.cn
+  - description: 基于 AI 快速从照片中删除对象
+    logo: https://www.hama.app/zh/assets/favicon.ico
+    title: Hama
+    url: https://www.hama.app/zh
+  - description: 主打 AI 抠图功能的在线图片编辑器
+    logo: https://photokit.com/favicon.ico
+    title: PhotoKit
+    url: https://photokit.com
+  - description: 模糊图片秒变超清！开源免费 AI 图片无损放大工具
+    logo: https://www.upscayl.org/favicon.ico
+    title: Upscay
+    url: https://www.upscayl.org
+  - description: AI人工智能图片无损放大
+    logo: https://bigjpg.com/favicon.ico
+    title: Bigjpg
+    url: https://bigjpg.com
+  - description: Github上的人脸修复、人脸清晰开源项目
+    logo: https://github.githubassets.com/favicons/favicon.png
+    title: CodeFormer
+    url: https://github.com/sczhou/CodeFormer
+  - description: 魔法橡皮擦：快速删掉任何图片中不需要的部分
+    logo: https://cleanup.pictures/favicon.ico
+    title: cleanup.pictures 魔法橡皮擦
+    url: https://cleanup.pictures
+  taxonomy: Image
+- icon: fas fa-pen fa-lg
+  links:
+  - description: 首家检测文本是否由 AI 生成的工具
+    logo: https://gptzero.me/favicon.ico
+    title: GPTZero
+    url: https://gptzero.me/
+  - description: 基于AI大模型的在线内容生成工具，擅长理解文本和生成内容
+    logo: http://www.aispacelab.cn/favicon.ico
+    title: 左脉梦幻师
+    url: http://www.aispacelab.cn
+  - description: 一键生成营销文本、配图与短视频等多类型内容
+    logo: http://copyai.cn/favicon.ico
+    title: AI营销内容创作copyai.cn
+    url: http://copyai.cn
+  - description: 在线文章原创检测工具，并可重写和进行 SEO 优化
+    logo: https://wyc.5118.com/favicon.ico
+    title: 5118智能伪原创工具
+    url: https://wyc.5118.com
+  - description: 为英文考试作文打分，支持从小学到雅思8大考试
+    logo: https://aimwriting.mtutor.engkoo.com/favicon.ico
+    title: 微软爱写作网站
+    url: https://aimwriting.mtutor.engkoo.com
+  - description: 一款内容创作AI辅助工具
+    logo: https://www.giiso.com/favicon.ico
+    title: Giiso写作机器人
+    url: https://www.giiso.com
+  - description: 为文学创作者及文学爱好者提供Ai辅助创作编辑工具
+    logo: https://cdn-web.caiyunapp.com/dreamily/public/images/logo.png
+    title: 彩云AI
+    url: https://if.caiyunai.com
+  - description: 一款 AI 智能写作工具
+    logo: https://uranus-static.oss-accelerate.aliyuncs.com/xiezuocat/favicon.ico
+    title: 秘塔写作猫
+    url: 'https://xiezuocat.com/ '
+  taxonomy: Write
+- icon: fas fa-school fa-lg
+  links:
+  - description: 中英双语对话模型 ChatGLM-6B，支持在单张消费级显卡上进行推理使用，支持中英双语问答的对话语言模型，并针对中文进行了优化。
+    logo: https://github.githubassets.com/favicons/favicon.png
+    title: '清华开源模型 ChatGLM-6B '
+    url: https://github.com/THUDM/ChatGLM-6B
+  - description: 可在 Slack 上免费使用的 Chat Bot，具备知识图谱能力
+    logo: https://www.anthropic.com/images/icons/favicon-32x32.png
+    title: Claude | Anthropic, PBC
+    url: https://anthropic.com/
+  taxonomy: Model
+- icon: fa fa-music fa-lg
+  links:
+  - description: 支持多国语言的免费在线音频合成平台，支持语音和语速调节
+    logo: https://storage.googleapis.com/ondoku3/img/icons/favicon.ico
+    title: Ondoku
+    url: https://ondoku3.com/zh-hans
+  - description: 一键文字转语音，自媒体配音神器
+    logo: https://yuedu.data-baker.com/favicon.ico
+    title: 标贝悦读AI配音
+    url: https://yuedu.data-baker.com/
+  - description: 基于微软Azure内核的在线文本转语音工具，号称永久免费
+    logo: https://ttsmaker.com/favicon.ico
+    title: TTSMaker
+    url: https://ttsmaker.com
+  - description: 科大讯飞推出的AI转语音和配音工具
+    logo: https://peiyin.xunfei.cn/themes/images/bigpeiyinge_favicon.ico
+    title: 讯飞智作
+    url: https://peiyin.xunfei.cn
+  - description: 内置以电影、动漫人物语音的音频合成平台
+    logo: https://uberduck.ai/favicon.ico
+    title: uberduck
+    url: https://uberduck.ai
+  taxonomy: Voice
+- icon: fa fa-code fa-lg
+  links:
+  - description: 亚马逊推出的 AI 编程服务，个人用户免费使用
+    logo: https://a0.awsstatic.com/libra-css/images/site/fav/favicon.ico
+    title: 亚马逊 CodeWhisperer
+    url: https://aws.amazon.com/cn/codewhisperer
+  - description: 国产，开源的编程辅助工具
+    logo: https://codegeex.cn/assets/images/logo-codegeex.png
+    title: codegeex
+    url: https://codegeex.cn
+  - description: 使用 Prompt 写代码
+    logo: https://www.cursor.so/favicon.ico
+    title: cursor.so
+    url: https://www.cursor.so
+  - description: GitHub 推出的编程辅助工具，基于 ChatGPT 4.
+    logo: https://github.com/fluidicon.png
+    title: GitHub Copilot
+    url: https://github.com/features/copilot
+  taxonomy: Code
+- icon: fa fa-money-bill fa-lg
+  links:
+  - description: 百度文心,产业级知识增强大模型,包含基础通用大模型及面向重点领域和重点任务的大模型,同时有丰富的工具与平台支撑高效便捷的应用开发,学习效率高,可解释性好,大幅降低AI开发与应用门槛.
+    logo: https://paddlepaddle-org-cn.cdn.bcebos.com/paddle-site-front/favicon.ico
+    title: 百度文心·创意应用空间
+    url: https://wenxin.baidu.com/younger/creativeSpace
+  - description: 一个支持 Python 的人工智能在线建模平台，可快速开发、训练并部署模型。
+    logo: https://momodel.cn/favicon.ico
+    title: Mo-人工智能教学实训平台
+    url: https://momodel.cn
+  - description: 一个数据建模和数据分析竞赛平台。企业和研究者可在其上发布数据，统计学者和数据挖掘专家可在其上进行竞赛以产生最好的模型。
+    logo: https://www.kaggle.com/favicon.ico
+    title: Kaggle竞赛平台
+    url: https://www.kaggle.com
+  - description: DataFountain(简称DF平台)是国内领先的数据科学及人工智能协同创新平台，提供AI 竞赛/大数据竞赛、人工智能数据集、开源分享社区、AI实验室等服务。是CCF大赛官方指定竞赛平台。
+    logo: https://www.datafountain.cn/favicon.ico
+    title: DataFountain大数据竞赛平台
+    url: https://www.datafountain.cn
+  - description: FlyAI是一个面向算法工程师的ai竞赛服务平台。
+    logo: https://www.flyai.com/favicon.ico
+    title: FlyAI-AI竞赛服务平台
+    url: https://www.flyai.com
+  - description: 阿里出品的AI竞赛平台
+    logo: https://img.alicdn.com/tfs/TB1_ZXuNcfpK1RjSZFOXXa6nFXa-32-32.ico
+    title: 阿里云天池
+    url: https://tianchi.aliyun.com
+  - description: 华为推出的云竞赛平台
+    logo: https://res-static.hc-cdn.cn/aem/content/dam/cloudbu-site/archive/commons/web_resoure/cms/static/images/global/favicon.ico?sttl=1631542346301
+    title: 华为云大赛平台
+    url: https://competition.huaweicloud.com/home
+  - description: 大数据竞赛平台，致力于通过优秀的数据科学家的力量解决复杂的大数据问题。
+    logo: https://www.dcjingsai.com/favicon.ico
+    title: DC竞赛
+    url: https://www.dcjingsai.com
+  - description: 面向数据科学家的最大数据黑客平台
+    logo: https://www.analyticsvidhya.com/wp-content/uploads/2015/02/logo_square_v2.jpg
+    title: DataHack
+    url: https://datahack.analyticsvidhya.com
+  - description: GPU租用服务平台
+    logo: https://www.autodl.com/favicon.ico
+    title: AutoDL AI算力云
+    url: https://www.autodl.com
+  - description: 人工智能基础设施服务商，面向企业及研究机构提供 AI 模型生产与部署系统。
+    logo: https://openbayes.com/favicon.ico
+    title: OpenBayes|贝式计算
+    url: https://openbayes.com
+  - description: 提供快速构建、训练模型的平台。
+    logo: https://www.bitahub.com/favicon.ico
+    title: BitaHub
+    url: https://www.bitahub.com
+  - description: 主机(GPU)云共享平台,专注于人工智能领域的云服务商
+    logo: https://www.matpool.com/favicon.ico
+    title: 矩池云
+    url: https://www.matpool.com
+  - description: 云上曲率是AIGC内容安全提供商，聚焦出海和国内游戏、社交、直播类，核心产品有全球RTM云信令、即时通讯、全球化多语言内容风控安全产品（文本审核、图片审核、音频审核、视频审核）、以及语音合成识别、多语言机器实时翻译等。
+    logo: https://www.ilivedata.com/favicon.ico
+    title: 云上曲率
+    url: https://www.ilivedata.com
+  - description: 阿里AI（阿里灵杰）依托阿里领先的云基础设施、大数据和AI工程能力、场景算法技术和多年行业实践，一站式地为企业和开发者提供云原生的AI能力体系。帮助提升AI应用开发效率，促进AI在产业中规模化落地，激发业务价值。
+    logo: https://img.alicdn.com/tfs/TB1_ZXuNcfpK1RjSZFOXXa6nFXa-32-32.ico
+    title: 阿里云ai-阿里灵杰
+    url: https://ai.aliyun.com
+  - description: 百度AI开放平台 全球领先的人工智能服务平台
+    logo: https://ai.baidu.com/favicon.ico
+    title: 百度AI开放平台
+    url: https://ai.baidu.com
+  - description: 科大讯飞推出的以语音交互技术为核心的人工智能开放平台
+    logo: https://www.xfyun.cn/favicon.ico
+    title: 讯飞开放平台
+    url: https://www.xfyun.cn
+  - description: 华为的AI平台以华为云为基础，以华为的硬件为依托，在AI能力方面，更突出面向开发者的服务
+    logo: https://developer.huaweicloud.com/favicon.ico
+    title: 华为云AI平台
+    url: https://developer.huaweicloud.com
+  - description: 是一家专注于智能语音交互和AI数据服务的人工智能公司。
+    logo: https://www.data-baker.com/favicon.ico
+    title: 标贝科技
+    url: https://www.data-baker.com
+  - description: 移动推出的移动云平台云主机、服务器、大数据、人工智能等都有
+    logo: https://ecloud.10086.cn/home/favicon.ico
+    title: 移动云
+    url: https://ecloud.10086.cn/home
+  taxonomy: Platform
