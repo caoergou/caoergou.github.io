@@ -8,11 +8,33 @@ jobs:
   extract-issue-content-and-echo:
     runs-on: ubuntu-latest
     steps:
+      
       - name: View issue information
         run: |
           echo ${{ github.event.issue.title }}
           echo ${{ github.event.issue.body }}
-      - name: View the github context
-        run: echo "$GITHUB_CONTEXT"
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Create new branch and commit changes
+        run: |
+          git config --global user.name 'auto-create-pr'
+          git config --global user.email 'github-actions@github.com'
+          git checkout -b new-branch-${{ github.event.issue.number }}
+          echo "${{ github.event.issue.body }}" > newfile.txt
+          git add newfile.txt
+          git commit -m "Add new file"
+          git push origin new-branch-${{ github.event.issue.number }}
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Create PR'
+          title: 'Create PR'
+          body: |
+            This is an auto-generated PR.
+          branch: 'auto-pr'
+          branch-suffix: timestamp
+          delete-branch: true
