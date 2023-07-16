@@ -27,11 +27,11 @@ jobs:
           branch: new-branch-${{ github.event.issue.number }}
 
       - name: Create PR
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'Create PR'
           title: 'Create PR'
           body: |
-            This is an auto-generated PR.
-          branch: main
+                        This PR was auto-created from Issue #${{ github.event.issue.number }}. The original issue content was: "${{ github.event.issue.body }}"
+          branch: 'new-branch-${{ github.event.issue.number }}'
