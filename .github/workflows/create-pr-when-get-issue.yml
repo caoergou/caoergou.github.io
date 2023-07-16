@@ -19,7 +19,12 @@ jobs:
           echo "${{ github.event.issue.body }}" > newfile.txt
           git add newfile.txt
           git commit -m "Add new file"
-          git push origin new-branch-${{ github.event.issue.number }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: new-branch-${{ github.event.issue.number }}
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v3
