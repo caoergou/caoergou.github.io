@@ -34,4 +34,4 @@ jobs:
           title: 'Create PR'
           body: |
                         This PR was auto-created from Issue #${{ github.event.issue.number }}. The original issue content was: "${{ github.event.issue.body }}"
-          branch: 'new-branch-${{ github.event.issue.number }}'
+          branch: 'main'
