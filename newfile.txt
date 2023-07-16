@@ -1,0 +1,15 @@
+### Site URL
+
+https://sourceai.dev/
+
+### Logo URL
+
+https://sourceai.dev/img/logo/logo-sm.png
+
+### short-description
+
+test3
+
+### kind
+
+Browser Plugin
