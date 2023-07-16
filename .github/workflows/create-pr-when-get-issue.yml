@@ -8,12 +8,6 @@ jobs:
   extract-issue-content-and-echo:
     runs-on: ubuntu-latest
     steps:
-      
-      - name: View issue information
-        run: |
-          echo ${{ github.event.issue.title }}
-          echo ${{ github.event.issue.body }}
-
       - name: Checkout code
         uses: actions/checkout@v3
       
