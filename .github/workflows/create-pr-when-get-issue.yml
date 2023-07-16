@@ -34,5 +34,4 @@ jobs:
           title: 'Create PR'
           body: |
             This is an auto-generated PR.
-          branch: new-branch-${{ github.event.issue.number }}
-          delete-branch: true
+          branch: main
