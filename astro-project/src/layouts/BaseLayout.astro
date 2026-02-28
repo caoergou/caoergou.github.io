@@ -7,62 +7,78 @@ import ThreeBackground from '../components/ThreeBackground';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eric Cao - 个人页面</title>
-  <meta name="description" content="Eric Cao 的个人页面 - 全栈开发工程师 & 开源爱好者">
+  <title>Eric Cao</title>
+  <meta name="description" content="Eric Cao — Python 开发者 & 开源贡献者">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    * {
+    *, *::before, *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
+    :root {
+      --bg: #080c14;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-hover: rgba(255, 255, 255, 0.07);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 179, 237, 0.4);
+      --text-primary: rgba(255, 255, 255, 0.92);
+      --text-secondary: rgba(255, 255, 255, 0.5);
+      --text-muted: rgba(255, 255, 255, 0.3);
+      --accent: #63b3ed;
+      --accent-dim: rgba(99, 179, 237, 0.15);
+      --accent-glow: rgba(99, 179, 237, 0.25);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Inter', 'Noto Sans SC', sans-serif;
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
       line-height: 1.6;
-      color: #333;
-      background: #0a0a0a;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ── */
+    .page {
+      position: relative;
+      z-index: 1;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 0 2rem;
-      position: relative;
-      z-index: 2;
     }
 
-    /* Hero Section */
-    .hero-section {
+    /* ── Hero ── */
+    .hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 2rem 0;
-      position: relative;
+      padding: 6rem 0 4rem;
     }
 
-    .hero-content {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 24px;
-      padding: 4rem 2rem;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      max-width: 800px;
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
     }
 
     .hero-avatar {
-      width: 150px;
-      height: 150px;
-      margin: 0 auto 2rem;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       overflow: hidden;
-      border: 4px solid #667eea;
-      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
     }
 
     .hero-avatar img {
@@ -71,195 +87,267 @@ import ThreeBackground from '../components/ThreeBackground';
       object-fit: cover;
     }
 
-    .hero-content h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin-bottom: 1rem;
-    }
-
-    .hero-content .role {
-      font-size: 1.2rem;
-      color: #667eea;
+    .hero-name {
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
       font-weight: 600;
-      margin-bottom: 1.5rem;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--text-primary);
     }
 
-    .hero-content p {
-      font-size: 1.1rem;
-      color: #666;
-      margin-bottom: 2rem;
-      line-height: 1.8;
+    .hero-role {
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      margin-top: 0.5rem;
     }
 
-    /* Social Links */
-    .social-links {
+    .hero-bio {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 520px;
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .hero-links {
       display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
     }
 
-    .social-link {
+    .hero-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      gap: 0.45rem;
+      padding: 0.55rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
       text-decoration: none;
-      border-radius: 30px;
+      font-size: 0.875rem;
+      font-weight: 400;
+      transition: all 0.2s ease;
+      background: var(--surface);
+    }
+
+    .hero-link:hover {
+      border-color: var(--border-hover);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .hero-link svg {
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    .hero-link:hover svg {
+      opacity: 1;
+    }
+
+    /* ── Section ── */
+    .section {
+      padding: 5rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 0.75rem;
       font-weight: 500;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2.5rem;
     }
 
-    .social-link:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
-    }
-
-    /* Projects Section */
-    .projects-section {
-      padding: 4rem 0;
-      background: rgba(255, 255, 255, 0.95);
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin-bottom: 3rem;
-    }
-
+    /* ── Projects ── */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 2rem;
-      margin-bottom: 3rem;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
     }
 
     .project-card {
-      background: white;
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-      border: 1px solid rgba(102, 126, 234, 0.1);
+      padding: 1.75rem;
+      background: var(--surface);
+      transition: background 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
     }
 
     .project-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
-      border-color: #667eea;
+      background: var(--surface-hover);
     }
 
-    .project-card h3 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin-bottom: 1rem;
+    .project-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
     }
 
-    .project-card p {
-      color: #666;
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
+    .project-name {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      font-family: 'Inter', monospace;
     }
 
-    .project-link {
+    .project-stars {
       display: inline-flex;
       align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .project-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      font-weight: 300;
+      flex: 1;
+    }
+
+    .project-tags {
+      display: flex;
       gap: 0.5rem;
-      color: #667eea;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
+      flex-wrap: wrap;
     }
 
-    .project-link:hover {
-      color: #764ba2;
+    .tag {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-weight: 400;
+      letter-spacing: 0.01em;
     }
 
-    /* Blog Section */
-    .blog-section {
-      padding: 4rem 0;
-      background: rgba(255, 255, 255, 0.95);
-      border-top: 1px solid rgba(102, 126, 234, 0.1);
-    }
-
-    .blog-posts {
+    /* ── Blog ── */
+    .blog-list {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      max-width: 800px;
-      margin: 0 auto;
     }
 
-    .blog-post-card {
-      background: white;
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
+    .blog-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
       text-decoration: none;
       color: inherit;
-      display: block;
+      transition: all 0.2s ease;
     }
 
-    .blog-post-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+    .blog-item:first-child {
+      border-top: 1px solid var(--border);
     }
 
-    .blog-post-card h3 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin-bottom: 0.5rem;
+    .blog-item:hover .blog-title {
+      color: var(--accent);
     }
 
-    .blog-post-card .meta {
-      color: #999;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
+    .blog-title {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      font-weight: 400;
+      transition: color 0.2s ease;
     }
 
-    .blog-post-card .excerpt {
-      color: #666;
-      line-height: 1.6;
+    .blog-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
 
-    /* Footer */
+    .blog-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .blog-more:hover {
+      color: var(--accent);
+    }
+
+    /* ── Footer ── */
     .footer {
-      padding: 2rem 0;
-      background: rgba(0, 0, 0, 0.8);
-      color: rgba(255, 255, 255, 0.7);
-      text-align: center;
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
     }
 
-    .footer p {
-      margin: 0;
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero-content {
-        padding: 2rem 1rem;
-        margin: 1rem;
-      }
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
 
-      .hero-content h1 {
-        font-size: 2rem;
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-link {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--text-secondary);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .container {
+        padding: 0 1.25rem;
       }
 
       .projects-grid {
         grid-template-columns: 1fr;
       }
 
-      .section-title {
-        font-size: 2rem;
+      .hero {
+        padding: 5rem 0 3rem;
+      }
+
+      .blog-item {
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -267,115 +355,163 @@ import ThreeBackground from '../components/ThreeBackground';
 <body>
   <ThreeBackground client:load />
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-avatar">
-          <img src="/assets/images/avatar.jpg" alt="Eric Cao">
-        </div>
-        <h1>Eric Cao</h1>
-        <div class="role">Python 开发者 & 开源贡献者</div>
-        <p>
-          Stay hungry, Stay foolish. 热衷于开发实用的开源工具和探索新技术。<br>
-          专注于 Python 开发、分布式系统、Web 开发和 AI 应用。
-        </p>
+  <div class="page">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="hero-avatar">
+            <img src="/assets/images/avatar.jpg" alt="Eric Cao" loading="eager">
+          </div>
 
-        <div class="social-links">
-          <a href="https://github.com/caoergou" class="social-link" target="_blank" rel="noopener">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
-            </svg>
-            GitHub
+          <div>
+            <h1 class="hero-name">Eric Cao</h1>
+            <div class="hero-role">Python 开发者 & 开源贡献者</div>
+          </div>
+
+          <p class="hero-bio">
+            热衷于构建实用的开源工具，专注于 Python 开发、分布式系统与 AI 应用。<br>
+            Stay hungry, stay foolish.
+          </p>
+
+          <div class="hero-links">
+            <a href="https://github.com/caoergou" class="hero-link" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+              </svg>
+              GitHub
+            </a>
+            <a href="https://jike.city/ergou" class="hero-link" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              即刻
+            </a>
+            <a href="mailto:itsericsmail@gmail.com" class="hero-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              邮件
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="section">
+      <div class="container">
+        <div class="section-label">开源项目</div>
+        <div class="projects-grid">
+          <a href="https://github.com/caoergou/airflow-extended-api-plugin" class="project-card" target="_blank" rel="noopener">
+            <div class="project-header">
+              <span class="project-name">airflow-extended-api-plugin</span>
+              <span class="project-stars">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                78
+              </span>
+            </div>
+            <p class="project-desc">基于 CLI 命令的 Apache Airflow RESTful API 扩展插件，支持 Airflow v2.X，方便与外部系统集成。</p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Airflow</span>
+              <span class="tag">REST API</span>
+            </div>
           </a>
-          <a href="https://truer.ai" class="social-link" target="_blank" rel="noopener">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
-            </svg>
-            Truer.ai
+
+          <a href="https://github.com/caoergou/cnpip" class="project-card" target="_blank" rel="noopener">
+            <div class="project-header">
+              <span class="project-name">cnpip</span>
+              <span class="project-stars">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                43
+              </span>
+            </div>
+            <p class="project-desc">Python pip 镜像源切换工具，自动测速并选择最快的国内镜像，一条命令提升包下载速度。</p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">CLI</span>
+              <span class="tag">DevTools</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/caoergou/COVID-19Simulation" class="project-card" target="_blank" rel="noopener">
+            <div class="project-header">
+              <span class="project-name">COVID-19 Simulation</span>
+              <span class="project-stars">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                12
+              </span>
+            </div>
+            <p class="project-desc">用 Python turtle 实现的疫情传播模拟程序，逻辑简洁，适合作为 Python 入门实践项目。</p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Simulation</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/caoergou/JS_answer" class="project-card" target="_blank" rel="noopener">
+            <div class="project-header">
+              <span class="project-name">JS_answer</span>
+              <span class="project-stars">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                7
+              </span>
+            </div>
+            <p class="project-desc">基于 Flask + LayUI 的问答社区平台，支持提问、回答、搜索等核心功能。</p>
+            <div class="project-tags">
+              <span class="tag">Flask</span>
+              <span class="tag">Python</span>
+              <span class="tag">Web</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/caoergou/airlineReservationSystem" class="project-card" target="_blank" rel="noopener">
+            <div class="project-header">
+              <span class="project-name">Airline Reservation System</span>
+              <span class="project-stars">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                2
+              </span>
+            </div>
+            <p class="project-desc">RESTful 架构的航班订票系统，Spring Boot + Vue.js 实现的分布式系统课程实验项目。</p>
+            <div class="project-tags">
+              <span class="tag">Spring Boot</span>
+              <span class="tag">Vue.js</span>
+              <span class="tag">分布式</span>
+            </div>
           </a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Projects Section -->
-  <section class="projects-section">
-    <div class="container">
-      <h2 class="section-title">我的项目</h2>
-
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3>airflow-extended-api-plugin</h3>
-          <p>基于 CLI 命令的 Airflow RESTful API 插件，支持 Airflow v2.X。提供了扩展的 API 接口，方便与其他系统集成。⭐ 78</p>
-          <a href="https://github.com/caoergou/airflow-extended-api-plugin" class="project-link" target="_blank" rel="noopener">
-            查看详情 →
-          </a>
-        </div>
-
-        <div class="project-card">
-          <h3>cnpip</h3>
-          <p>帮助中国用户快速切换 pip 镜像源的命令行工具，自动测试并选择最快的镜像源，提升 Python 包下载速度。⭐ 43</p>
-          <a href="https://github.com/caoergou/cnpip" class="project-link" target="_blank" rel="noopener">
-            查看详情 →
-          </a>
-        </div>
-
-        <div class="project-card">
-          <h3>Truer.ai</h3>
-          <p>收集实用的 AGI 应用的导航网站，基于 Hugo 和 GitHub Actions 构建。帮助用户了解真实的 AI 应用发展。⭐ 5</p>
-          <a href="https://truer.ai" class="project-link" target="_blank" rel="noopener">
-            查看详情 →
-          </a>
-        </div>
-
-        <div class="project-card">
-          <h3>COVID-19 Simulation</h3>
-          <p>基于 turtle 实现的新冠疫情传播模拟程序，逻辑简单，适合作为 Python 编程入门实践项目。⭐ 12</p>
-          <a href="https://github.com/caoergou/COVID-19Simulation" class="project-link" target="_blank" rel="noopener">
-            查看详情 →
-          </a>
-        </div>
-
-        <div class="project-card">
-          <h3>JS_answer</h3>
-          <p>基于 Flask 后端和 LayUI 前端的问答社区，实现了用户提问、回答、搜索等功能。⭐ 7</p>
-          <a href="https://github.com/caoergou/JS_answer" class="project-link" target="_blank" rel="noopener">
-            查看详情 →
-          </a>
-        </div>
-
-        <div class="project-card">
-          <h3>Airline Reservation System</h3>
-          <p>基于 RESTful 架构的航班订票网站，使用 Spring Boot + Vue.js 实现的分布式系统课程实验项目。⭐ 2</p>
-          <a href="https://github.com/caoergou/airlineReservationSystem" class="project-link" target="_blank" rel="noopener">
-            查看详情 →
+    <!-- Blog -->
+    <section class="section">
+      <div class="container">
+        <div class="section-label">最新文章</div>
+        <div class="blog-list">
+          <a href="/blog" class="blog-item">
+            <span class="blog-title">查看所有文章 →</span>
+            <span class="blog-date">Python · Web · 分布式</span>
           </a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Blog Section -->
-  <section class="blog-section">
-    <div class="container">
-      <h2 class="section-title">最新文章</h2>
-
-      <div class="blog-posts">
-        <a href="/blog" class="blog-post-card">
-          <h3>查看所有文章</h3>
-          <div class="meta">探索更多技术文章</div>
-          <div class="excerpt">点击查看我的博客文章，包括 Python 开发、Web 技术、分布式系统等主题...</div>
-        </a>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-inner">
+          <span class="footer-copy">© 2026 Eric Cao</span>
+          <div class="footer-links">
+            <a href="https://github.com/caoergou" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://jike.city/ergou" class="footer-link" target="_blank" rel="noopener">即刻</a>
+            <a href="mailto:itsericsmail@gmail.com" class="footer-link">Email</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <p>&copy; 2024 Eric Cao. All rights reserved.</p>
-    </div>
-  </footer>
+    </footer>
+  </div>
 </body>
 </html>

@@ -7,115 +7,61 @@ const ThreeBackground = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Scene setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.current.appendChild(renderer.domElement);
 
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(1, 1, 1);
-    scene.add(directionalLight);
-
-    const pointLight1 = new THREE.PointLight(0x667eea, 1, 100);
-    pointLight1.position.set(20, 20, 20);
-    scene.add(pointLight1);
-
-    const pointLight2 = new THREE.PointLight(0x764ba2, 1, 100);
-    pointLight2.position.set(-20, -20, 20);
-    scene.add(pointLight2);
-
-    // Create floating particles
+    // Subtle star field — small, dim, blue-tinted
     const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 1000;
-    const posArray = new Float32Array(particlesCount * 3);
-
-    for (let i = 0; i < particlesCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 100;
+    const count = 600;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 120;
     }
-
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.1,
-      color: 0xffffff,
+      size: 0.08,
+      color: 0x63b3ed,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.35,
       blending: THREE.AdditiveBlending,
+      depthWrite: false,
     });
 
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particlesMesh);
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particles);
 
-    // Create geometric shapes
-    const geometry1 = new THREE.TorusGeometry(10, 3, 16, 100);
-    const material1 = new THREE.MeshPhongMaterial({
-      color: 0x667eea,
+    // Single subtle wireframe icosahedron — far back, very dim
+    const icoGeo = new THREE.IcosahedronGeometry(14, 1);
+    const icoMat = new THREE.MeshBasicMaterial({
+      color: 0x63b3ed,
       transparent: true,
-      opacity: 0.3,
+      opacity: 0.04,
       wireframe: true,
     });
-    const torus1 = new THREE.Mesh(geometry1, material1);
-    scene.add(torus1);
-
-    const geometry2 = new THREE.IcosahedronGeometry(8, 0);
-    const material2 = new THREE.MeshPhongMaterial({
-      color: 0x764ba2,
-      transparent: true,
-      opacity: 0.2,
-      wireframe: true,
-    });
-    const icosahedron = new THREE.Mesh(geometry2, material2);
-    scene.add(icosahedron);
-
-    const geometry3 = new THREE.OctahedronGeometry(6, 0);
-    const material3 = new THREE.MeshPhongMaterial({
-      color: 0x20c997,
-      transparent: true,
-      opacity: 0.4,
-      wireframe: true,
-    });
-    const octahedron = new THREE.Mesh(geometry3, material3);
-    scene.add(octahedron);
+    const ico = new THREE.Mesh(icoGeo, icoMat);
+    ico.position.set(18, -4, -10);
+    scene.add(ico);
 
     camera.position.z = 30;
 
-    // Animation
     const animate = () => {
       requestAnimationFrame(animate);
-
-      // Rotate shapes
-      torus1.rotation.x += 0.002;
-      torus1.rotation.y += 0.005;
-
-      icosahedron.rotation.x -= 0.003;
-      icosahedron.rotation.y -= 0.004;
-
-      octahedron.rotation.x += 0.001;
-      octahedron.rotation.y -= 0.002;
-
-      // Rotate particles
-      particlesMesh.rotation.y += 0.0005;
-
-      // Float effect
-      const time = Date.now() * 0.001;
-      torus1.position.y = Math.sin(time * 0.5) * 2;
-      icosahedron.position.y = Math.cos(time * 0.7) * 1.5;
-      octahedron.position.y = Math.sin(time * 0.3) * 2.5;
-
+      const t = Date.now() * 0.0003;
+      particles.rotation.y = t * 0.08;
+      particles.rotation.x = t * 0.03;
+      ico.rotation.x = t * 0.15;
+      ico.rotation.y = t * 0.2;
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // Handle resize
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -124,10 +70,11 @@ const ThreeBackground = () => {
 
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
-      containerRef.current?.removeChild(renderer.domElement);
+      if (containerRef.current?.contains(renderer.domElement)) {
+        containerRef.current.removeChild(renderer.domElement);
+      }
       renderer.dispose();
     };
   }, []);
@@ -142,7 +89,7 @@ const ThreeBackground = () => {
         width: '100%',
         height: '100%',
         zIndex: 0,
-        opacity: 0.6,
+        pointerEvents: 'none',
       }}
     />
   );
