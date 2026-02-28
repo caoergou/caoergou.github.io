@@ -1,47 +1,74 @@
-# Truer.ai
+# Eric Cao - Personal Website
 
 [中文版介绍](README-zh-CN.md)
 
-Truer.ai is a website built with Hugo and GitHub Actions that collects the latest and most practical AGI (Artificial General Intelligence) applications that can be experienced firsthand.
+This is my personal website built with Hugo and deployed via GitHub Actions to GitHub Pages.
 
-## Why Truer.ai ?
+## About
 
-AGI is changing lives and work, but many only theoretically understand it or lack knowledge of its practical use and benefit. Truer.ai addresses this by:
+A minimalist personal website showcasing my profile, projects, and contact information.
 
-- Highlighting AGI's diversity and useful applications, not just recognition or autonomous vehicles.
-- Spreading AGI knowledge and experience so people can apply it to work and problems.
-- Stimulating AGI innovation and exploration across fields and in creating better products/services.
+**Live Site**: [eric.run.place](https://eric.run.place)
 
-## Open and Welcoming
+## Tech Stack
 
-[Truer.ai](https://truer.ai) is open-source and open. Anyone interested in or experienced with AGI can:
+- **Static Site Generator**: [Hugo](https://gohugo.io/)
+- **CI/CD**: [GitHub Actions](https://docs.github.com/en/actions)
+- **Hosting**: [GitHub Pages](https://pages.github.com/)
 
-- Contribute by submitting new AGI examples or participating in discussions.  
-- Shape [Truer.ai](https://truer.ai) by providing feedback or suggestions.
+## Project Structure
 
-And issues/pull requests are welcomed.
+```
+.
+├── site/                 # Hugo site source
+│   ├── config.toml      # Site configuration
+│   ├── layouts/         # HTML templates
+│   ├── static/          # Static assets
+│   └── data/            # Data files
+├── .github/
+│   └── workflows/       # GitHub Actions workflows
+└── CNAME                # Custom domain configuration
+```
 
-## Future Plans
+## Local Development
 
-Continuing relevance through regular content updates. Adding:
+1. Install Hugo (extended version):
+   ```bash
+   # macOS
+   brew install hugo
 
-- [ ] Improved search, sorting and filtering to efficiently access information.
-- [ ] A community for sharing AGI insights and experiences.
+   # Linux
+   snap install hugo --channel=extended
+   ```
 
-## Acknowledgements
+2. Clone the repository:
+   ```bash
+   git clone https://github.com/caoergou/caoergou.github.io.git
+   cd caoergou.github.io
+   ```
 
-We would like to thank all individuals and organizations who have contributed data and technical resources to truer.ai. We also want to extend our gratitude to the following open-source projects and services that have provided valuable support to truer.ai:
+3. Run the development server:
+   ```bash
+   cd site
+   hugo server -D
+   ```
 
-- [Hugo](https://gohugo.io/), a fast static site generator.
-- [GitHub Actions](https://docs.github.com/en/actions), automated continuous integration.
-- [GitHub Pages](https://pages.github.com/), free website hosting.
+4. Visit `http://localhost:1313` in your browser
+
+## Deployment
+
+The site is automatically deployed to GitHub Pages when changes are pushed to the `main` branch. The workflow:
+
+1. Builds the Hugo site
+2. Deploys to the `gh-pages` branch
+3. GitHub Pages serves the site at the custom domain
 
 ## Contact
 
-If you are interested in this project or have any suggestions or questions, please feel free to contact me via the following ways:
+- **Email**: itsericsmail@gmail.com
+- **GitHub**: [@caoergou](https://github.com/caoergou)
+- **Jike**: [Personal Page](https://jike.city/ergou)
 
-- Email: itsericsmail@gmail.com
-- GitHub: @caoergou
-- Jike: [Personal Page](https://jike.city/ergou)
+## License
 
-Thank you for your attention and support!
+This project is open source and available under the MIT License.

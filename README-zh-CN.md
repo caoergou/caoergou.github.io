@@ -1,50 +1,72 @@
-# Truer.ai
+# Eric Cao - 个人网站
 
-Truer.ai 是一个收集实用的 AGI (Artificial General Intelligence, 通用人工智能) 应用的导航，基于 Hugo 和 Github Actions 构建。
+这是我的个人网站，使用 Hugo 构建，通过 GitHub Actions 自动部署到 GitHub Pages。
 
-## 为什么要做 `Truer.ai` ？
+## 关于
 
-虽然自从 ChatGPT 发布以来，很多人为止震惊，担心自己即将失业。但更多人其实只是从营销号去了解，没有自己真正体验过生成式AI的应用。[Truer.ai](https://truer.ai) 致力于：
+一个简洁的个人网站，展示个人信息、项目和联系方式。
 
-- 展示AI技术应用的多样性和实用性，不只是让 Siri 控制家电或者人脸识别。
-- 传播 AI 技术的使用经验，帮助你将其应用于实际工作或者生活中。
-- 刺激人工智能在不同领域的创新和探索，帮助从更加广阔的视野去思考。
+**在线访问**: [eric.run.place](https://eric.run.place)
 
-## 开放与欢迎
+## 技术栈
 
-[Truer.ai](https://truer.ai) 是一个开源和开放的项目。 
-任何对人工智能感兴趣的人都可以：
+- **静态网站生成器**: [Hugo](https://gohugo.io/)
+- **CI/CD**: [GitHub Actions](https://docs.github.com/en/actions)
+- **托管平台**: [GitHub Pages](https://pages.github.com/)
 
-- 提交新的人工智能应用案例，或参与讨论。
-- 提供反馈或建议，共同塑造[Truer.ai](https://truer.ai)。
+## 项目结构
 
-此外，欢迎issue或pull request对网站样式进行修改。
+```
+.
+├── site/                 # Hugo 网站源码
+│   ├── config.toml      # 网站配置
+│   ├── layouts/         # HTML 模板
+│   ├── static/          # 静态资源
+│   └── data/            # 数据文件
+├── .github/
+│   └── workflows/       # GitHub Actions 工作流
+└── CNAME                # 自定义域名配置
+```
 
-## 未来计划
+## 本地开发
 
-会持续收入更多以确保网站的时效性。
-此外计划增加：
+1. 安装 Hugo（扩展版本）：
+   ```bash
+   # macOS
+   brew install hugo
 
-- [ ] 搜索和过滤功能，以便更有效地查找信息。
-- [ ] 交流社区，分享一些使用的经验。
+   # Linux
+   snap install hugo --channel=extended
+   ```
 
-## 致谢
+2. 克隆仓库：
+   ```bash
+   git clone https://github.com/caoergou/caoergou.github.io.git
+   cd caoergou.github.io
+   ```
 
-感谢互联网和 ChatGPT 帮我水了这篇 readme。  
-同时感谢以下开源项目和服务：
+3. 运行开发服务器：
+   ```bash
+   cd site
+   hugo server -D
+   ```
 
-- [Hugo](https://gohugo.io/)，一个快速的静态网站生成器。
-- [GitHub Actions](https://docs.github.com/en/actions)，一个自动化的持续集成平台。
-- [GitHub Pages](https://pages.github.com/)，免费的静态网站托管平台。
-- [WebStackPage](https://github.com/WebStackPage/WebStackPage.github.io)，一个静态网址导航的网站样式模板
-- [WebStackPage-hugo](https://github.com/shenweiyan/WebStack-Hugo)，基于 WebStackPage 制作的 Hugo 主题
+4. 在浏览器中访问 `http://localhost:1313`
+
+## 部署
+
+当代码推送到 `main` 分支时，网站会自动部署到 GitHub Pages。部署流程：
+
+1. 构建 Hugo 网站
+2. 部署到 `gh-pages` 分支
+3. GitHub Pages 在自定义域名上提供服务
 
 ## 联系方式
 
-如果你对此项目感兴趣或有任何建议或问题，请通过以下方式与我们联系：
+- **邮箱**: itsericsmail@gmail.com
+- **GitHub**: [@caoergou](https://github.com/caoergou)
+- **即刻**: [个人主页](https://jike.city/ergou)
 
-- Email: itsericsmail@gmail.com
-- GitHub: @caoergou
-- Jike: [Personal Page](https://jike.city/ergou)
+## 许可证
 
-感谢你的关注和支持！
+本项目开源，采用 MIT 许可证。
