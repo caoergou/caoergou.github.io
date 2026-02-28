@@ -1,0 +1,197 @@
+---
+import ThreeBackground from '../../components/ThreeBackground';
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博客 - Eric Cao</title>
+  <meta name="description" content="分享我的思考和技术文章">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans SC', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #0a0a0a;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem 0;
+    }
+
+    .page-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .page-description {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.1rem;
+    }
+
+    .blog-posts {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .blog-post-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .blog-post-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 70px rgba(102, 126, 234, 0.4);
+    }
+
+    .blog-post-card:hover .post-title {
+      color: #667eea;
+    }
+
+    .post-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .post-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .post-excerpt {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 1rem;
+      color: #667eea;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .read-more:hover {
+      color: #764ba2;
+      transform: translateX(4px);
+    }
+
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      margin-bottom: 2rem;
+    }
+
+    .back-home:hover {
+      color: #667eea;
+      transform: translateX(-4px);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .blog-post-card {
+        padding: 1.5rem;
+      }
+
+      .post-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <ThreeBackground client:load />
+
+  <div class="container">
+    <a href="/" class="back-home">
+      ← 回到首页
+    </a>
+
+    <header class="page-header">
+      <h1 class="page-title">博客</h1>
+      <p class="page-description">分享我的思考和技术文章</p>
+    </header>
+
+    <main class="blog-posts">
+      <div class="blog-post-card">
+        <h3 class="post-title">Python 开发工具与最佳实践</h3>
+        <div class="post-meta">
+          <time>即将发布</time>
+        </div>
+        <p class="post-excerpt">分享我在 Python 开发中使用的工具和最佳实践，包括 pip 镜像管理、虚拟环境配置、代码质量工具等。</p>
+      </div>
+
+      <div class="blog-post-card">
+        <h3 class="post-title">构建分布式系统的经验</h3>
+        <div class="post-meta">
+          <time>即将发布</time>
+        </div>
+        <p class="post-excerpt">从航班订票系统项目中学到的分布式系统设计经验，包括 RESTful API 设计、服务间通信、数据一致性等。</p>
+      </div>
+
+      <div class="blog-post-card">
+        <h3 class="post-title">开源项目维护心得</h3>
+        <div class="post-meta">
+          <time>即将发布</time>
+        </div>
+        <p class="post-excerpt">维护 airflow-extended-api-plugin 和 cnpip 等开源项目的经验分享，包括如何处理 issue、PR 审查、版本发布等。</p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
