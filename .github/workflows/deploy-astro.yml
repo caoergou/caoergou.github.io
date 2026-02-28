@@ -14,9 +14,6 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
-env:
-  BUILD_PATH: "./astro-project"
-
 jobs:
   build:
     name: Build
@@ -30,7 +27,6 @@ jobs:
         with:
           node-version: "20"
           cache: npm
-          cache-dependency-path: ${{ env.BUILD_PATH }}/package-lock.json
 
       - name: Setup Pages
         id: pages
@@ -38,17 +34,14 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        working-directory: ${{ env.BUILD_PATH }}
 
       - name: Build with Astro
-        run: |
-          npm run build
-        working-directory: ${{ env.BUILD_PATH }}
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.BUILD_PATH }}/dist
+          path: ./dist
 
   deploy:
     environment:
