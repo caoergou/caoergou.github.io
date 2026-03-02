@@ -16,19 +16,23 @@ import ThreeBackground from '../components/ThreeBackground';
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #06060f;
-      --surface: rgba(255, 255, 255, 0.03);
-      --border: rgba(255, 255, 255, 0.10);
-      --text-primary: rgba(255, 255, 255, 0.95);
-      --text-secondary: rgba(255, 255, 255, 0.65);
-      --text-muted: rgba(255, 255, 255, 0.38);
-      --accent: #818cf8;
-      --accent-2: #22d3ee;
-      --accent-3: #a78bfa;
-      --accent-bright: #c7d2fe;
-      --accent-dim: rgba(129, 140, 248, 0.12);
-      --glow-purple: rgba(129, 140, 248, 0.20);
-      --glow-cyan: rgba(34, 211, 238, 0.15);
+      --bg: #0a0a12;
+      --surface: rgba(255, 255, 255, 0.06);
+      --surface-hover: rgba(255, 255, 255, 0.09);
+      --border: rgba(255, 255, 255, 0.15);
+      --border-hover: rgba(255, 255, 255, 0.25);
+      --text-primary: rgba(255, 255, 255, 0.92);
+      --text-secondary: rgba(255, 255, 255, 0.70);
+      --text-muted: rgba(255, 255, 255, 0.45);
+      --accent: #8b95ff;
+      --accent-2: #3dd9ee;
+      --accent-3: #b794ff;
+      --accent-bright: #d4dbff;
+      --accent-dim: rgba(139, 149, 255, 0.15);
+      --glow-purple: rgba(139, 149, 255, 0.28);
+      --glow-cyan: rgba(61, 217, 238, 0.22);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
     }
 
     html { scroll-behavior: smooth; }
@@ -58,19 +62,19 @@ import ThreeBackground from '../components/ThreeBackground';
     }
     .aurora-blob-1 {
       width: 600px; height: 500px;
-      background: radial-gradient(ellipse, rgba(121, 40, 202, 0.18) 0%, transparent 70%);
+      background: radial-gradient(ellipse, rgba(139, 60, 220, 0.25) 0%, transparent 70%);
       top: -150px; left: -150px;
       animation: drift1 14s ease-in-out infinite alternate;
     }
     .aurora-blob-2 {
       width: 500px; height: 500px;
-      background: radial-gradient(ellipse, rgba(0, 128, 255, 0.14) 0%, transparent 70%);
+      background: radial-gradient(ellipse, rgba(61, 150, 255, 0.20) 0%, transparent 70%);
       top: 15%; right: -120px;
       animation: drift2 18s ease-in-out infinite alternate;
     }
     .aurora-blob-3 {
       width: 450px; height: 400px;
-      background: radial-gradient(ellipse, rgba(34, 211, 238, 0.10) 0%, transparent 70%);
+      background: radial-gradient(ellipse, rgba(61, 217, 238, 0.16) 0%, transparent 70%);
       bottom: 10%; left: 15%;
       animation: drift3 22s ease-in-out infinite alternate;
     }
@@ -97,7 +101,7 @@ import ThreeBackground from '../components/ThreeBackground';
       letter-spacing: -0.03em;
       line-height: 1.05;
       margin-bottom: 1.75rem;
-      background: linear-gradient(135deg, #c7d2fe, #818cf8, #22d3ee, #a78bfa, #c7d2fe);
+      background: linear-gradient(135deg, #d4dbff, #8b95ff, #3dd9ee, #b794ff, #d4dbff);
       background-size: 300% 300%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -184,10 +188,15 @@ import ThreeBackground from '../components/ThreeBackground';
       padding: 2.25rem 0 2.25rem 1.5rem;
       border-bottom: 1px solid var(--border);
       border-left: 2px solid transparent;
-      transition: border-left-color 0.3s ease, padding-left 0.3s ease;
+      transition: all 0.3s ease;
+      cursor: pointer;
     }
     .project:last-child { border-bottom: none; }
-    .project:hover { border-left-color: var(--accent); }
+    .project:hover {
+      border-left-color: var(--accent);
+      background: var(--surface);
+      padding-left: 2rem;
+    }
 
     .project-header {
       display: flex;
@@ -226,16 +235,25 @@ import ThreeBackground from '../components/ThreeBackground';
       padding: 0.2rem 0.65rem;
       border-radius: 4px;
       background: var(--accent-dim);
-      border: 1px solid rgba(129, 140, 248, 0.2);
+      border: 1px solid rgba(139, 149, 255, 0.25);
       color: var(--accent-bright);
       font-weight: 500;
       font-family: 'Space Grotesk', sans-serif;
     }
 
     /* Thoughts */
-    .thought { padding: 2.5rem 0 2.5rem 1.5rem; border-bottom: 1px solid var(--border); border-left: 2px solid transparent; transition: border-left-color 0.3s ease; }
+    .thought {
+      padding: 2.5rem 0 2.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      border-left: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
     .thought:last-child { border-bottom: none; }
-    .thought:hover { border-left-color: var(--accent-3); }
+    .thought:hover {
+      border-left-color: var(--accent-3);
+      background: var(--surface);
+      padding-left: 2rem;
+    }
 
     .thought-text {
       font-size: 1rem;
@@ -258,7 +276,8 @@ import ThreeBackground from '../components/ThreeBackground';
     .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
     .footer-copy { font-size: 0.82rem; color: var(--text-muted); font-family: 'Space Grotesk', sans-serif; }
     .footer-links { display: flex; gap: 2rem; }
-    .footer-link { font-size: 0.82rem; color: var(--text-muted); text-decoration: none; transition: color 0.25s ease; }
+    .footer-link { font-size: 0.82rem; color: var(--text-muted); text-decoration: none; transition: color 0.25s ease; cursor: pointer; }
+    .footer-link:hover { color: var(--accent-2); }
     .footer-link:hover { color: var(--accent-bright); }
 
     /* Responsive */
