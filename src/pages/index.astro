@@ -1,7 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const [profile, projects] = await Promise.all([
+  getCollection('profile'),
+  getCollection('projects'),
+]);
 ---
 
-<BaseLayout>
-  <!-- Content is provided by BaseLayout -->
-</BaseLayout>
+<BaseLayout
+  profile={profile[0]}
+  projects={projects}
+/>

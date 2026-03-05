@@ -1,0 +1,147 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  profile: CollectionEntry<'profile'>;
+}
+
+const { profile } = Astro.props;
+---
+
+<section class="hero">
+  <h1 class="hero-name">{profile.data.name}</h1>
+  <p class="hero-tagline" data-tagline={profile.data.tagline}></p>
+  <blockquote class="hero-quote serif" data-quote={profile.data.quote}></blockquote>
+  <div class="hero-links">
+    {profile.data.social_links.map((link) => (
+      <a
+        href={link.url}
+        class="hero-link"
+        target={link.url.startsWith('http') ? '_blank' : '_self'}
+        rel={link.url.startsWith('http') ? 'noopener noreferrer' : ''}
+      >
+        {link.icon === 'github' ? (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+        ) : link.icon === 'jike' ? (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        ) : link.icon === 'email' ? (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        ) : null}
+        {link.name}
+      </a>
+    ))}
+  </div>
+
+  <div class="theme-toggle">
+    <button id="themeToggle" aria-label="Toggle theme">
+      <span class="theme-icon dark">🌙</span>
+      <span class="theme-icon light">☀️</span>
+    </button>
+  </div>
+</section>
+
+<style>
+  .theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+  }
+
+  #themeToggle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-primary);
+  }
+
+  #themeToggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .theme-icon {
+    position: absolute;
+    transition: opacity 0.3s ease;
+  }
+
+  .theme-icon.light {
+    opacity: 0;
+  }
+
+  .light-mode .theme-icon.dark {
+    opacity: 0;
+  }
+
+  .light-mode .theme-icon.light {
+    opacity: 1;
+  }
+</style>
+
+<script is:inline>
+  // Typewriter effect
+  function typewriter(element, text, delay = 50) {
+    let index = 0;
+    element.textContent = '';
+    element.style.opacity = '1';
+
+    function type() {
+      if (index < text.length) {
+        element.textContent += text.charAt(index);
+        index++;
+        setTimeout(type, delay);
+      }
+    }
+
+    type();
+  }
+
+  // Initialize typewriter when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const taglineEl = document.querySelector('[data-tagline]');
+    const quoteEl = document.querySelector('[data-quote]');
+
+    if (taglineEl) {
+      const tagline = taglineEl.getAttribute('data-tagline');
+      typewriter(taglineEl, tagline, 30);
+    }
+
+    if (quoteEl) {
+      const quote = quoteEl.getAttribute('data-quote');
+      setTimeout(() => {
+        typewriter(quoteEl, quote, 40);
+      }, 2000);
+    }
+  });
+
+  // Theme switching
+  const themeToggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+
+  // Check saved theme
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    root.classList.add('light-mode');
+  }
+
+  themeToggle.addEventListener('click', () => {
+    root.classList.toggle('light-mode');
+    const isLight = root.classList.contains('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+</script>

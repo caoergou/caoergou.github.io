@@ -1,0 +1,170 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="project" data-type={project.data.type}>
+  <div class="project-header">
+    {project.data.url ? (
+      <a href={project.data.url} class="project-name" target="_blank" rel="noopener">
+        {project.data.title}
+      </a>
+    ) : (
+      <h3 class="project-name">{project.data.title}</h3>
+    )}
+    {project.data.stars && (
+      <span class="project-stars">{project.data.stars}</span>
+    )}
+  </div>
+  {project.data.demo_url && (
+    <div class="project-links">
+      <a href={project.data.demo_url} class="project-demo-link" target="_blank" rel="noopener">
+        🔗 在线体验
+      </a>
+    </div>
+  )}
+  <p class="project-desc">{await project.render()}</p>
+  <div class="project-tags">
+    {project.data.tags.map((tag) => (
+      <span class="tag">{tag}</span>
+    ))}
+  </div>
+</article>
+
+<style>
+  .project {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 2rem;
+    margin-bottom: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .project:hover {
+    border-left-color: var(--accent);
+    background: var(--bg-secondary);
+    transform: translateX(8px);
+    box-shadow: -4px 0 20px var(--accent-glow);
+  }
+
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .project-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    cursor: pointer;
+    letter-spacing: -0.02em;
+  }
+
+  .project-name:hover {
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  .project-stars {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    white-space: nowrap;
+    font-weight: 700;
+    text-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  .project-links {
+    margin-bottom: 0.5rem;
+  }
+
+  .project-demo-link {
+    font-size: 0.75rem;
+    color: var(--accent-3);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .project-demo-link:hover {
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  .project-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.2s ease;
+  }
+
+  .tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  @media (max-width: 640px) {
+    .project {
+      padding-left: 1rem;
+    }
+    .project-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  /* Linked vs Personal project visual distinction */
+  .project[data-type="linked"] {
+    border-left-color: var(--accent-3);
+  }
+
+  .project[data-type="linked"]:hover {
+    border-left-color: var(--accent-3);
+    box-shadow: -4px 0 20px rgba(0, 212, 255, 0.2);
+  }
+
+  .project[data-type="personal"] {
+    border-left-color: var(--accent-2);
+  }
+
+  .project[data-type="personal"]:hover {
+    border-left-color: var(--accent-2);
+    box-shadow: -4px 0 20px rgba(255, 0, 102, 0.2);
+  }
+</style>
