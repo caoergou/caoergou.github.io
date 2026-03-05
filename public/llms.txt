@@ -162,7 +162,7 @@ This file provides metadata about the structure and content of this website to h
 ## Recent Activity
 
 - Active contributor to multiple open source projects
-- Recent contributions to: caoergou.github.io, mermaid-pic, mcpm.sh, skills, excalidraw, openclaw, OpenViking, wavectl, cc-switch, ui.mantine.dev
+- Recent contributions to: caoergou.github.io, MermZen, mcpm.sh, skills, excalidraw, openclaw, OpenViking, wavectl, cc-switch, ui.mantine.dev
 - Commit activity: 51% commits, 19% pull requests (Jan-Feb 2026)
 
 ## Updates
