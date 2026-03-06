@@ -1,5 +1,7 @@
 # Eric Cao - 个人网站
 
+> 一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾。
+
 这是我的个人网站，展示个人信息、项目和联系方式。
 
 **在线访问**: [eric.run.place](https://eric.run.place)
@@ -12,7 +14,7 @@
 
 - **邮箱**: itsericsmail@gmail.com
 - **GitHub**: [@caoergou](https://github.com/caoergou)
-- **网站**: [truer.ai](https://truer.ai)
+- **网站**: [eric.run.place](https://eric.run.place)
 - **即刻**: [个人主页](https://jike.city/ergou)
 
 ## 开发者文档

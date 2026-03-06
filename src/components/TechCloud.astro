@@ -1,0 +1,250 @@
+---
+const techs = [
+  // AI Agent
+  { name: 'AI Agent', weight: 5 },
+  { name: 'Dify', weight: 4 },
+  { name: 'Context Engineering', weight: 4 },
+  { name: 'Prompt Engineering', weight: 4 },
+  { name: 'Tool Use', weight: 4 },
+  { name: 'RAG', weight: 3 },
+  { name: 'MCP', weight: 3 },
+  { name: 'Function Calling', weight: 3 },
+
+  // Data Engineering
+  { name: 'Airflow', weight: 5 },
+  { name: 'LakeFS', weight: 4 },
+  { name: 'Data Pipeline', weight: 4 },
+  { name: 'ETL/ELT', weight: 4 },
+  { name: 'Spark', weight: 3 },
+  { name: 'Data Versioning', weight: 3 },
+  { name: 'Stream Processing', weight: 3 },
+
+  // Performance
+  { name: 'Performance Tuning', weight: 4 },
+  { name: 'End-to-End Optimization', weight: 4 },
+  { name: 'QPS/TPS', weight: 3 },
+
+  // Tech Stack
+  { name: 'Python', weight: 5 },
+  { name: 'TypeScript', weight: 4 },
+  { name: 'React', weight: 4 },
+  { name: 'Docker', weight: 3 },
+
+  // Philosophy
+  { name: 'Open Source', weight: 4 },
+  { name: 'Automation First', weight: 4 },
+  { name: 'Engineering Practices', weight: 3 },
+];
+
+const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
+---
+
+<div class="tech-cloud-wrapper">
+  <div class="tech-cloud" id="techCloud">
+    {techs.map((tech, i) => (
+      <span
+        class="tech-tag"
+        data-weight={tech.weight}
+        data-index={i}
+        style={`--delay: ${i * 0.03}s; --color: ${colors[i % 3]};`}
+      >
+        {tech.name}
+      </span>
+    ))}
+  </div>
+  <button class="shuffle-btn" id="shuffleBtn" aria-label="Shuffle tags" title="点击排序">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="2" y="2" width="8" height="8" rx="1"/>
+      <rect x="14" y="2" width="8" height="8" rx="1"/>
+      <rect x="2" y="14" width="8" height="8" rx="1"/>
+      <rect x="14" y="14" width="8" height="8" rx="1"/>
+      <circle cx="6" cy="6" r="1" fill="currentColor"/>
+      <circle cx="18" cy="6" r="1" fill="currentColor"/>
+      <circle cx="6" cy="18" r="1" fill="currentColor"/>
+      <circle cx="18" cy="18" r="1" fill="currentColor"/>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .tech-cloud-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .tech-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.5rem 0;
+    position: relative;
+    min-height: 80px;
+    flex: 1;
+  }
+
+  .shuffle-btn {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-top: 0.5rem;
+  }
+
+  .shuffle-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: rotate(15deg);
+  }
+
+  .shuffle-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .tech-tag {
+    display: inline-block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--color);
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: default;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: tagFadeIn 0.6s ease forwards, tagFloat 4s ease-in-out infinite;
+    animation-delay: var(--delay), calc(var(--delay) + 0.6s);
+    opacity: 0;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .tech-tag[data-weight="5"] { font-size: 1rem; }
+  .tech-tag[data-weight="4"] { font-size: 0.85rem; }
+  .tech-tag[data-weight="3"] { font-size: 0.75rem; }
+
+  .tech-tag:hover {
+    background: var(--color);
+    color: var(--bg);
+    border-color: var(--color);
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 0 20px var(--accent-glow);
+    z-index: 10;
+    animation-play-state: paused;
+  }
+
+  @keyframes tagFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(15px) rotate(5deg);
+    }
+    60% {
+      opacity: 0.8;
+      transform: translateY(-5px) rotate(-2deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) rotate(0);
+    }
+  }
+
+  @keyframes tagFloat {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tech-tag[data-weight="5"] { font-size: 0.85rem; }
+    .tech-tag[data-weight="4"] { font-size: 0.75rem; }
+    .tech-tag[data-weight="3"] { font-size: 0.7rem; }
+  }
+</style>
+
+<script>
+  // Algorithm-style sorting effect on shuffle button click
+  const cloud = document.getElementById('techCloud');
+  const shuffleBtn = document.getElementById('shuffleBtn');
+
+  if (cloud && shuffleBtn) {
+    let sortMode = 0;
+    const sortModes = ['original', 'length-asc', 'length-desc', 'weight', 'alpha', 'random'];
+    let originalOrder: HTMLElement[] = [];
+
+    // Store original order on load
+    document.addEventListener('DOMContentLoaded', () => {
+      originalOrder = Array.from(cloud.querySelectorAll('.tech-tag')) as HTMLElement[];
+    });
+
+    shuffleBtn.addEventListener('click', () => {
+      const tags = Array.from(cloud.querySelectorAll('.tech-tag')) as HTMLElement[];
+
+      // Animate all tags out
+      tags.forEach((tag) => {
+        tag.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        tag.style.transform = 'translateY(-20px) rotate(5deg)';
+        tag.style.opacity = '0';
+      });
+
+      // Rotate button
+      shuffleBtn.style.transform = 'rotate(360deg)';
+      setTimeout(() => {
+        shuffleBtn.style.transform = '';
+      }, 300);
+
+      setTimeout(() => {
+        // Sort based on current mode
+        sortMode = (sortMode + 1) % sortModes.length;
+        let sorted = [...tags];
+
+        switch (sortModes[sortMode]) {
+          case 'original':
+            sorted = [...originalOrder];
+            break;
+          case 'length-asc':
+            sorted.sort((a, b) => (a.textContent?.length || 0) - (b.textContent?.length || 0));
+            break;
+          case 'length-desc':
+            sorted.sort((a, b) => (b.textContent?.length || 0) - (a.textContent?.length || 0));
+            break;
+          case 'weight':
+            sorted.sort((a, b) => parseInt(b.getAttribute('data-weight') || '0') - parseInt(a.getAttribute('data-weight') || '0'));
+            break;
+          case 'alpha':
+            sorted.sort((a, b) => (a.textContent || '').localeCompare(b.textContent || ''));
+            break;
+          case 'random':
+            for (let i = sorted.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [sorted[i], sorted[j]] = [sorted[j], sorted[i]];
+            }
+            break;
+        }
+
+        // Re-append in new order
+        sorted.forEach(tag => cloud.appendChild(tag));
+
+        // Animate back in with stagger
+        sorted.forEach((tag, i) => {
+          setTimeout(() => {
+            tag.style.transform = 'translateY(0) rotate(0)';
+            tag.style.opacity = '1';
+          }, i * 25);
+        });
+      }, 300);
+    });
+  }
+</script>

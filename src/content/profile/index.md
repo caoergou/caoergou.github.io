@@ -1,9 +1,12 @@
 ---
 name: "Eric Cao"
-title: "Python 工程师，开源创作者"
-tagline: "在效率与品味之间寻找平衡。如果一件事重复 3 遍以上，就值得用工具替代。"
-quote: "Vibe Coding 时代，编程是经验与品味的艺术。"
-quote_author: "— Eric Cao"
+title_zh: "在确定性与混沌之间构建秩序"
+title_en: "Building order between certainty and chaos"
+tagline_zh: "一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾"
+tagline_en: "A developer who loves tinkering, swimming hard in the sweeping tides of AI"
+quote_zh: ""
+quote_en: ""
+quote_author: ""
 avatar: ""
 social_links:
   - name: "GitHub"
@@ -17,6 +20,32 @@ social_links:
     icon: "email"
 ---
 
-专注于用技术解决重复性问题，通过自动化工具提升效率。在 AI 辅助编程时代，追求「恰到好处的自动化」——既不过度设计，也不敷衍了事。
+这里是我的数字花园 🌱
 
-相信工具的价值在于「让复杂的事情变简单，让简单的事情消失」。在代码的世界里，品味往往体现在对「何时停止」的判断上。
+有时候写代码。
+Python、TypeScript，偶尔折腾点有趣的工具。
+
+有时候思考。
+AI 怎么落地？数据怎么流动？系统怎么更快？
+
+更多时候发呆——
+这个问题，真的需要写代码吗？
+
+坚信好的工程不是炫技。
+不追逐热点，只打磨真正有用的东西。
+
+---
+
+This is my digital garden 🌱
+
+Sometimes I code.
+Python, TypeScript, occasionally tinker with interesting tools.
+
+Sometimes I think.
+How does AI land? How does data flow? How do systems run faster?
+
+More often, I zone out —
+Does this problem really need code?
+
+I believe good engineering isn't showing off.
+Not chasing trends, just polishing things that work.

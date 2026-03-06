@@ -6,12 +6,40 @@ interface Props {
 }
 
 const { profile } = Astro.props;
+const nameChars = profile.data.name.split('');
 ---
 
 <section class="hero">
-  <h1 class="hero-name">{profile.data.name}</h1>
-  <p class="hero-tagline" data-tagline={profile.data.tagline}></p>
-  <blockquote class="hero-quote serif" data-quote={profile.data.quote}></blockquote>
+  <!-- Top Controls: Language + Theme -->
+  <div class="top-controls">
+    <button id="langToggle" class="control-btn" aria-label="Switch language">
+      <span class="lang-text" data-zh="中" data-en="EN">中</span>
+    </button>
+    <button id="themeToggle" class="control-btn" aria-label="Toggle theme">
+      <svg class="theme-icon dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
+        <circle cx="12" cy="12" r="4"/>
+      </svg>
+      <svg class="theme-icon light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="hero-name-wrapper">
+    <h1 class="hero-name" data-text={profile.data.name}>
+      {nameChars.map((char, i) => (
+        char === ' '
+          ? <span class="name-space"></span>
+          : <span class="name-char" style={`--i: ${i}`}>{char}</span>
+      ))}
+    </h1>
+    <div class="hero-identity">
+      <a href="https://github.com/caoergou" target="_blank" rel="noopener" class="hero-username">@caoergou</a>
+    </div>
+  </div>
+
+  <blockquote class="hero-tagline serif" data-tagline-zh={profile.data.tagline_zh} data-tagline-en={profile.data.tagline_en}></blockquote>
   <div class="hero-links">
     {profile.data.social_links.map((link) => (
       <a
@@ -38,102 +66,215 @@ const { profile } = Astro.props;
       </a>
     ))}
   </div>
-
-  <div class="theme-toggle">
-    <button id="themeToggle" aria-label="Toggle theme">
-      <span class="theme-icon dark">🌙</span>
-      <span class="theme-icon light">☀️</span>
-    </button>
-  </div>
 </section>
 
 <style>
-  .theme-toggle {
+  /* Top Controls */
+  .top-controls {
     position: fixed;
     top: 1.5rem;
     right: 1.5rem;
     z-index: 100;
+    display: flex;
+    gap: 0.5rem;
   }
 
-  #themeToggle {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    width: 2.5rem;
-    height: 2.5rem;
+  .control-btn {
+    width: 2.25rem;
+    height: 2.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(13, 13, 13, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
     cursor: pointer;
     transition: all 0.2s ease;
-    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
-  #themeToggle:hover {
+  .control-btn:hover {
     border-color: var(--accent);
     color: var(--accent);
-    box-shadow: 0 0 20px var(--accent-glow);
+    box-shadow: 0 0 15px var(--accent-glow);
+  }
+
+  .lang-text {
+    text-transform: uppercase;
   }
 
   .theme-icon {
-    position: absolute;
-    transition: opacity 0.3s ease;
+    width: 18px;
+    height: 18px;
+    transition: all 0.3s ease;
   }
 
   .theme-icon.light {
-    opacity: 0;
+    display: none;
   }
 
   .light-mode .theme-icon.dark {
-    opacity: 0;
+    display: none;
   }
 
   .light-mode .theme-icon.light {
-    opacity: 1;
+    display: block;
+  }
+
+  /* Light mode control buttons */
+  :global(.light-mode) .control-btn {
+    background: rgba(248, 249, 250, 0.9);
+  }
+
+  .hero-name-wrapper {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .hero-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    position: relative;
+    display: inline-flex;
+    cursor: default;
+  }
+
+  .name-char {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-3) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: charFloat 3s ease-in-out infinite, gradientShift 4s ease infinite;
+    animation-delay: calc(var(--i) * 0.1s), 0s;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .name-char:hover {
+    animation: none;
+    transform: translateY(-8px) rotate(5deg) scale(1.2);
+    filter: drop-shadow(0 0 20px var(--accent));
+  }
+
+  .name-space {
+    width: 0.3em;
+  }
+
+  @keyframes charFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hero-username {
+    font-family: 'Space Grotesk', monospace;
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 0.2rem 0.5rem;
+    background: transparent;
+    border: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-username:hover {
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  .hero-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .hero-identity::before {
+    content: '/';
+    color: var(--text-muted);
+    opacity: 0.4;
+    margin-right: 0.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero-name-wrapper {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .top-controls {
+      top: 1rem;
+      right: 1rem;
+    }
   }
 </style>
 
 <script is:inline>
-  // Typewriter effect
-  function typewriter(element, text, delay = 50) {
-    let index = 0;
-    element.textContent = '';
-    element.style.opacity = '1';
-
-    function type() {
-      if (index < text.length) {
-        element.textContent += text.charAt(index);
-        index++;
-        setTimeout(type, delay);
-      }
+  // Update hero text on language change
+  function updateHeroText(lang) {
+    const taglineEl = document.querySelector('[data-tagline-zh]');
+    if (taglineEl) {
+      taglineEl.textContent = taglineEl.getAttribute(`data-tagline-${lang}`) || '';
+      taglineEl.style.opacity = '1';
     }
 
-    type();
+    const quoteEl = document.querySelector('[data-quote-zh]');
+    if (quoteEl) {
+      quoteEl.textContent = quoteEl.getAttribute(`data-quote-${lang}`) || '';
+      quoteEl.style.opacity = '1';
+    }
+
+    // Update lang toggle button text
+    const langText = document.querySelector('.lang-text');
+    if (langText) {
+      langText.textContent = langText.getAttribute(`data-${lang}`) || '中';
+    }
   }
 
-  // Initialize typewriter when DOM is ready
+  // Listen for global language change event
+  window.addEventListener('langChange', (e) => {
+    updateHeroText(e.detail.lang);
+  });
+
+  // Initialize on load
   document.addEventListener('DOMContentLoaded', () => {
-    const taglineEl = document.querySelector('[data-tagline]');
-    const quoteEl = document.querySelector('[data-quote]');
+    const lang = localStorage.getItem('lang') || 'zh';
+    updateHeroText(lang);
+  });
 
-    if (taglineEl) {
-      const tagline = taglineEl.getAttribute('data-tagline');
-      typewriter(taglineEl, tagline, 30);
-    }
+  // Language toggle
+  const langToggle = document.getElementById('langToggle');
+  langToggle.addEventListener('click', () => {
+    const currentLang = localStorage.getItem('lang') || 'zh';
+    const newLang = currentLang === 'zh' ? 'en' : 'zh';
+    localStorage.setItem('lang', newLang);
+    updateHeroText(newLang);
 
-    if (quoteEl) {
-      const quote = quoteEl.getAttribute('data-quote');
-      setTimeout(() => {
-        typewriter(quoteEl, quote, 40);
-      }, 2000);
-    }
+    // Dispatch global event
+    window.dispatchEvent(new CustomEvent('langChange', { detail: { lang: newLang } }));
   });
 
   // Theme switching
   const themeToggle = document.getElementById('themeToggle');
   const root = document.documentElement;
 
-  // Check saved theme
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
     root.classList.add('light-mode');

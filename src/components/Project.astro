@@ -6,9 +6,12 @@ interface Props {
 }
 
 const { project } = Astro.props;
+
+// Extract repo name from URL for live star fetching
+const repoName = project.data.url?.split('github.com/')[1] || '';
 ---
 
-<article class="project" data-type={project.data.type}>
+<article class="project" data-type={project.data.type} data-repo={repoName}>
   <div class="project-header">
     {project.data.url ? (
       <a href={project.data.url} class="project-name" target="_blank" rel="noopener">
@@ -17,18 +20,18 @@ const { project } = Astro.props;
     ) : (
       <h3 class="project-name">{project.data.title}</h3>
     )}
-    {project.data.stars && (
-      <span class="project-stars">{project.data.stars}</span>
-    )}
+    <span class="project-stars" data-stars={project.data.stars || 0}>
+      ★ {project.data.stars || 0}
+    </span>
   </div>
   {project.data.demo_url && (
     <div class="project-links">
-      <a href={project.data.demo_url} class="project-demo-link" target="_blank" rel="noopener">
-        🔗 在线体验
+      <a href={project.data.demo_url} class="project-demo-link" target="_blank" rel="noopener" data-link-zh="在线体验" data-link-en="Live Demo">
+        在线体验
       </a>
     </div>
   )}
-  <p class="project-desc">{await project.render()}</p>
+  <p class="project-desc" data-desc-zh={project.data.desc_zh} data-desc-en={project.data.desc_en}>{project.data.desc_zh}</p>
   <div class="project-tags">
     {project.data.tags.map((tag) => (
       <span class="tag">{tag}</span>
@@ -36,13 +39,49 @@ const { project } = Astro.props;
   </div>
 </article>
 
+<script>
+  // Fetch live star counts
+  document.addEventListener('DOMContentLoaded', async () => {
+    const projects = document.querySelectorAll('.project[data-repo]');
+
+    for (const project of projects) {
+      const repo = project.getAttribute('data-repo');
+      if (!repo) continue;
+
+      const starEl = project.querySelector('.project-stars');
+      if (!starEl) continue;
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${repo}`);
+        if (res.ok) {
+          const data = await res.json();
+          const stars = data.stargazers_count;
+          starEl.setAttribute('data-stars', stars);
+
+          // Format number
+          if (stars >= 1000) {
+            starEl.textContent = `★ ${(stars / 1000).toFixed(1)}k`;
+          } else {
+            starEl.textContent = `★ ${stars}`;
+          }
+
+          // Add animation
+          starEl.classList.add('loaded');
+        }
+      } catch (e) {
+        // Keep static value if fetch fails
+      }
+    }
+  });
+</script>
+
 <style>
   .project {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.25rem;
-    padding: 2rem;
-    margin-bottom: 1rem;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0.5rem;
     background: var(--surface);
     border: 1px solid var(--border);
     border-left: 3px solid transparent;
@@ -54,7 +93,7 @@ const { project } = Astro.props;
   .project:hover {
     border-left-color: var(--accent);
     background: var(--bg-secondary);
-    transform: translateX(8px);
+    transform: translateX(4px);
     box-shadow: -4px 0 20px var(--accent-glow);
   }
 
@@ -67,7 +106,7 @@ const { project } = Astro.props;
 
   .project-name {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--text-primary);
     text-decoration: none;
@@ -83,19 +122,35 @@ const { project } = Astro.props;
 
   .project-stars {
     font-family: 'Space Grotesk', monospace;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--accent);
     white-space: nowrap;
     font-weight: 700;
     text-shadow: 0 0 10px var(--accent-glow);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+
+  .project-stars.loaded {
+    opacity: 1;
+    animation: starPop 0.3s ease;
+  }
+
+  @keyframes starPop {
+    0% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+
+  .project-stars::before {
+    content: '★ ';
   }
 
   .project-links {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
   }
 
   .project-demo-link {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--accent-3);
     text-decoration: none;
     font-weight: 600;
@@ -109,20 +164,21 @@ const { project } = Astro.props;
   }
 
   .project-desc {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    line-height: 1.75;
+    line-height: 1.6;
+    margin: 0;
   }
 
   .project-tags {
     display: flex;
-    gap: 0.6rem;
+    gap: 0.4rem;
     flex-wrap: wrap;
   }
 
   .tag {
-    font-size: 0.7rem;
-    padding: 0.3rem 0.8rem;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
     background: transparent;
     border: 1px solid var(--border);
     color: var(--text-secondary);
@@ -141,7 +197,7 @@ const { project } = Astro.props;
 
   @media (max-width: 640px) {
     .project {
-      padding-left: 1rem;
+      padding: 1rem;
     }
     .project-header {
       flex-direction: column;

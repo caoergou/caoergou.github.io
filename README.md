@@ -2,6 +2,8 @@
 
 [中文版介绍](README-zh-CN.md)
 
+> A developer who loves tinkering, swimming hard in the sweeping tides of AI.
+
 This is my personal website showcasing my profile, projects, and contact information.
 
 **Live Site**: [eric.run.place](https://eric.run.place)
@@ -14,7 +16,7 @@ A modern personal website with 3D animations, built with Astro and deployed via 
 
 - **Email**: itsericsmail@gmail.com
 - **GitHub**: [@caoergou](https://github.com/caoergou)
-- **Website**: [truer.ai](https://truer.ai)
+- **Website**: [eric.run.place](https://eric.run.place)
 - **Jike**: [Personal Page](https://jike.city/ergou)
 
 ## For Developers

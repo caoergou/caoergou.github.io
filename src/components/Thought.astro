@@ -9,14 +9,14 @@ const { thought } = Astro.props;
 ---
 
 <article class="thought">
-  <p class="thought-text serif">{await thought.render()}</p>
-  <p class="thought-meta">— {thought.data.title}</p>
+  <h3 class="thought-title" data-title-zh={thought.data.title_zh} data-title-en={thought.data.title_en}>{thought.data.title_zh}</h3>
+  <p class="thought-text serif" data-desc-zh={thought.data.desc_zh} data-desc-en={thought.data.desc_en}>{thought.data.desc_zh}</p>
 </article>
 
 <style>
   .thought {
-    padding: 2rem;
-    margin-bottom: 1rem;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0.5rem;
     background: var(--surface);
     border: 1px solid var(--border);
     border-left: 3px solid transparent;
@@ -27,33 +27,33 @@ const { thought } = Astro.props;
   .thought:hover {
     border-left-color: var(--accent-3);
     background: var(--bg-secondary);
-    transform: translateX(8px);
+    transform: translateX(4px);
     box-shadow: -4px 0 20px rgba(0, 212, 255, 0.2);
   }
 
+  .thought-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
   .thought-text {
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    line-height: 1.8;
+    line-height: 1.6;
     font-weight: 300;
     position: relative;
     z-index: 1;
-  }
-
-  .thought-meta {
-    font-size: 0.75rem;
-    color: var(--accent-3);
-    margin-top: 1.25rem;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    margin: 0;
   }
 
   @media (max-width: 640px) {
     .thought {
-      padding-left: 1rem;
+      padding: 1rem;
     }
   }
 </style>
