@@ -447,6 +447,12 @@ const siteUrl = 'https://eric.run.place';
         if (text) el.textContent = text;
       });
 
+      // Update thought titles
+      document.querySelectorAll('[data-title-zh]').forEach(el => {
+        const text = el.getAttribute(`data-title-${lang}`);
+        if (text) el.textContent = text;
+      });
+
       // Update buttons
       document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === lang);
