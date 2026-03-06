@@ -1,0 +1,8 @@
+---
+title_zh: "大数据工程实践"
+title_en: "Big Data Engineering"
+desc_zh: "不做教科书式的概念搬运，聚焦真实业务场景里的大数据链路搭建、优化与落地。分享数据从采集、清洗、存储到分析应用的全流程实践，让数据体系真正支撑业务决策与 AI 应用。"
+desc_en: "No textbook concepts—focus on real business scenarios for big data pipeline setup, optimization and deployment. Full process practice from data collection, cleaning, storage to analytics."
+author: "Eric Cao"
+date: "2025-03-01"
+---

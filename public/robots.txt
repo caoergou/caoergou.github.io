@@ -1,0 +1,10 @@
+# https://eric.run.place robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://eric.run.place/sitemap-index.xml
+
+# Crawl-delay (optional, be polite)
+Crawl-delay: 1

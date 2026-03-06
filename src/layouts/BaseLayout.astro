@@ -3,13 +3,16 @@ import type { CollectionEntry } from 'astro:content';
 import Hero from '../components/Hero.astro';
 import Project from '../components/Project.astro';
 import Thought from '../components/Thought.astro';
+import TechCloud from '../components/TechCloud.astro';
 
 interface Props {
   profile: CollectionEntry<'profile'>;
   projects: CollectionEntry<'projects'>[];
+  thoughts: CollectionEntry<'thoughts'>[];
 }
 
-const { profile, projects } = Astro.props;
+const { profile, projects, thoughts } = Astro.props;
+const siteUrl = 'https://eric.run.place';
 ---
 
 <!DOCTYPE html>
@@ -17,10 +20,34 @@ const { profile, projects } = Astro.props;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eric Cao — 构建工具，也质疑工具</title>
-  <meta name="description" content="Python 工程师，开源创作者。构建工具，也质疑工具存在的理由。">
+  <title>Eric Cao — 在AI席卷的浪潮中努力扑腾</title>
+  <meta name="description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾。">
+  <meta name="keywords" content="Eric Cao, Python, AI Agent, Dify, Airflow, 大数据, 开源, TypeScript, React">
+  <meta name="author" content="Eric Cao">
+
+  <!-- Search Engine Verification -->
   <meta name="google-site-verification" content="XuYZmP0E0M5Day61XIADItGmZMHKZ4kIHaHpnbEHtf8" />
   <meta name="baidu-site-verification" content="codeva-4Lwu94LneY" />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={siteUrl}>
+  <meta property="og:title" content="Eric Cao — 在AI席卷的浪潮中努力扑腾">
+  <meta property="og:description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾。">
+  <meta property="og:site_name" content="Eric Cao">
+  <meta property="og:locale" content="zh_CN">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content={siteUrl}>
+  <meta name="twitter:title" content="Eric Cao — 在AI席卷的浪潮中努力扑腾">
+  <meta name="twitter:description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾。">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href={siteUrl}>
+
+  <!-- Sitemap -->
+  <link rel="sitemap" type="application/xml" href="/sitemap-index.xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -111,68 +138,78 @@ const { profile, projects } = Astro.props;
     }
 
     /* Hero */
-    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 6rem 0 4rem; }
+    .hero { min-height: auto; display: flex; flex-direction: column; justify-content: center; padding: 3rem 0 2rem; }
 
     .hero-name {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.5rem, 9vw, 4.5rem);
+      font-size: clamp(2rem, 8vw, 3.5rem);
       font-weight: 900;
       letter-spacing: -0.05em;
-      line-height: 0.9;
-      margin-bottom: 2rem;
+      line-height: 1;
+      margin-bottom: 1rem;
       color: var(--text-primary);
       text-transform: uppercase;
       position: relative;
       display: inline-block;
-      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-3) 100%);
+      background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       filter: drop-shadow(0 0 30px var(--accent-glow));
+      animation: gradientShift 4s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero-name:hover {
+      animation: glitch 0.3s ease;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
     }
 
     .hero-tagline {
-      font-size: clamp(1rem, 3vw, 1.2rem);
-      color: var(--text-secondary);
-      font-weight: 300;
-      line-height: 1.7;
-      max-width: 560px;
-      margin-bottom: 3rem;
-      font-family: 'Inter', sans-serif;
-      opacity: 0;
-    }
-
-    .hero-quote {
-      font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
       color: var(--accent);
       font-style: normal;
       border-left: 3px solid var(--accent);
-      padding-left: 1.5rem;
-      margin-bottom: 3rem;
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
       font-weight: 500;
-      letter-spacing: -0.01em;
+      line-height: 1.7;
+      max-width: 100%;
       opacity: 0;
     }
 
     .hero-links {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
       flex-wrap: wrap;
     }
 
     .hero-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
       color: var(--text-primary);
       text-decoration: none;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       transition: all 0.2s ease;
       cursor: pointer;
-      padding: 0.75rem 1.5rem;
+      padding: 0.5rem 1rem;
       border: 1px solid var(--border);
       background: var(--surface);
       position: relative;
@@ -197,13 +234,42 @@ const { profile, projects } = Astro.props;
       box-shadow: 0 0 20px var(--accent-glow);
     }
 
+    /* Stats */
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .stat-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(22px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
     /* Section */
-    .section { padding: 6rem 0; border-top: 1px solid var(--border); }
+    .section { padding: 2.5rem 0; border-top: 1px solid var(--border); }
     .section-title {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 0.7rem;
@@ -211,7 +277,7 @@ const { profile, projects } = Astro.props;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 3rem;
+      margin-bottom: 1.5rem;
       position: relative;
       display: inline-block;
       text-shadow: 0 0 20px var(--accent-glow);
@@ -223,13 +289,51 @@ const { profile, projects } = Astro.props;
     /* Thoughts */
     .thoughts-list { display: flex; flex-direction: column; gap: 0; }
 
+    /* Coming Soon */
+    .coming-soon {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 212, 255, 0.05) 100%);
+      border-radius: 4px;
+      border: 1px dashed var(--border);
+    }
+
+    .coming-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .coming-item {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      padding-left: 1.5rem;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .coming-item::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      opacity: 0.6;
+    }
+
+    .coming-item:hover {
+      color: var(--text-primary);
+    }
+
+    .coming-item:hover::before {
+      opacity: 1;
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+
     /* Footer */
-    .footer { padding: 4rem 0 3rem; border-top: 1px solid var(--border); margin-top: 4rem; }
-    .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
-    .footer-copy { font-size: 0.75rem; color: var(--text-muted); font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
-    .footer-links { display: flex; gap: 2rem; }
+    .footer { padding: 2rem 0; border-top: 1px solid var(--border); margin-top: 2rem; }
+    .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-copy { font-size: 0.7rem; color: var(--text-muted); font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
+    .footer-links { display: flex; gap: 1.5rem; }
     .footer-link {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--text-secondary);
       text-decoration: none;
       transition: all 0.2s ease;
@@ -241,6 +345,12 @@ const { profile, projects } = Astro.props;
     .footer-link:hover {
       color: var(--accent);
       text-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* Tech Section */
+    .tech-section {
+      padding: 1.5rem 0;
+      border-top: none;
     }
 
     /* Responsive */
@@ -265,12 +375,35 @@ const { profile, projects } = Astro.props;
     <div class="container">
       <Hero profile={profile} />
 
+      <section class="section tech-section">
+        <TechCloud />
+      </section>
+
       <section class="section">
-        <h2 class="section-title">作品</h2>
+        <h2 class="section-title" data-text-zh="作品" data-text-en="Projects">作品</h2>
         <div class="projects-list">
           {projects.map((project) => (
             <Project key={project.id} project={project} />
           ))}
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title" data-text-zh="探索方向" data-text-en="Explorations">探索方向</h2>
+        <div class="thoughts-list">
+          {thoughts.map((thought) => (
+            <Thought key={thought.id} thought={thought} />
+          ))}
+        </div>
+      </section>
+
+      <section class="section coming-soon">
+        <h2 class="section-title">Coming Soon</h2>
+        <div class="coming-list">
+          <div class="coming-item" data-text-zh="个人/团队专属 AI Agent 工作流的从零搭建全流程" data-text-en="Complete guide to building personal/team AI Agent workflows from scratch">个人/团队专属 AI Agent 工作流的从零搭建全流程</div>
+          <div class="coming-item" data-text-zh="企业级场景下 Agent 自动化流程的落地实战记录" data-text-en="Enterprise Agent automation implementation case studies">企业级场景下 Agent 自动化流程的落地实战记录</div>
+          <div class="coming-item" data-text-zh="大数据与 AI Agent 结合的场景化解决方案" data-text-en="Big Data + AI Agent scenario-based solutions">大数据与 AI Agent 结合的场景化解决方案</div>
+          <div class="coming-item" data-text-zh="全链路性能优化的系列避坑指南与实战技巧" data-text-en="End-to-end performance optimization pitfalls and practical tips">全链路性能优化的系列避坑指南与实战技巧</div>
         </div>
       </section>
 
@@ -287,5 +420,51 @@ const { profile, projects } = Astro.props;
       </footer>
     </div>
   </div>
+
+  <script is:inline>
+    // Global language switching - direct text replacement (no typewriter for stability)
+    let currentLang = localStorage.getItem('lang') || 'zh';
+
+    function updateAllText(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+
+      // Update section titles
+      document.querySelectorAll('[data-text-zh]').forEach(el => {
+        const text = el.getAttribute(`data-text-${lang}`);
+        if (text) el.textContent = text;
+      });
+
+      // Update project descriptions
+      document.querySelectorAll('[data-desc-zh]').forEach(el => {
+        const text = el.getAttribute(`data-desc-${lang}`);
+        if (text) el.textContent = text;
+      });
+
+      // Update project demo links
+      document.querySelectorAll('[data-link-zh]').forEach(el => {
+        const text = el.getAttribute(`data-link-${lang}`);
+        if (text) el.textContent = text;
+      });
+
+      // Update buttons
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      // Dispatch custom event for Hero component
+      window.dispatchEvent(new CustomEvent('langChange', { detail: { lang } }));
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateAllText(currentLang);
+
+      // Language switch listeners
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => updateAllText(btn.dataset.lang));
+      });
+    });
+  </script>
 </body>
 </html>
