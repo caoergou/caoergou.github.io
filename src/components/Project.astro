@@ -7,32 +7,50 @@ interface Props {
 
 const { project } = Astro.props;
 
+// Region type icons
+const regionIcons: Record<string, string> = {
+  personal: '🏛️',
+  linked: '🔗',
+  default: '🗺️'
+};
+
+const regionIcon = regionIcons[project.data.type || 'default'] || regionIcons.default;
+
 // Extract repo name from URL for live star fetching
 const repoName = project.data.url?.split('github.com/')[1] || '';
 ---
 
 <article class="project" data-type={project.data.type} data-repo={repoName}>
   <div class="project-header">
-    {project.data.url ? (
-      <a href={project.data.url} class="project-name" target="_blank" rel="noopener">
-        {project.data.title}
-      </a>
-    ) : (
-      <h3 class="project-name">{project.data.title}</h3>
-    )}
-    <span class="project-stars" data-stars={project.data.stars || 0}>
-      ★ {project.data.stars || 0}
-    </span>
-  </div>
-  {project.data.demo_url && (
-    <div class="project-links">
-      <a href={project.data.demo_url} class="project-demo-link" target="_blank" rel="noopener" data-link-zh="在线体验" data-link-en="Live Demo">
-        在线体验
-      </a>
+    <div class="region-icon">{regionIcon}</div>
+    <div class="region-info">
+      {project.data.url ? (
+        <a href={project.data.url} class="project-name" target="_blank" rel="noopener">
+          {project.data.title}
+        </a>
+      ) : (
+        <h3 class="project-name">{project.data.title}</h3>
+      )}
+      <div class="project-meta">
+        <span class="project-stars" data-stars={project.data.stars || 0}>
+          ⭐ <span class="star-count">{project.data.stars || 0}</span>
+        </span>
+        <span class="explorers-label">explorers</span>
+      </div>
     </div>
+  </div>
+
+  {project.data.demo_url && (
+    <a href={project.data.demo_url} class="project-demo-link" target="_blank" rel="noopener">
+      <span class="demo-icon">🎮</span>
+      <span data-link-zh="进入区域" data-link-en="Enter Region">进入区域</span>
+    </a>
   )}
+
   <p class="project-desc" data-desc-zh={project.data.desc_zh} data-desc-en={project.data.desc_en}>{project.data.desc_zh}</p>
+
   <div class="project-tags">
+    <span class="tags-label">Required Skills:</span>
     {project.data.tags.map((tag) => (
       <span class="tag">{tag}</span>
     ))}
@@ -49,7 +67,8 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
       if (!repo) continue;
 
       const starEl = project.querySelector('.project-stars');
-      if (!starEl) continue;
+      const starCountEl = project.querySelector('.star-count');
+      if (!starEl || !starCountEl) continue;
 
       try {
         const res = await fetch(`https://api.github.com/repos/${repo}`);
@@ -60,9 +79,9 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
 
           // Format number
           if (stars >= 1000) {
-            starEl.textContent = `★ ${(stars / 1000).toFixed(1)}k`;
+            starCountEl.textContent = `${(stars / 1000).toFixed(1)}k`;
           } else {
-            starEl.textContent = `★ ${stars}`;
+            starCountEl.textContent = `${stars}`;
           }
 
           // Add animation
@@ -80,147 +99,240 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.75rem;
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
     margin-bottom: 0.5rem;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid transparent;
-    transition: all 0.3s ease;
+    box-shadow:
+      4px 0 0 var(--border),
+      -4px 0 0 var(--border),
+      0 4px 0 var(--border),
+      0 -4px 0 var(--border);
     position: relative;
     cursor: pointer;
+    transition: all 0.15s step-end;
   }
 
   .project:hover {
-    border-left-color: var(--accent);
-    background: var(--bg-secondary);
-    transform: translateX(4px);
-    box-shadow: -4px 0 20px var(--accent-glow);
+    transform: translate(-2px, -2px);
+    box-shadow:
+      6px 0 0 var(--accent),
+      -6px 0 0 var(--accent),
+      0 6px 0 var(--accent),
+      0 -6px 0 var(--accent);
   }
 
+  .project:active {
+    transform: translate(2px, 2px);
+    box-shadow:
+      2px 0 0 var(--accent),
+      -2px 0 0 var(--accent),
+      0 2px 0 var(--accent),
+      0 -2px 0 var(--accent);
+  }
+
+  /* Type-based colors */
+  .project[data-type="linked"] {
+    box-shadow:
+      4px 0 0 var(--accent-3),
+      -4px 0 0 var(--accent-3),
+      0 4px 0 var(--accent-3),
+      0 -4px 0 var(--accent-3);
+  }
+
+  .project[data-type="linked"]:hover {
+    box-shadow:
+      6px 0 0 var(--accent-3),
+      -6px 0 0 var(--accent-3),
+      0 6px 0 var(--accent-3),
+      0 -6px 0 var(--accent-3);
+  }
+
+  .project[data-type="personal"] {
+    box-shadow:
+      4px 0 0 var(--accent-2),
+      -4px 0 0 var(--accent-2),
+      0 4px 0 var(--accent-2),
+      0 -4px 0 var(--accent-2);
+  }
+
+  .project[data-type="personal"]:hover {
+    box-shadow:
+      6px 0 0 var(--accent-2),
+      -6px 0 0 var(--accent-2),
+      0 6px 0 var(--accent-2),
+      0 -6px 0 var(--accent-2);
+  }
+
+  /* Header */
   .project-header {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .region-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+    flex-shrink: 0;
+  }
+
+  .region-info {
+    flex: 1;
+    min-width: 0;
   }
 
   .project-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.65rem;
     color: var(--text-primary);
     text-decoration: none;
-    transition: color 0.2s ease;
     cursor: pointer;
-    letter-spacing: -0.02em;
+    line-height: 1.4;
+    display: block;
+    margin-bottom: 0.25rem;
   }
 
   .project-name:hover {
     color: var(--accent);
-    text-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  .project-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
   }
 
   .project-stars {
-    font-family: 'Space Grotesk', monospace;
-    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
     color: var(--accent);
-    white-space: nowrap;
-    font-weight: 700;
-    text-shadow: 0 0 10px var(--accent-glow);
-    opacity: 0.6;
-    transition: opacity 0.3s ease;
+    opacity: 0.7;
+    transition: opacity 0.15s step-end;
   }
 
   .project-stars.loaded {
     opacity: 1;
-    animation: starPop 0.3s ease;
+    animation: starBounce 0.4s steps(4);
   }
 
-  @keyframes starPop {
-    0% { transform: scale(1.3); }
+  @keyframes starBounce {
+    0% { transform: scale(1.2); }
     100% { transform: scale(1); }
   }
 
-  .project-stars::before {
-    content: '★ ';
+  .explorers-label {
+    font-family: 'VT323', monospace;
+    font-size: 0.85rem;
+    color: var(--text-muted);
   }
 
-  .project-links {
-    margin-bottom: 0.25rem;
-  }
-
+  /* Demo Link */
   .project-demo-link {
-    font-size: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'VT323', monospace;
+    font-size: 0.95rem;
     color: var(--accent-3);
     text-decoration: none;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    background: rgba(77, 150, 255, 0.1);
+    box-shadow:
+      2px 0 0 var(--accent-3),
+      -2px 0 0 var(--accent-3),
+      0 2px 0 var(--accent-3),
+      0 -2px 0 var(--accent-3);
+    transition: all 0.15s step-end;
   }
 
   .project-demo-link:hover {
-    color: var(--accent);
-    text-shadow: 0 0 10px var(--accent-glow);
+    color: var(--text-primary);
+    background: rgba(77, 150, 255, 0.2);
   }
 
+  .demo-icon {
+    font-size: 0.9rem;
+  }
+
+  /* Description */
   .project-desc {
-    font-size: 0.85rem;
+    font-family: 'VT323', monospace;
+    font-size: 1.05rem;
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.5;
     margin: 0;
   }
 
+  /* Tags */
   .project-tags {
     display: flex;
-    gap: 0.4rem;
     flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .tags-label {
+    font-family: 'VT323', monospace;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-right: 0.25rem;
   }
 
   .tag {
-    font-size: 0.65rem;
-    padding: 0.2rem 0.6rem;
-    background: transparent;
-    border: 1px solid var(--border);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    background: var(--surface-alt);
     color: var(--text-secondary);
-    font-weight: 600;
-    font-family: 'Space Grotesk', sans-serif;
+    box-shadow:
+      2px 0 0 var(--border),
+      -2px 0 0 var(--border),
+      0 2px 0 var(--border),
+      0 -2px 0 var(--border);
+    transition: all 0.15s step-end;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.2s ease;
   }
 
   .tag:hover {
-    border-color: var(--accent);
     color: var(--accent);
-    box-shadow: 0 0 10px var(--accent-glow);
+    box-shadow:
+      2px 0 0 var(--accent),
+      -2px 0 0 var(--accent),
+      0 2px 0 var(--accent),
+      0 -2px 0 var(--accent);
   }
 
+  /* Responsive */
   @media (max-width: 640px) {
     .project {
-      padding: 1rem;
+      padding: 0.875rem 1rem;
     }
+
+    .region-icon {
+      font-size: 1.25rem;
+    }
+
+    .project-name {
+      font-size: 0.55rem;
+    }
+
+    .project-desc {
+      font-size: 0.95rem;
+    }
+  }
+
+  @media (max-width: 480px) {
     .project-header {
       flex-direction: column;
-      align-items: flex-start;
+      gap: 0.5rem;
     }
-  }
 
-  /* Linked vs Personal project visual distinction */
-  .project[data-type="linked"] {
-    border-left-color: var(--accent-3);
-  }
-
-  .project[data-type="linked"]:hover {
-    border-left-color: var(--accent-3);
-    box-shadow: -4px 0 20px rgba(0, 212, 255, 0.2);
-  }
-
-  .project[data-type="personal"] {
-    border-left-color: var(--accent-2);
-  }
-
-  .project[data-type="personal"]:hover {
-    border-left-color: var(--accent-2);
-    box-shadow: -4px 0 20px rgba(255, 0, 102, 0.2);
+    .tags-label {
+      display: none;
+    }
   }
 </style>

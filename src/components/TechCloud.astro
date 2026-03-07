@@ -1,87 +1,98 @@
 ---
-const techs = [
-  // AI Agent
-  { name: 'AI Agent', weight: 5 },
-  { name: 'Dify', weight: 4 },
-  { name: 'Context Engineering', weight: 4 },
-  { name: 'Prompt Engineering', weight: 4 },
-  { name: 'Tool Use', weight: 4 },
-  { name: 'RAG', weight: 3 },
-  { name: 'MCP', weight: 3 },
-  { name: 'Function Calling', weight: 3 },
+const skills = [
+  // AI Agent Skills
+  { name: 'AI Agent', level: 5, icon: '🤖' },
+  { name: 'Dify', level: 4, icon: '🔧' },
+  { name: 'Context Engineering', level: 4, icon: '📝' },
+  { name: 'Prompt Engineering', level: 4, icon: '💬' },
+  { name: 'Tool Use', level: 4, icon: '🛠️' },
+  { name: 'RAG', level: 3, icon: '📚' },
+  { name: 'MCP', level: 3, icon: '🔌' },
+  { name: 'Function Calling', level: 3, icon: '⚡' },
 
-  // Data Engineering
-  { name: 'Airflow', weight: 5 },
-  { name: 'LakeFS', weight: 4 },
-  { name: 'Data Pipeline', weight: 4 },
-  { name: 'ETL/ELT', weight: 4 },
-  { name: 'Spark', weight: 3 },
-  { name: 'Data Versioning', weight: 3 },
-  { name: 'Stream Processing', weight: 3 },
+  // Data Engineering Skills
+  { name: 'Airflow', level: 5, icon: '🌬️' },
+  { name: 'LakeFS', level: 4, icon: '💾' },
+  { name: 'Data Pipeline', level: 4, icon: '🔄' },
+  { name: 'ETL/ELT', level: 4, icon: '📊' },
+  { name: 'Spark', level: 3, icon: '✨' },
+  { name: 'Data Versioning', level: 3, icon: '📦' },
+  { name: 'Stream Processing', level: 3, icon: '🌊' },
 
-  // Performance
-  { name: 'Performance Tuning', weight: 4 },
-  { name: 'End-to-End Optimization', weight: 4 },
-  { name: 'QPS/TPS', weight: 3 },
+  // Performance Skills
+  { name: 'Performance Tuning', level: 4, icon: '🚀' },
+  { name: 'E2E Optimization', level: 4, icon: '🎯' },
+  { name: 'QPS/TPS', level: 3, icon: '📈' },
 
-  // Tech Stack
-  { name: 'Python', weight: 5 },
-  { name: 'TypeScript', weight: 4 },
-  { name: 'React', weight: 4 },
-  { name: 'Docker', weight: 3 },
+  // Tech Stack Skills
+  { name: 'Python', level: 5, icon: '🐍' },
+  { name: 'TypeScript', level: 4, icon: '📘' },
+  { name: 'React', level: 4, icon: '⚛️' },
+  { name: 'Docker', level: 3, icon: '🐳' },
 
-  // Philosophy
-  { name: 'Open Source', weight: 4 },
-  { name: 'Automation First', weight: 4 },
-  { name: 'Engineering Practices', weight: 3 },
+  // Philosophy Skills
+  { name: 'Open Source', level: 4, icon: '🌟' },
+  { name: 'Automation First', level: 4, icon: '⚙️' },
+  { name: 'Engineering Practices', level: 3, icon: '📐' },
 ];
 
-const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
+// Level colors
+const levelColors: Record<number, string> = {
+  5: 'var(--accent)',    // Gold - Master
+  4: 'var(--accent-2)',  // Green - Expert
+  3: 'var(--accent-3)',  // Blue - Skilled
+};
+
+// Level star count
+const levelStars = (level: number) => '⭐'.repeat(level);
 ---
 
-<div class="tech-cloud-wrapper">
-  <div class="tech-cloud" id="techCloud">
-    {techs.map((tech, i) => (
-      <span
-        class="tech-tag"
-        data-weight={tech.weight}
+<div class="skills-section">
+  <div class="skills-header">
+    <span class="skills-icon">⚔️</span>
+    <span class="skills-title" data-text-zh="解锁的能力" data-text-en="Unlocked Skills">解锁的能力</span>
+    <button class="shuffle-btn" id="shuffleBtn" aria-label="Shuffle skills">
+      <span class="shuffle-icon">🎲</span>
+    </button>
+  </div>
+
+  <div class="skills-grid" id="skillsGrid">
+    {skills.map((skill, i) => (
+      <div
+        class="skill-badge"
+        data-level={skill.level}
         data-index={i}
-        style={`--delay: ${i * 0.03}s; --color: ${colors[i % 3]};`}
+        style={`--delay: ${i * 0.04}s; --color: ${levelColors[skill.level]};`}
       >
-        {tech.name}
-      </span>
+        <span class="skill-icon">{skill.icon}</span>
+        <span class="skill-name">{skill.name}</span>
+        <span class="skill-stars">{levelStars(skill.level)}</span>
+      </div>
     ))}
   </div>
-  <button class="shuffle-btn" id="shuffleBtn" aria-label="Shuffle tags" title="点击排序">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="2" y="2" width="8" height="8" rx="1"/>
-      <rect x="14" y="2" width="8" height="8" rx="1"/>
-      <rect x="2" y="14" width="8" height="8" rx="1"/>
-      <rect x="14" y="14" width="8" height="8" rx="1"/>
-      <circle cx="6" cy="6" r="1" fill="currentColor"/>
-      <circle cx="18" cy="6" r="1" fill="currentColor"/>
-      <circle cx="6" cy="18" r="1" fill="currentColor"/>
-      <circle cx="18" cy="18" r="1" fill="currentColor"/>
-    </svg>
-  </button>
 </div>
 
 <style>
-  .tech-cloud-wrapper {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
+  .skills-section {
+    padding: 0.75rem 0;
   }
 
-  .tech-cloud {
+  .skills-header {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
     align-items: center;
-    justify-content: flex-start;
-    padding: 0.5rem 0;
-    position: relative;
-    min-height: 80px;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .skills-icon {
+    font-size: 1.25rem;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+  }
+
+  .skills-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.55rem;
+    color: var(--text-primary);
     flex: 1;
   }
 
@@ -91,140 +102,184 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
-    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow:
+      2px 0 0 var(--border),
+      -2px 0 0 var(--border),
+      0 2px 0 var(--border),
+      0 -2px 0 var(--border);
+    border: none;
     color: var(--text-muted);
     cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-    margin-top: 0.5rem;
+    transition: all 0.15s step-end;
   }
 
   .shuffle-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 15px var(--accent-glow);
-    transform: rotate(15deg);
+    box-shadow:
+      2px 0 0 var(--accent),
+      -2px 0 0 var(--accent),
+      0 2px 0 var(--accent),
+      0 -2px 0 var(--accent);
   }
 
-  .shuffle-btn svg {
-    width: 16px;
-    height: 16px;
+  .shuffle-btn:active {
+    transform: translate(1px, 1px);
   }
 
-  .tech-tag {
-    display: inline-block;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    color: var(--color);
-    padding: 0.35rem 0.75rem;
-    border: 1px solid var(--border);
-    background: transparent;
+  .shuffle-icon {
+    font-size: 0.9rem;
+    transition: transform 0.2s;
+  }
+
+  .shuffle-btn:hover .shuffle-icon {
+    transform: rotate(180deg);
+  }
+
+  /* Skills Grid */
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Skill Badge */
+  .skill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.6rem;
+    background: var(--surface);
+    box-shadow:
+      3px 0 0 var(--border),
+      -3px 0 0 var(--border),
+      0 3px 0 var(--border),
+      0 -3px 0 var(--border);
     cursor: default;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: tagFadeIn 0.6s ease forwards, tagFloat 4s ease-in-out infinite;
-    animation-delay: var(--delay), calc(var(--delay) + 0.6s);
+    transition: all 0.15s step-end;
+    animation: badgeFadeIn 0.5s steps(6) forwards;
+    animation-delay: var(--delay);
     opacity: 0;
-    white-space: nowrap;
-    position: relative;
   }
 
-  .tech-tag[data-weight="5"] { font-size: 1rem; }
-  .tech-tag[data-weight="4"] { font-size: 0.85rem; }
-  .tech-tag[data-weight="3"] { font-size: 0.75rem; }
-
-  .tech-tag:hover {
-    background: var(--color);
-    color: var(--bg);
-    border-color: var(--color);
-    transform: scale(1.1) translateY(-2px);
-    box-shadow: 0 0 20px var(--accent-glow);
-    z-index: 10;
-    animation-play-state: paused;
-  }
-
-  @keyframes tagFadeIn {
-    0% {
+  @keyframes badgeFadeIn {
+    from {
       opacity: 0;
-      transform: translateY(15px) rotate(5deg);
+      transform: translateY(-4px);
     }
-    60% {
-      opacity: 0.8;
-      transform: translateY(-5px) rotate(-2deg);
-    }
-    100% {
+    to {
       opacity: 1;
-      transform: translateY(0) rotate(0);
-    }
-  }
-
-  @keyframes tagFloat {
-    0%, 100% {
       transform: translateY(0);
     }
-    50% {
-      transform: translateY(-3px);
+  }
+
+  .skill-badge:hover {
+    transform: translate(-2px, -2px);
+    box-shadow:
+      5px 0 0 var(--color),
+      -5px 0 0 var(--color),
+      0 5px 0 var(--color),
+      0 -5px 0 var(--color);
+  }
+
+  /* Level-based sizing */
+  .skill-badge[data-level="5"] { }
+  .skill-badge[data-level="4"] { opacity: 0.9; }
+  .skill-badge[data-level="3"] { opacity: 0.8; }
+
+  .skill-icon {
+    font-size: 0.85rem;
+    filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.2));
+    line-height: 1;
+  }
+
+  .skill-name {
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+
+  .skill-stars {
+    font-size: 0.5rem;
+    line-height: 1;
+    filter: drop-shadow(0 0 2px var(--color));
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .skill-badge {
+      padding: 0.35rem 0.5rem;
+    }
+
+    .skill-name {
+      font-size: 0.9rem;
+    }
+
+    .skill-stars {
+      font-size: 0.4rem;
     }
   }
 
-  @media (max-width: 640px) {
-    .tech-tag[data-weight="5"] { font-size: 0.85rem; }
-    .tech-tag[data-weight="4"] { font-size: 0.75rem; }
-    .tech-tag[data-weight="3"] { font-size: 0.7rem; }
+  @media (max-width: 480px) {
+    .skill-icon {
+      display: none;
+    }
+
+    .skill-stars {
+      display: none;
+    }
   }
 </style>
 
 <script>
-  // Algorithm-style sorting effect on shuffle button click
-  const cloud = document.getElementById('techCloud');
+  // Shuffle functionality
+  const grid = document.getElementById('skillsGrid');
   const shuffleBtn = document.getElementById('shuffleBtn');
 
-  if (cloud && shuffleBtn) {
+  if (grid && shuffleBtn) {
     let sortMode = 0;
-    const sortModes = ['original', 'length-asc', 'length-desc', 'weight', 'alpha', 'random'];
+    const sortModes = ['original', 'level-desc', 'level-asc', 'alpha', 'random'];
     let originalOrder: HTMLElement[] = [];
 
-    // Store original order on load
     document.addEventListener('DOMContentLoaded', () => {
-      originalOrder = Array.from(cloud.querySelectorAll('.tech-tag')) as HTMLElement[];
+      originalOrder = Array.from(grid.querySelectorAll('.skill-badge')) as HTMLElement[];
     });
 
     shuffleBtn.addEventListener('click', () => {
-      const tags = Array.from(cloud.querySelectorAll('.tech-tag')) as HTMLElement[];
+      const badges = Array.from(grid.querySelectorAll('.skill-badge')) as HTMLElement[];
 
-      // Animate all tags out
-      tags.forEach((tag) => {
-        tag.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-        tag.style.transform = 'translateY(-20px) rotate(5deg)';
-        tag.style.opacity = '0';
+      // Animate out
+      badges.forEach((badge) => {
+        badge.style.transform = 'translateY(-8px) scale(0.9)';
+        badge.style.opacity = '0';
       });
 
-      // Rotate button
-      shuffleBtn.style.transform = 'rotate(360deg)';
       setTimeout(() => {
-        shuffleBtn.style.transform = '';
-      }, 300);
-
-      setTimeout(() => {
-        // Sort based on current mode
         sortMode = (sortMode + 1) % sortModes.length;
-        let sorted = [...tags];
+        let sorted = [...badges];
 
         switch (sortModes[sortMode]) {
           case 'original':
             sorted = [...originalOrder];
             break;
-          case 'length-asc':
-            sorted.sort((a, b) => (a.textContent?.length || 0) - (b.textContent?.length || 0));
+          case 'level-desc':
+            sorted.sort((a, b) =>
+              parseInt(b.getAttribute('data-level') || '0') -
+              parseInt(a.getAttribute('data-level') || '0')
+            );
             break;
-          case 'length-desc':
-            sorted.sort((a, b) => (b.textContent?.length || 0) - (a.textContent?.length || 0));
-            break;
-          case 'weight':
-            sorted.sort((a, b) => parseInt(b.getAttribute('data-weight') || '0') - parseInt(a.getAttribute('data-weight') || '0'));
+          case 'level-asc':
+            sorted.sort((a, b) =>
+              parseInt(a.getAttribute('data-level') || '0') -
+              parseInt(b.getAttribute('data-level') || '0')
+            );
             break;
           case 'alpha':
-            sorted.sort((a, b) => (a.textContent || '').localeCompare(b.textContent || ''));
+            sorted.sort((a, b) => {
+              const nameA = a.querySelector('.skill-name')?.textContent || '';
+              const nameB = b.querySelector('.skill-name')?.textContent || '';
+              return nameA.localeCompare(nameB);
+            });
             break;
           case 'random':
             for (let i = sorted.length - 1; i > 0; i--) {
@@ -234,17 +289,18 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
             break;
         }
 
-        // Re-append in new order
-        sorted.forEach(tag => cloud.appendChild(tag));
+        // Re-append
+        sorted.forEach(badge => grid.appendChild(badge));
 
-        // Animate back in with stagger
-        sorted.forEach((tag, i) => {
+        // Animate in
+        sorted.forEach((badge, i) => {
           setTimeout(() => {
-            tag.style.transform = 'translateY(0) rotate(0)';
-            tag.style.opacity = '1';
-          }, i * 25);
+            badge.style.transform = 'translateY(0) scale(1)';
+            badge.style.opacity = badge.getAttribute('data-level') === '5' ? '1' :
+                                   badge.getAttribute('data-level') === '4' ? '0.9' : '0.8';
+          }, i * 20);
         });
-      }, 300);
+      }, 200);
     });
   }
 </script>
