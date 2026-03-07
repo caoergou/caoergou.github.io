@@ -1,0 +1,223 @@
+---
+// XP Bar component - Minecraft style
+const currentXP = 75;
+const level = 12;
+const xpForNextLevel = 100;
+---
+
+<div class="xp-container" id="xpContainer">
+  <div class="xp-info">
+    <span class="xp-level" data-i18n="xpbar.levelShort">Lv.</span>
+    <span class="xp-level-num">{level}</span>
+  </div>
+  <div class="xp-bar-bg">
+    <div class="xp-bar-fill" id="xpFill" style={`--xp: ${currentXP}%`}></div>
+    <div class="xp-bar-shine"></div>
+  </div>
+  <span class="xp-text">{currentXP}/{xpForNextLevel}</span>
+</div>
+
+<style>
+  .xp-container {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 100;
+    padding: 0.4rem 0.75rem;
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow:
+      inset -2px 0 0 rgba(0,0,0,0.5),
+      inset 0 -2px 0 rgba(0,0,0,0.5),
+      inset 2px 0 0 rgba(50,50,50,0.5),
+      inset 0 2px 0 rgba(50,50,50,0.5);
+  }
+
+  .xp-info {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .xp-level {
+    font-family: 'Zpix', 'Press Start 2P', cursive;
+    font-size: 0.45rem;
+    color: var(--accent-6);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  }
+
+  .xp-level-num {
+    font-family: 'Zpix', 'Press Start 2P', cursive;
+    font-size: 0.45rem;
+    color: var(--accent-6);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  }
+
+  .xp-bar-bg {
+    position: relative;
+    width: 120px;
+    height: 8px;
+    background: #1a1a1a;
+    box-shadow:
+      inset -1px 0 0 rgba(0,0,0,0.8),
+      inset 0 -1px 0 rgba(0,0,0,0.8),
+      inset 1px 0 0 rgba(100,100,100,0.3),
+      inset 0 1px 0 rgba(100,100,100,0.3);
+    overflow: hidden;
+  }
+
+  .xp-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: var(--xp);
+    background: linear-gradient(
+      to bottom,
+      #7FFF00 0%,
+      #32CD32 50%,
+      #228B22 100%
+    );
+    transition: width 0.3s step-end;
+  }
+
+  .xp-bar-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      transparent 100%
+    );
+    animation: xpShine 3s ease-in-out infinite;
+  }
+
+  @keyframes xpShine {
+    0%, 100% { left: -50%; }
+    50% { left: 100%; }
+  }
+
+  .xp-text {
+    font-family: 'Zpix', 'VT323', monospace;
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .xp-container {
+      top: auto;
+      bottom: 4.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.3rem 0.5rem;
+    }
+
+    .xp-bar-bg {
+      width: 80px;
+      height: 6px;
+    }
+
+    .xp-level {
+      font-size: 0.35rem;
+    }
+
+    .xp-text {
+      font-size: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  // XP system - gain XP by scrolling
+  let currentXP = 75;
+  let level = 12;
+  const xpPerScroll = 1;
+  const xpPerLevel = 100;
+
+  const xpFill = document.getElementById('xpFill');
+  const xpContainer = document.getElementById('xpContainer');
+
+  // Track scroll position
+  let lastScrollY = window.scrollY;
+  let scrollThreshold = 50;
+
+  // Vibration helper (works on Android, ignored on iOS)
+  function vibrate(pattern: number | number[]) {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(pattern);
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+    const scrollDiff = Math.abs(currentScrollY - lastScrollY);
+
+    if (scrollDiff > scrollThreshold) {
+      addXP(xpPerScroll);
+      lastScrollY = currentScrollY;
+    }
+  }, { passive: true });
+
+  function addXP(amount: number) {
+    currentXP += amount;
+
+    // Level up
+    if (currentXP >= xpPerLevel) {
+      level++;
+      currentXP = currentXP - xpPerLevel;
+      showLevelUp();
+    }
+
+    updateXPBar();
+  }
+
+  function updateXPBar() {
+    if (xpFill) {
+      xpFill.style.setProperty('--xp', `${(currentXP / xpPerLevel) * 100}%`);
+    }
+
+    // Update level display
+    const levelNumEl = xpContainer?.querySelector('.xp-level-num');
+    if (levelNumEl) {
+      levelNumEl.textContent = String(level);
+    }
+
+    // Update text
+    const textEl = xpContainer?.querySelector('.xp-text');
+    if (textEl) {
+      textEl.textContent = `${currentXP}/${xpPerLevel}`;
+    }
+  }
+
+  function showLevelUp() {
+    if (xpContainer) {
+      xpContainer.classList.add('level-up');
+
+      // Celebration vibration pattern: long pulse
+      vibrate([50, 30, 50, 30, 200]);
+
+      setTimeout(() => {
+        xpContainer.classList.remove('level-up');
+      }, 1000);
+    }
+  }
+</script>
+
+<style>
+  .xp-container.level-up {
+    animation: levelUpPulse 0.5s steps(4) 2;
+  }
+
+  @keyframes levelUpPulse {
+    0%, 100% { box-shadow: inset -2px 0 0 rgba(0,0,0,0.5), inset 0 -2px 0 rgba(0,0,0,0.5), inset 2px 0 0 rgba(50,50,50,0.5), inset 0 2px 0 rgba(50,50,50,0.5); }
+    50% { box-shadow: inset -2px 0 0 rgba(0,0,0,0.5), inset 0 -2px 0 rgba(0,0,0,0.5), inset 2px 0 0 rgba(50,50,50,0.5), inset 0 2px 0 rgba(50,50,50,0.5), 0 0 15px var(--accent-6); }
+  }
+</style>

@@ -12,28 +12,28 @@
     "blog": "博客"
   },
   "hero": {
-    "title": "全栈探索者",
+    "title": "全栈冒险家",
     "langToggle": "中"
   },
   "stats": {
-    "regions": "已探索区域",
-    "skills": "解锁技能",
-    "days": "冒险天数"
+    "regions": "征服区域",
+    "skills": "已掌握技能",
+    "days": "冒险历程"
   },
   "sections": {
-    "projects": "作品",
+    "projects": "探险区域",
     "explorations": "探索方向"
   },
   "project": {
-    "enterRegion": "进入区域",
-    "requiredSkills": "Required Skills:",
-    "explorers": "explorers"
+    "enterRegion": "传送至该区域",
+    "requiredSkills": "所需技能：",
+    "explorers": "位探险者"
   },
   "thought": {
-    "exploring": "探索中"
+    "exploring": "解析中"
   },
   "comingSoon": {
-    "title": "Coming Soon",
+    "title": "即将解锁",
     "items": [
       "个人/团队专属 AI Agent 工作流的从零搭建全流程",
       "企业级场景下 Agent 自动化流程的落地实战记录",
@@ -49,5 +49,35 @@
   },
   "footer": {
     "copyright": "© {year} Eric Cao"
+  },
+  "xpbar": {
+    "level": "等级",
+    "levelShort": "Lv.",
+    "levelUp": "升级了！"
+  },
+  "hotbar": {
+    "profile": "角色档案",
+    "skills": "技能背包",
+    "projects": "探险区域",
+    "thoughts": "冒险日志",
+    "coming": "即将解锁"
+  },
+  "monster": {
+    "creeper": "爬行者",
+    "creeperSound": "Ssssss...",
+    "enderman": "末影人",
+    "skeleton": "骷髅",
+    "spider": "蜘蛛",
+    "zombie": "僵尸",
+    "appeared": "一只野生的{name}出现了！"
+  },
+  "inventory": {
+    "title": "背包物品",
+    "legendary": "传说级",
+    "epic": "史诗级",
+    "rare": "稀有级",
+    "common": "普通级",
+    "attack": "攻击力",
+    "defense": "防御力"
   }
 }

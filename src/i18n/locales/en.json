@@ -12,28 +12,28 @@
     "blog": "Blog"
   },
   "hero": {
-    "title": "Full-Stack Explorer",
+    "title": "Full-Stack Adventurer",
     "langToggle": "EN"
   },
   "stats": {
-    "regions": "Regions",
-    "skills": "Skills",
-    "days": "Days"
+    "regions": "Regions Conquered",
+    "skills": "Skills Mastered",
+    "days": "Adventure Days"
   },
   "sections": {
-    "projects": "Projects",
+    "projects": "Quests",
     "explorations": "Explorations"
   },
   "project": {
-    "enterRegion": "Enter Region",
-    "requiredSkills": "Required Skills:",
+    "enterRegion": "Teleport to Region",
+    "requiredSkills": "Skills Required:",
     "explorers": "explorers"
   },
   "thought": {
-    "exploring": "Exploring"
+    "exploring": "Decrypting"
   },
   "comingSoon": {
-    "title": "Coming Soon",
+    "title": "Unlocking Soon",
     "items": [
       "Complete guide to building personal/team AI Agent workflows from scratch",
       "Enterprise Agent automation implementation case studies",
@@ -49,5 +49,35 @@
   },
   "footer": {
     "copyright": "© {year} Eric Cao"
+  },
+  "xpbar": {
+    "level": "Level",
+    "levelShort": "Lv.",
+    "levelUp": "Level Up!"
+  },
+  "hotbar": {
+    "profile": "Character",
+    "skills": "Skills",
+    "projects": "Quests",
+    "thoughts": "Journal",
+    "coming": "Unlocking Soon"
+  },
+  "monster": {
+    "creeper": "Creeper",
+    "creeperSound": "Ssssss...",
+    "enderman": "Enderman",
+    "skeleton": "Skeleton",
+    "spider": "Spider",
+    "zombie": "Zombie",
+    "appeared": "A wild {name} appeared!"
+  },
+  "inventory": {
+    "title": "Inventory",
+    "legendary": "LEGENDARY",
+    "epic": "EPIC",
+    "rare": "RARE",
+    "common": "COMMON",
+    "attack": "Attack",
+    "defense": "Defense"
   }
 }
