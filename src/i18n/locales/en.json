@@ -1,0 +1,53 @@
+{
+  "site": {
+    "title": "Eric Cao — Swimming hard in the sweeping tides of AI",
+    "description": "A developer who loves tinkering, swimming hard in the sweeping tides of AI. Focused on Python, AI Agent, Big Data, and open-source tools.",
+    "author": "Eric Cao",
+    "keywords": "Eric Cao, Python, AI Agent, Dify, Airflow, Big Data, Open Source, TypeScript, React, Full-Stack Developer",
+    "locale": "en_US",
+    "lang": "en-US"
+  },
+  "nav": {
+    "home": "Home",
+    "blog": "Blog"
+  },
+  "hero": {
+    "title": "Full-Stack Explorer",
+    "langToggle": "EN"
+  },
+  "stats": {
+    "regions": "Regions",
+    "skills": "Skills",
+    "days": "Days"
+  },
+  "sections": {
+    "projects": "Projects",
+    "explorations": "Explorations"
+  },
+  "project": {
+    "enterRegion": "Enter Region",
+    "requiredSkills": "Required Skills:",
+    "explorers": "explorers"
+  },
+  "thought": {
+    "exploring": "Exploring"
+  },
+  "comingSoon": {
+    "title": "Coming Soon",
+    "items": [
+      "Complete guide to building personal/team AI Agent workflows from scratch",
+      "Enterprise Agent automation implementation case studies",
+      "Big Data + AI Agent scenario-based solutions",
+      "End-to-end performance optimization pitfalls and practical tips"
+    ]
+  },
+  "blog": {
+    "title": "📜 Blog",
+    "description": "Python · Distributed Systems · Web Development · AI Applications",
+    "emptyTitle": "New map is being drawn...",
+    "emptyDesc": "Adventure logs coming soon."
+  },
+  "footer": {
+    "copyright": "© {year} Eric Cao"
+  }
+}

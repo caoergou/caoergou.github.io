@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { t } from '../i18n';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -35,7 +36,7 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
         <span class="project-stars" data-stars={project.data.stars || 0}>
           ⭐ <span class="star-count">{project.data.stars || 0}</span>
         </span>
-        <span class="explorers-label">explorers</span>
+        <span class="explorers-label" data-i18n="project.explorers">{t('zh', 'project.explorers')}</span>
       </div>
     </div>
   </div>
@@ -43,14 +44,14 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
   {project.data.demo_url && (
     <a href={project.data.demo_url} class="project-demo-link" target="_blank" rel="noopener">
       <span class="demo-icon">🎮</span>
-      <span data-link-zh="进入区域" data-link-en="Enter Region">进入区域</span>
+      <span data-link-zh="进入区域" data-link-en="Enter Region">{t('zh', 'project.enterRegion')}</span>
     </a>
   )}
 
-  <p class="project-desc" data-desc-zh={project.data.desc_zh} data-desc-en={project.data.desc_en}>{project.data.desc_zh}</p>
+  <p class="project-desc" data-desc-zh={project.data.description.zh} data-desc-en={project.data.description.en}>{project.data.description.zh}</p>
 
   <div class="project-tags">
-    <span class="tags-label">Required Skills:</span>
+    <span class="tags-label" data-i18n="project.requiredSkills">{t('zh', 'project.requiredSkills')}</span>
     {project.data.tags.map((tag) => (
       <span class="tag">{tag}</span>
     ))}
