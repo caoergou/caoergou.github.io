@@ -6,54 +6,142 @@ interface Props {
 }
 
 const { thought } = Astro.props;
+
+// Status icons for different exploration states
+const statusIcons = ['🗼', '🔮', '🌟', '📚', '⚗️'];
+const statusIcon = statusIcons[Math.floor(Math.random() * statusIcons.length)];
 ---
 
 <article class="thought">
-  <h3 class="thought-title" data-title-zh={thought.data.title_zh} data-title-en={thought.data.title_en}>{thought.data.title_zh}</h3>
-  <p class="thought-text serif" data-desc-zh={thought.data.desc_zh} data-desc-en={thought.data.desc_en}>{thought.data.desc_zh}</p>
+  <div class="thought-header">
+    <span class="status-icon">{statusIcon}</span>
+    <h3 class="thought-title" data-title-zh={thought.data.title_zh} data-title-en={thought.data.title_en}>{thought.data.title_zh}</h3>
+  </div>
+  <p class="thought-text" data-desc-zh={thought.data.desc_zh} data-desc-en={thought.data.desc_en}>{thought.data.desc_zh}</p>
+  <div class="thought-status">
+    <span class="status-badge">
+      <span class="status-dot"></span>
+      <span data-text-zh="探索中" data-text-en="Exploring">探索中</span>
+    </span>
+  </div>
 </article>
 
 <style>
   .thought {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
     margin-bottom: 0.5rem;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid transparent;
-    transition: all 0.3s ease;
+    box-shadow:
+      4px 0 0 var(--accent-5),
+      -4px 0 0 var(--accent-5),
+      0 4px 0 var(--accent-5),
+      0 -4px 0 var(--accent-5);
     position: relative;
+    cursor: pointer;
+    transition: all 0.15s step-end;
   }
 
   .thought:hover {
-    border-left-color: var(--accent-3);
-    background: var(--bg-secondary);
-    transform: translateX(4px);
-    box-shadow: -4px 0 20px rgba(0, 212, 255, 0.2);
+    transform: translate(-2px, -2px);
+    box-shadow:
+      6px 0 0 var(--accent-5),
+      -6px 0 0 var(--accent-5),
+      0 6px 0 var(--accent-5),
+      0 -6px 0 var(--accent-5);
+  }
+
+  .thought:active {
+    transform: translate(2px, 2px);
+    box-shadow:
+      2px 0 0 var(--accent-5),
+      -2px 0 0 var(--accent-5),
+      0 2px 0 var(--accent-5),
+      0 -2px 0 var(--accent-5);
+  }
+
+  /* Header */
+  .thought-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .status-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
   }
 
   .thought-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .thought-text {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    font-weight: 300;
-    position: relative;
-    z-index: 1;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.55rem;
+    color: var(--accent-5);
     margin: 0;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
   }
 
+  /* Text */
+  .thought-text {
+    font-family: 'VT323', monospace;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0 0 0.75rem 0;
+    padding-left: 0.25rem;
+    border-left: 3px solid var(--border);
+  }
+
+  /* Status */
+  .thought-status {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: 'VT323', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-2);
+    padding: 0.15rem 0.5rem;
+    background: rgba(107, 203, 119, 0.1);
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-2);
+    animation: pulse 1.5s steps(2) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Responsive */
   @media (max-width: 640px) {
     .thought {
-      padding: 1rem;
+      padding: 0.875rem 1rem;
+    }
+
+    .thought-title {
+      font-size: 0.5rem;
+    }
+
+    .thought-text {
+      font-size: 0.95rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .thought-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.35rem;
     }
   }
 </style>

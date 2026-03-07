@@ -6,7 +6,18 @@ interface Props {
 }
 
 const { profile } = Astro.props;
-const nameChars = profile.data.name.split('');
+
+// Calculate adventure days (from a start date, or estimate from work experience)
+const adventureStartDate = new Date('2020-01-01'); // Example start date
+const today = new Date();
+const adventureDays = Math.floor((today.getTime() - adventureStartDate.getTime()) / (1000 * 60 * 60 * 24));
+
+// Explorer stats
+const stats = {
+  regionsExplored: 5, // Number of projects
+  skillsUnlocked: 12, // Number of tech skills
+  adventureDays: adventureDays
+};
 ---
 
 <section class="hero">
@@ -15,31 +26,58 @@ const nameChars = profile.data.name.split('');
     <button id="langToggle" class="control-btn" aria-label="Switch language">
       <span class="lang-text" data-zh="中" data-en="EN">中</span>
     </button>
-    <button id="themeToggle" class="control-btn" aria-label="Toggle theme">
-      <svg class="theme-icon dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <button id="themeToggle" class="control-btn theme-btn" aria-label="Toggle theme">
+      <svg class="theme-icon dark" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
         <circle cx="12" cy="12" r="4"/>
       </svg>
-      <svg class="theme-icon light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg class="theme-icon light" viewBox="0 0 24 24" fill="currentColor">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
   </div>
 
-  <div class="hero-name-wrapper">
-    <h1 class="hero-name" data-text={profile.data.name}>
-      {nameChars.map((char, i) => (
-        char === ' '
-          ? <span class="name-space"></span>
-          : <span class="name-char" style={`--i: ${i}`}>{char}</span>
-      ))}
-    </h1>
-    <div class="hero-identity">
-      <a href="https://github.com/caoergou" target="_blank" rel="noopener" class="hero-username">@caoergou</a>
+  <!-- Adventurer Profile Card -->
+  <div class="adventurer-card">
+    <div class="avatar-frame">
+      <div class="avatar-inner">
+        <span class="avatar-icon">⚔️</span>
+      </div>
+      <div class="level-badge">Lv.{Math.floor(adventureDays / 365 * 10)}</div>
+    </div>
+
+    <div class="adventurer-info">
+      <div class="name-row">
+        <h1 class="hero-name">{profile.data.name}</h1>
+        <a href="https://github.com/caoergou" target="_blank" rel="noopener" class="hero-username">@caoergou</a>
+      </div>
+      <div class="hero-title" data-title-zh="全栈探索者" data-title-en="Full-Stack Explorer">全栈探索者</div>
     </div>
   </div>
 
-  <blockquote class="hero-tagline serif" data-tagline-zh={profile.data.tagline_zh} data-tagline-en={profile.data.tagline_en}></blockquote>
+  <!-- Explorer Quote -->
+  <blockquote class="hero-tagline" data-tagline-zh={profile.data.tagline_zh} data-tagline-en={profile.data.tagline_en}></blockquote>
+
+  <!-- Adventure Stats -->
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-icon">🗺️</span>
+      <span class="stat-value">{stats.regionsExplored}</span>
+      <span class="stat-label" data-text-zh="已探索区域" data-text-en="Regions">已探索区域</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">⚔️</span>
+      <span class="stat-value">{stats.skillsUnlocked}</span>
+      <span class="stat-label" data-text-zh="解锁技能" data-text-en="Skills">解锁技能</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">🌟</span>
+      <span class="stat-value">{stats.adventureDays.toLocaleString()}+</span>
+      <span class="stat-label" data-text-zh="冒险天数" data-text-en="Days">冒险天数</span>
+    </div>
+  </div>
+
+  <!-- Social Links as Quick Actions -->
   <div class="hero-links">
     {profile.data.social_links.map((link) => (
       <a
@@ -48,28 +86,17 @@ const nameChars = profile.data.name.split('');
         target={link.url.startsWith('http') ? '_blank' : '_self'}
         rel={link.url.startsWith('http') ? 'noopener noreferrer' : ''}
       >
-        {link.icon === 'github' ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-          </svg>
-        ) : link.icon === 'jike' ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-        ) : link.icon === 'email' ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        ) : null}
-        {link.name}
+        <span class="link-icon">
+          {link.icon === 'github' ? '🐙' : link.icon === 'jike' ? '💬' : link.icon === 'email' ? '📨' : '🔗'}
+        </span>
+        <span class="link-text">{link.name}</span>
       </a>
     ))}
   </div>
 </section>
 
 <style>
-  /* Top Controls */
+  /* ===== Top Controls - Pixel Style ===== */
   .top-controls {
     position: fixed;
     top: 1.5rem;
@@ -80,27 +107,41 @@ const nameChars = profile.data.name.split('');
   }
 
   .control-btn {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(13, 13, 13, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
+    background: var(--surface);
+    border: none;
+    box-shadow:
+      3px 0 0 var(--border),
+      -3px 0 0 var(--border),
+      0 3px 0 var(--border),
+      0 -3px 0 var(--border);
+    color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    transition: all 0.15s step-end;
   }
 
   .control-btn:hover {
-    border-color: var(--accent);
     color: var(--accent);
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow:
+      3px 0 0 var(--accent),
+      -3px 0 0 var(--accent),
+      0 3px 0 var(--accent),
+      0 -3px 0 var(--accent);
+  }
+
+  .control-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow:
+      1px 0 0 var(--accent),
+      -1px 0 0 var(--accent),
+      0 1px 0 var(--accent),
+      0 -1px 0 var(--accent);
   }
 
   .lang-text {
@@ -108,120 +149,305 @@ const nameChars = profile.data.name.split('');
   }
 
   .theme-icon {
-    width: 18px;
-    height: 18px;
-    transition: all 0.3s ease;
+    width: 16px;
+    height: 16px;
   }
 
   .theme-icon.light {
     display: none;
   }
 
-  .light-mode .theme-icon.dark {
+  :global(.light-mode) .theme-icon.dark {
     display: none;
   }
 
-  .light-mode .theme-icon.light {
+  :global(.light-mode) .theme-icon.light {
     display: block;
   }
 
-  /* Light mode control buttons */
-  :global(.light-mode) .control-btn {
-    background: rgba(248, 249, 250, 0.9);
+  /* ===== Adventurer Card ===== */
+  .adventurer-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
   }
 
-  .hero-name-wrapper {
+  /* Pixel Avatar Frame */
+  .avatar-frame {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .avatar-inner {
+    width: 64px;
+    height: 64px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      4px 0 0 var(--border),
+      -4px 0 0 var(--border),
+      0 4px 0 var(--border),
+      0 -4px 0 var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avatar-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 4px,
+        rgba(255, 217, 61, 0.1) 4px,
+        rgba(255, 217, 61, 0.1) 8px
+      );
+  }
+
+  .avatar-icon {
+    font-size: 1.75rem;
+    filter: drop-shadow(2px 2px 0 var(--border));
+  }
+
+  .level-badge {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.4rem;
+    padding: 2px 6px;
+    box-shadow:
+      2px 0 0 rgba(0,0,0,0.3),
+      -2px 0 0 rgba(0,0,0,0.3),
+      0 2px 0 rgba(0,0,0,0.3),
+      0 -2px 0 rgba(0,0,0,0.3);
+    white-space: nowrap;
+  }
+
+  /* Name and Title */
+  .adventurer-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .name-row {
     display: flex;
     align-items: baseline;
-    gap: 1rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
+    margin-bottom: 0.25rem;
   }
 
   .hero-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(2rem, 8vw, 3.5rem);
-    font-weight: 900;
-    letter-spacing: -0.05em;
-    line-height: 1;
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+    line-height: 1.3;
     color: var(--text-primary);
-    text-transform: uppercase;
-    position: relative;
-    display: inline-flex;
-    cursor: default;
-  }
-
-  .name-char {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-3) 100%);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: charFloat 3s ease-in-out infinite, gradientShift 4s ease infinite;
-    animation-delay: calc(var(--i) * 0.1s), 0s;
-    transition: transform 0.3s ease, filter 0.3s ease;
-  }
-
-  .name-char:hover {
-    animation: none;
-    transform: translateY(-8px) rotate(5deg) scale(1.2);
-    filter: drop-shadow(0 0 20px var(--accent));
-  }
-
-  .name-space {
-    width: 0.3em;
-  }
-
-  @keyframes charFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
-  }
-
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+    text-shadow:
+      3px 3px 0 var(--accent),
+      -1px -1px 0 var(--border);
   }
 
   .hero-username {
-    font-family: 'Space Grotesk', monospace;
-    font-size: clamp(0.8rem, 2.5vw, 1rem);
-    font-weight: 500;
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
     color: var(--text-muted);
     text-decoration: none;
-    padding: 0.2rem 0.5rem;
-    background: transparent;
-    border: none;
-    transition: all 0.3s ease;
-    letter-spacing: 0.02em;
+    padding: 0.15rem 0.4rem;
+    background: var(--surface);
+    box-shadow:
+      2px 0 0 var(--border),
+      -2px 0 0 var(--border),
+      0 2px 0 var(--border),
+      0 -2px 0 var(--border);
+    transition: all 0.15s step-end;
   }
 
   .hero-username:hover {
     color: var(--accent);
-    text-shadow: 0 0 10px var(--accent-glow);
+    box-shadow:
+      2px 0 0 var(--accent),
+      -2px 0 0 var(--accent),
+      0 2px 0 var(--accent),
+      0 -2px 0 var(--accent);
   }
 
-  .hero-identity {
+  .hero-title {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    color: var(--accent-3);
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== Hero Tagline ===== */
+  .hero-tagline {
+    font-family: 'VT323', monospace;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    color: var(--accent-2);
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    max-width: 100%;
+    border-left: 4px solid var(--accent-2);
+    background: linear-gradient(90deg, rgba(107, 203, 119, 0.1) 0%, transparent 100%);
+  }
+
+  /* ===== Adventure Stats ===== */
+  .hero-stats {
     display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--surface);
+    box-shadow:
+      3px 0 0 var(--border),
+      -3px 0 0 var(--border),
+      0 3px 0 var(--border),
+      0 -3px 0 var(--border);
+    margin-bottom: 1.5rem;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.15rem;
+    flex: 1;
   }
 
-  .hero-identity::before {
-    content: '/';
+  .stat-icon {
+    font-size: 1.25rem;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.2));
+  }
+
+  .stat-value {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-shadow: 2px 2px 0 rgba(255, 217, 61, 0.2);
+  }
+
+  .stat-label {
+    font-family: 'VT323', monospace;
+    font-size: 0.85rem;
     color: var(--text-muted);
-    opacity: 0.4;
-    margin-right: 0.25rem;
+    text-align: center;
   }
 
+  /* ===== Hero Links ===== */
+  .hero-links {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0.6rem 0.9rem;
+    background: var(--surface);
+    box-shadow:
+      3px 0 0 var(--border),
+      -3px 0 0 var(--border),
+      0 3px 0 var(--border),
+      0 -3px 0 var(--border);
+    transition: all 0.15s step-end;
+  }
+
+  .hero-link:hover {
+    transform: translate(-2px, -2px);
+    box-shadow:
+      5px 0 0 var(--accent),
+      -5px 0 0 var(--accent),
+      0 5px 0 var(--accent),
+      0 -5px 0 var(--accent);
+  }
+
+  .hero-link:active {
+    transform: translate(2px, 2px);
+    box-shadow:
+      1px 0 0 var(--accent),
+      -1px 0 0 var(--accent),
+      0 1px 0 var(--accent),
+      0 -1px 0 var(--accent);
+  }
+
+  .link-icon {
+    font-size: 1rem;
+    filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.2));
+  }
+
+  .link-text {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* ===== Responsive ===== */
   @media (max-width: 640px) {
-    .hero-name-wrapper {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
     .top-controls {
       top: 1rem;
       right: 1rem;
+    }
+
+    .adventurer-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .name-row {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .hero-stats {
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .stat {
+      min-width: 80px;
+    }
+
+    .hero-links {
+      flex-direction: column;
+    }
+
+    .hero-link {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .avatar-inner {
+      width: 56px;
+      height: 56px;
+    }
+
+    .hero-name {
+      font-size: 1rem;
+    }
+
+    .stat-value {
+      font-size: 0.65rem;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
     }
   }
 </style>
@@ -229,17 +455,23 @@ const nameChars = profile.data.name.split('');
 <script is:inline>
   // Update hero text on language change
   function updateHeroText(lang) {
+    // Update tagline
     const taglineEl = document.querySelector('[data-tagline-zh]');
     if (taglineEl) {
       taglineEl.textContent = taglineEl.getAttribute(`data-tagline-${lang}`) || '';
-      taglineEl.style.opacity = '1';
     }
 
-    const quoteEl = document.querySelector('[data-quote-zh]');
-    if (quoteEl) {
-      quoteEl.textContent = quoteEl.getAttribute(`data-quote-${lang}`) || '';
-      quoteEl.style.opacity = '1';
+    // Update title
+    const titleEl = document.querySelector('[data-title-zh]');
+    if (titleEl) {
+      titleEl.textContent = titleEl.getAttribute(`data-title-${lang}`) || '';
     }
+
+    // Update stat labels
+    document.querySelectorAll('.stat-label[data-text-zh]').forEach(el => {
+      const text = el.getAttribute(`data-text-${lang}`);
+      if (text) el.textContent = text;
+    });
 
     // Update lang toggle button text
     const langText = document.querySelector('.lang-text');
