@@ -1,0 +1,53 @@
+{
+  "site": {
+    "title": "Eric Cao — 在AI席卷的浪潮中努力扑腾",
+    "description": "一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾。专注于 Python、AI Agent、大数据、开源工具的开发与探索。",
+    "author": "Eric Cao",
+    "keywords": "Eric Cao, Python, AI Agent, Dify, Airflow, 大数据, 开源, TypeScript, React, 全栈开发",
+    "locale": "zh_CN",
+    "lang": "zh-CN"
+  },
+  "nav": {
+    "home": "首页",
+    "blog": "博客"
+  },
+  "hero": {
+    "title": "全栈探索者",
+    "langToggle": "中"
+  },
+  "stats": {
+    "regions": "已探索区域",
+    "skills": "解锁技能",
+    "days": "冒险天数"
+  },
+  "sections": {
+    "projects": "作品",
+    "explorations": "探索方向"
+  },
+  "project": {
+    "enterRegion": "进入区域",
+    "requiredSkills": "Required Skills:",
+    "explorers": "explorers"
+  },
+  "thought": {
+    "exploring": "探索中"
+  },
+  "comingSoon": {
+    "title": "Coming Soon",
+    "items": [
+      "个人/团队专属 AI Agent 工作流的从零搭建全流程",
+      "企业级场景下 Agent 自动化流程的落地实战记录",
+      "大数据与 AI Agent 结合的场景化解决方案",
+      "全链路性能优化的系列避坑指南与实战技巧"
+    ]
+  },
+  "blog": {
+    "title": "📜 博客",
+    "description": "Python · 分布式系统 · Web 开发 · AI 应用",
+    "emptyTitle": "新地图正在绘制中...",
+    "emptyDesc": "探险日志即将解锁，敬请期待。"
+  },
+  "footer": {
+    "copyright": "© {year} Eric Cao"
+  }
+}

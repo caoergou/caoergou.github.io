@@ -28,6 +28,9 @@ export default defineConfig({
         // Windows XP
         'https://eric.run.place/windows-xp/',
       ],
+      changefreq: 'weekly',
+      priority: 0.7,
+      lastmod: new Date(),
     }),
   ],
   markdown: {
