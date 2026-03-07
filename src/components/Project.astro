@@ -96,6 +96,7 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
 </script>
 
 <style>
+  /* Project Card - Minecraft Biome/Region Style */
   .project {
     display: grid;
     grid-template-columns: 1fr;
@@ -104,64 +105,95 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
     margin-bottom: 0.5rem;
     background: var(--surface);
     box-shadow:
-      4px 0 0 var(--border),
-      -4px 0 0 var(--border),
-      0 4px 0 var(--border),
-      0 -4px 0 var(--border);
+      inset -4px 0 0 var(--block-shadow),
+      inset 0 -4px 0 var(--block-shadow),
+      inset 4px 0 0 var(--block-light),
+      inset 0 4px 0 var(--block-light),
+      5px 5px 0 var(--block-shadow);
     position: relative;
     cursor: pointer;
     transition: all 0.15s step-end;
   }
 
+  .project::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.15s step-end;
+  }
+
   .project:hover {
-    transform: translate(-2px, -2px);
+    transform: translate(-3px, -3px);
     box-shadow:
-      6px 0 0 var(--accent),
-      -6px 0 0 var(--accent),
-      0 6px 0 var(--accent),
-      0 -6px 0 var(--accent);
+      inset -4px 0 0 var(--block-shadow),
+      inset 0 -4px 0 var(--block-shadow),
+      inset 4px 0 0 var(--block-light),
+      inset 0 4px 0 var(--block-light),
+      8px 8px 0 var(--accent);
+  }
+
+  .project:hover::before {
+    opacity: 1;
   }
 
   .project:active {
     transform: translate(2px, 2px);
     box-shadow:
-      2px 0 0 var(--accent),
-      -2px 0 0 var(--accent),
-      0 2px 0 var(--accent),
-      0 -2px 0 var(--accent);
+      inset -2px 0 0 var(--block-shadow),
+      inset 0 -2px 0 var(--block-shadow),
+      inset 2px 0 0 var(--block-light),
+      inset 0 2px 0 var(--block-light),
+      2px 2px 0 var(--block-shadow);
   }
 
-  /* Type-based colors */
+  /* Type-based colors - Biome themes */
   .project[data-type="linked"] {
     box-shadow:
-      4px 0 0 var(--accent-3),
-      -4px 0 0 var(--accent-3),
-      0 4px 0 var(--accent-3),
-      0 -4px 0 var(--accent-3);
+      inset -4px 0 0 var(--block-shadow),
+      inset 0 -4px 0 var(--block-shadow),
+      inset 4px 0 0 var(--block-light),
+      inset 0 4px 0 var(--block-light),
+      5px 5px 0 var(--accent-3);
+  }
+
+  .project[data-type="linked"]::before {
+    background: var(--accent-3);
   }
 
   .project[data-type="linked"]:hover {
     box-shadow:
-      6px 0 0 var(--accent-3),
-      -6px 0 0 var(--accent-3),
-      0 6px 0 var(--accent-3),
-      0 -6px 0 var(--accent-3);
+      inset -4px 0 0 var(--block-shadow),
+      inset 0 -4px 0 var(--block-shadow),
+      inset 4px 0 0 var(--block-light),
+      inset 0 4px 0 var(--block-light),
+      8px 8px 0 var(--accent-3);
   }
 
   .project[data-type="personal"] {
     box-shadow:
-      4px 0 0 var(--accent-2),
-      -4px 0 0 var(--accent-2),
-      0 4px 0 var(--accent-2),
-      0 -4px 0 var(--accent-2);
+      inset -4px 0 0 var(--block-shadow),
+      inset 0 -4px 0 var(--block-shadow),
+      inset 4px 0 0 var(--block-light),
+      inset 0 4px 0 var(--block-light),
+      5px 5px 0 var(--accent-6);
+  }
+
+  .project[data-type="personal"]::before {
+    background: var(--accent-6);
   }
 
   .project[data-type="personal"]:hover {
     box-shadow:
-      6px 0 0 var(--accent-2),
-      -6px 0 0 var(--accent-2),
-      0 6px 0 var(--accent-2),
-      0 -6px 0 var(--accent-2);
+      inset -4px 0 0 var(--block-shadow),
+      inset 0 -4px 0 var(--block-shadow),
+      inset 4px 0 0 var(--block-light),
+      inset 0 4px 0 var(--block-light),
+      8px 8px 0 var(--accent-6);
   }
 
   /* Header */
@@ -184,7 +216,7 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
   }
 
   .project-name {
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Zpix', 'Press Start 2P', cursive;
     font-size: 0.65rem;
     color: var(--text-primary);
     text-decoration: none;
@@ -208,9 +240,9 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
     display: inline-flex;
     align-items: center;
     gap: 0.2rem;
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Zpix', 'Press Start 2P', cursive;
     font-size: 0.5rem;
-    color: var(--accent);
+    color: var(--accent-6);
     opacity: 0.7;
     transition: opacity 0.15s step-end;
   }
@@ -226,33 +258,40 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
   }
 
   .explorers-label {
-    font-family: 'VT323', monospace;
+    font-family: 'Zpix', 'VT323', monospace;
     font-size: 0.85rem;
     color: var(--text-muted);
   }
 
-  /* Demo Link */
+  /* Demo Link - Portal style */
   .project-demo-link {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-family: 'VT323', monospace;
+    font-family: 'Zpix', 'VT323', monospace;
     font-size: 0.95rem;
-    color: var(--accent-3);
+    color: var(--accent-7);
     text-decoration: none;
     padding: 0.25rem 0.5rem;
-    background: rgba(77, 150, 255, 0.1);
+    background: rgba(127, 63, 191, 0.1);
     box-shadow:
-      2px 0 0 var(--accent-3),
-      -2px 0 0 var(--accent-3),
-      0 2px 0 var(--accent-3),
-      0 -2px 0 var(--accent-3);
+      inset -2px 0 0 var(--block-shadow),
+      inset 0 -2px 0 var(--block-shadow),
+      inset 2px 0 0 rgba(127, 63, 191, 0.3),
+      inset 0 2px 0 rgba(127, 63, 191, 0.3);
     transition: all 0.15s step-end;
   }
 
   .project-demo-link:hover {
     color: var(--text-primary);
-    background: rgba(77, 150, 255, 0.2);
+    background: rgba(127, 63, 191, 0.2);
+    transform: translate(-2px, -2px);
+    box-shadow:
+      inset -2px 0 0 var(--block-shadow),
+      inset 0 -2px 0 var(--block-shadow),
+      inset 2px 0 0 rgba(127, 63, 191, 0.3),
+      inset 0 2px 0 rgba(127, 63, 191, 0.3),
+      4px 4px 0 var(--accent-7);
   }
 
   .demo-icon {
@@ -261,14 +300,14 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
 
   /* Description */
   .project-desc {
-    font-family: 'VT323', monospace;
+    font-family: 'Zpix', 'VT323', monospace;
     font-size: 1.05rem;
     color: var(--text-secondary);
     line-height: 1.5;
     margin: 0;
   }
 
-  /* Tags */
+  /* Tags - Minecraft item tags */
   .project-tags {
     display: flex;
     flex-wrap: wrap;
@@ -277,34 +316,36 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
   }
 
   .tags-label {
-    font-family: 'VT323', monospace;
+    font-family: 'Zpix', 'VT323', monospace;
     font-size: 0.85rem;
     color: var(--text-muted);
     margin-right: 0.25rem;
   }
 
   .tag {
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Zpix', 'Press Start 2P', cursive;
     font-size: 0.4rem;
     padding: 0.3rem 0.5rem;
     background: var(--surface-alt);
     color: var(--text-secondary);
     box-shadow:
-      2px 0 0 var(--border),
-      -2px 0 0 var(--border),
-      0 2px 0 var(--border),
-      0 -2px 0 var(--border);
+      inset -2px 0 0 var(--block-shadow),
+      inset 0 -2px 0 var(--block-shadow),
+      inset 2px 0 0 var(--block-light),
+      inset 0 2px 0 var(--block-light);
     transition: all 0.15s step-end;
     text-transform: uppercase;
   }
 
   .tag:hover {
     color: var(--accent);
+    transform: translate(-1px, -1px);
     box-shadow:
-      2px 0 0 var(--accent),
-      -2px 0 0 var(--accent),
-      0 2px 0 var(--accent),
-      0 -2px 0 var(--accent);
+      inset -2px 0 0 var(--block-shadow),
+      inset 0 -2px 0 var(--block-shadow),
+      inset 2px 0 0 var(--block-light),
+      inset 0 2px 0 var(--block-light),
+      3px 3px 0 var(--accent);
   }
 
   /* Responsive */

@@ -8,56 +8,124 @@ interface Props {
 
 const { thought } = Astro.props;
 
-// Status icons for different exploration states
-const statusIcons = ['🗼', '🔮', '🌟', '📚', '⚗️'];
-const statusIcon = statusIcons[Math.floor(Math.random() * statusIcons.length)];
+// End Portal style icons
+const portalIcons = ['🔮', '👁️', '🌀', '💎', '🌙'];
+const portalIcon = portalIcons[Math.floor(Math.random() * portalIcons.length)];
 ---
 
-<article class="thought">
+<article class="thought ender-portal">
+  <!-- Portal frame decoration -->
+  <div class="portal-frame">
+    <div class="portal-corner top-left"></div>
+    <div class="portal-corner top-right"></div>
+    <div class="portal-corner bottom-left"></div>
+    <div class="portal-corner bottom-right"></div>
+  </div>
+
   <div class="thought-header">
-    <span class="status-icon">{statusIcon}</span>
+    <span class="portal-icon">{portalIcon}</span>
     <h3 class="thought-title" data-title-zh={thought.data.title.zh} data-title-en={thought.data.title.en}>{thought.data.title.zh}</h3>
   </div>
   <p class="thought-text" data-desc-zh={thought.data.description.zh} data-desc-en={thought.data.description.en}>{thought.data.description.zh}</p>
   <div class="thought-status">
     <span class="status-badge">
-      <span class="status-dot"></span>
+      <span class="ender-eye"></span>
       <span data-i18n="thought.exploring">{t('zh', 'thought.exploring')}</span>
     </span>
   </div>
 </article>
 
 <style>
-  .thought {
+  /* End Portal Style Card */
+  .thought.ender-portal {
     padding: 1rem 1.25rem;
     margin-bottom: 0.5rem;
-    background: var(--surface);
+    background: linear-gradient(
+      135deg,
+      rgba(127, 63, 191, 0.1) 0%,
+      var(--surface) 50%,
+      rgba(127, 63, 191, 0.05) 100%
+    );
     box-shadow:
-      4px 0 0 var(--accent-5),
-      -4px 0 0 var(--accent-5),
-      0 4px 0 var(--accent-5),
-      0 -4px 0 var(--accent-5);
+      inset -4px 0 0 var(--block-shadow),
+      inset 0 -4px 0 var(--block-shadow),
+      inset 4px 0 0 var(--block-light),
+      inset 0 4px 0 var(--block-light),
+      5px 5px 0 var(--accent-7);
     position: relative;
     cursor: pointer;
     transition: all 0.15s step-end;
+    overflow: hidden;
   }
 
-  .thought:hover {
-    transform: translate(-2px, -2px);
+  /* Portal particle effect */
+  .thought.ender-portal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(1px 1px at 20% 30%, var(--accent-7) 50%, transparent 50%),
+      radial-gradient(1px 1px at 70% 60%, var(--accent-7) 50%, transparent 50%),
+      radial-gradient(1px 1px at 40% 80%, var(--accent-7) 50%, transparent 50%),
+      radial-gradient(2px 2px at 80% 20%, var(--accent-3) 50%, transparent 50%);
+    animation: portalParticles 4s ease-in-out infinite;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  @keyframes portalParticles {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50% { opacity: 0.6; transform: translateY(-5px); }
+  }
+
+  /* Portal frame corners */
+  .portal-frame {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .portal-corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--accent-7);
     box-shadow:
-      6px 0 0 var(--accent-5),
-      -6px 0 0 var(--accent-5),
-      0 6px 0 var(--accent-5),
-      0 -6px 0 var(--accent-5);
+      inset -2px 0 0 rgba(0,0,0,0.3),
+      inset 0 -2px 0 rgba(0,0,0,0.3),
+      inset 2px 0 0 rgba(200,150,255,0.3),
+      inset 0 2px 0 rgba(200,150,255,0.3);
   }
 
-  .thought:active {
+  .portal-corner.top-left { top: 0; left: 0; }
+  .portal-corner.top-right { top: 0; right: 0; }
+  .portal-corner.bottom-left { bottom: 0; left: 0; }
+  .portal-corner.bottom-right { bottom: 0; right: 0; }
+
+  .thought.ender-portal:hover {
+    transform: translate(-3px, -3px);
+    box-shadow:
+      inset -4px 0 0 var(--block-shadow),
+      inset 0 -4px 0 var(--block-shadow),
+      inset 4px 0 0 var(--block-light),
+      inset 0 4px 0 var(--block-light),
+      8px 8px 0 var(--accent-7),
+      0 0 20px rgba(127, 63, 191, 0.3);
+  }
+
+  .thought.ender-portal:hover::before {
+    animation: portalParticles 2s ease-in-out infinite;
+    opacity: 0.8;
+  }
+
+  .thought.ender-portal:active {
     transform: translate(2px, 2px);
     box-shadow:
-      2px 0 0 var(--accent-5),
-      -2px 0 0 var(--accent-5),
-      0 2px 0 var(--accent-5),
-      0 -2px 0 var(--accent-5);
+      inset -2px 0 0 var(--block-shadow),
+      inset 0 -2px 0 var(--block-shadow),
+      inset 2px 0 0 var(--block-light),
+      inset 0 2px 0 var(--block-light),
+      2px 2px 0 var(--block-shadow);
   }
 
   /* Header */
@@ -66,18 +134,26 @@ const statusIcon = statusIcons[Math.floor(Math.random() * statusIcons.length)];
     align-items: center;
     gap: 0.6rem;
     margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
   }
 
-  .status-icon {
+  .portal-icon {
     font-size: 1.25rem;
     line-height: 1;
-    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+    filter: drop-shadow(0 0 4px var(--accent-7)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+    animation: iconGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes iconGlow {
+    0%, 100% { filter: drop-shadow(0 0 4px var(--accent-7)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3)); }
+    50% { filter: drop-shadow(0 0 8px var(--accent-7)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3)); }
   }
 
   .thought-title {
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Zpix', 'Press Start 2P', cursive;
     font-size: 0.55rem;
-    color: var(--accent-5);
+    color: var(--accent-7);
     margin: 0;
     letter-spacing: 0.02em;
     line-height: 1.4;
@@ -85,47 +161,62 @@ const statusIcon = statusIcons[Math.floor(Math.random() * statusIcons.length)];
 
   /* Text */
   .thought-text {
-    font-family: 'VT323', monospace;
+    font-family: 'Zpix', 'VT323', monospace;
     font-size: 1.05rem;
     color: var(--text-secondary);
     line-height: 1.5;
     margin: 0 0 0.75rem 0;
-    padding-left: 0.25rem;
-    border-left: 3px solid var(--border);
+    padding-left: 0.5rem;
+    border-left: 3px solid var(--accent-7);
+    position: relative;
+    z-index: 1;
   }
 
   /* Status */
   .thought-status {
     display: flex;
     justify-content: flex-end;
+    position: relative;
+    z-index: 1;
   }
 
   .status-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    font-family: 'VT323', monospace;
+    font-family: 'Zpix', 'VT323', monospace;
     font-size: 0.85rem;
-    color: var(--accent-2);
+    color: var(--accent-3);
     padding: 0.15rem 0.5rem;
-    background: rgba(107, 203, 119, 0.1);
+    background: rgba(59, 138, 255, 0.1);
+    box-shadow:
+      inset -2px 0 0 rgba(0,0,0,0.2),
+      inset 0 -2px 0 rgba(0,0,0,0.2),
+      inset 2px 0 0 rgba(59, 138, 255, 0.3),
+      inset 0 2px 0 rgba(59, 138, 255, 0.3);
   }
 
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--accent-2);
-    animation: pulse 1.5s steps(2) infinite;
+  /* Ender eye style status dot */
+  .ender-eye {
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(
+      135deg,
+      var(--accent-3) 0%,
+      var(--accent-7) 100%
+    );
+    border-radius: 50%;
+    animation: eyePulse 2s ease-in-out infinite;
   }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+  @keyframes eyePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.8); }
   }
 
   /* Responsive */
   @media (max-width: 640px) {
-    .thought {
+    .thought.ender-portal {
       padding: 0.875rem 1rem;
     }
 
@@ -135,6 +226,11 @@ const statusIcon = statusIcons[Math.floor(Math.random() * statusIcons.length)];
 
     .thought-text {
       font-size: 0.95rem;
+    }
+
+    .portal-corner {
+      width: 8px;
+      height: 8px;
     }
   }
 

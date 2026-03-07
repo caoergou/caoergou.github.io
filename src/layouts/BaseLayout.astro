@@ -4,6 +4,9 @@ import Hero from '../components/Hero.astro';
 import Project from '../components/Project.astro';
 import Thought from '../components/Thought.astro';
 import TechCloud from '../components/TechCloud.astro';
+import XPBar from '../components/XPBar.astro';
+import Hotbar from '../components/Hotbar.astro';
+import Monster from '../components/Monster.astro';
 import { t, getClientTranslations, getI18nClientScript, type Lang } from '../i18n';
 
 interface Props {
@@ -91,35 +94,70 @@ const i18nClientScript = getI18nClientScript();
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Pixel fonts for game style -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <style is:global>
+    /* ===== Zpix Chinese Pixel Font ===== */
+    @font-face {
+      font-family: 'Zpix';
+      src: url('/fonts/zpix.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* ===== Pixel Game Theme - Zelda Style ===== */
+    /* ===== Minecraft Theme - Block World Adventure ===== */
     :root {
-      /* Dark Theme - Night Sky Adventure */
-      --bg: #1a1a2e;
-      --bg-secondary: #16213e;
-      --surface: #2d3a4f;
-      --surface-alt: #3d4a5f;
-      --border: #5a6a7a;
-      --border-light: #7a8a9a;
-      --text-primary: #f0f0e8;
-      --text-secondary: #a8b8c8;
-      --text-muted: #6a7a8a;
+      /* Dark Theme - Underground/Cave Adventure */
+      --bg: #1a1a1a;
+      --bg-secondary: #2d2d2d;
+      --surface: #3d3d3d;
+      --surface-alt: #4a4a4a;
+      --border: #5a5a5a;
+      --border-light: #7a7a7a;
+      --text-primary: #f8f8f8;
+      --text-secondary: #a8a8a8;
+      --text-muted: #6a6a6a;
 
-      /* Nintendo-inspired colors */
-      --accent: #ffd93d;       /* Gold - treasure/rewards */
-      --accent-2: #6bcb77;     /* Green - nature/life */
-      --accent-3: #4d96ff;     /* Blue - magic/water */
-      --accent-4: #ff6b6b;     /* Red - danger/heart */
-      --accent-5: #c9b1ff;     /* Purple - temple/mystery */
+      /* Minecraft-inspired accent colors */
+      --accent: #5DCE2E;       /* Grass block green */
+      --accent-2: #6B8E23;     /* Oak leaves */
+      --accent-3: #3B8AFF;     /* Diamond blue */
+      --accent-4: #C41E3A;     /* Redstone red */
+      --accent-5: #8B4513;     /* Dirt brown */
+      --accent-6: #FFAA00;     /* Gold ingot */
+      --accent-7: #7F3FBF;     /* Nether portal purple */
+      --accent-8: #00BFCB;     /* Diamond ore cyan */
+
+      /* Danger/Monster colors */
+      --danger: #FF5555;       /* Creeper explosion */
+      --danger-glow: #FF0000;  /* Hostile mob eyes */
+      --warning: #FFAA00;      /* Fire/Lava */
+      --success: #5DCE2E;      /* Health/XP */
+
+      /* 3D Block effects */
+      --block-light: rgba(255, 255, 255, 0.15);
+      --block-shadow: rgba(0, 0, 0, 0.4);
+      --block-depth: 4px;
 
       /* Pixel-specific */
       --pixel-size: 4px;
       --pixel-border: 4px solid var(--border);
 
-      /* Shadows */
+      /* 3D Block shadows */
+      --shadow-block:
+        inset -4px 0 0 var(--block-shadow),
+        inset 0 -4px 0 var(--block-shadow),
+        inset 4px 0 0 var(--block-light),
+        inset 0 4px 0 var(--block-light),
+        4px 4px 0 var(--block-shadow);
+      --shadow-block-accent:
+        inset -4px 0 0 rgba(0,0,0,0.3),
+        inset 0 -4px 0 rgba(0,0,0,0.3),
+        inset 4px 0 0 rgba(255,255,255,0.2),
+        inset 0 4px 0 rgba(255,255,255,0.2),
+        4px 4px 0 rgba(0,0,0,0.4);
       --shadow-pixel:
         4px 0 0 var(--border),
         -4px 0 0 var(--border),
@@ -136,23 +174,27 @@ const i18nClientScript = getI18nClientScript();
       --transition-normal: 0.3s step-end;
     }
 
-    /* Light Theme - Daytime Adventure */
+    /* Light Theme - Overworld Day */
     .light-mode {
-      --bg: #e8f4f8;
-      --bg-secondary: #d4e8e0;
-      --surface: #ffffff;
-      --surface-alt: #f5f5f0;
-      --border: #a0b0a0;
-      --border-light: #c0d0c0;
-      --text-primary: #2a3a4a;
-      --text-secondary: #4a5a6a;
-      --text-muted: #7a8a9a;
+      --bg: #87CEEB;
+      --bg-secondary: #78A7B8;
+      --surface: #F5F5DC;
+      --surface-alt: #E8E8D0;
+      --border: #8B7355;
+      --border-light: #A08060;
+      --text-primary: #2F2F2F;
+      --text-secondary: #4A4A4A;
+      --text-muted: #6A6A6A;
 
-      --accent: #e6a800;
-      --accent-2: #4a9e5a;
-      --accent-3: #2a7ecc;
-      --accent-4: #d64545;
-      --accent-5: #9a7acc;
+      --accent: #5DCE2E;
+      --accent-2: #228B22;
+      --accent-3: #2E7FD6;
+      --accent-4: #B33A3A;
+      --accent-5: #6B4423;
+      --accent-6: #DAA520;
+
+      --block-light: rgba(255, 255, 255, 0.3);
+      --block-shadow: rgba(0, 0, 0, 0.25);
     }
 
     html {
@@ -161,7 +203,7 @@ const i18nClientScript = getI18nClientScript();
     }
 
     body {
-      font-family: 'VT323', monospace;
+      font-family: 'Zpix', 'VT323', monospace;
       background: var(--bg);
       color: var(--text-primary);
       line-height: 1.6;
@@ -172,9 +214,45 @@ const i18nClientScript = getI18nClientScript();
     }
 
     /* Pixel fonts utility */
-    .pixel-font { font-family: 'Press Start 2P', cursive; }
-    .pixel-body { font-family: 'VT323', monospace; }
-    .serif { font-family: 'Noto Serif SC', serif; }
+    .pixel-font { font-family: 'Zpix', 'Press Start 2P', cursive; }
+    .pixel-body { font-family: 'Zpix', 'VT323', monospace; }
+    .pixel-en { font-family: 'Press Start 2P', cursive; }
+
+    /* 3D Block utility classes */
+    .block-3d {
+      position: relative;
+      background: var(--surface);
+      border: none;
+      box-shadow: var(--shadow-block);
+    }
+
+    .block-grass {
+      background: linear-gradient(
+        to bottom,
+        var(--accent) 0%,
+        var(--accent) 30%,
+        var(--accent-5) 30%,
+        var(--accent-5) 100%
+      );
+    }
+
+    .block-stone {
+      background:
+        repeating-linear-gradient(
+          90deg,
+          var(--surface) 0px,
+          var(--surface) 2px,
+          var(--surface-alt) 2px,
+          var(--surface-alt) 4px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          var(--surface) 0px,
+          var(--surface) 2px,
+          var(--surface-alt) 2px,
+          var(--surface-alt) 4px
+        );
+    }
 
     .page {
       position: relative;
@@ -188,7 +266,7 @@ const i18nClientScript = getI18nClientScript();
       padding: 0 1.5rem;
     }
 
-    /* ===== Pixel Star Background ===== */
+    /* ===== Minecraft Cave Background ===== */
     body::before {
       content: '';
       position: fixed;
@@ -199,30 +277,35 @@ const i18nClientScript = getI18nClientScript();
       pointer-events: none;
       z-index: 0;
       background-color: var(--bg);
+      /* Cave ambient particles - ore sparkles */
       background-image:
-        /* Stars layer 1 - small */
-        radial-gradient(1px 1px at 10% 20%, var(--accent) 50%, transparent 50%),
-        radial-gradient(1px 1px at 30% 50%, var(--accent-2) 50%, transparent 50%),
-        radial-gradient(1px 1px at 50% 10%, var(--accent-3) 50%, transparent 50%),
-        radial-gradient(1px 1px at 70% 40%, var(--accent-5) 50%, transparent 50%),
-        radial-gradient(1px 1px at 90% 60%, var(--accent) 50%, transparent 50%),
-        /* Stars layer 2 - medium */
-        radial-gradient(2px 2px at 15% 80%, var(--accent-2) 50%, transparent 50%),
-        radial-gradient(2px 2px at 45% 30%, var(--accent-3) 50%, transparent 50%),
-        radial-gradient(2px 2px at 85% 70%, var(--accent-5) 50%, transparent 50%),
-        /* Stars layer 3 - large */
-        radial-gradient(3px 3px at 25% 65%, var(--accent) 50%, transparent 50%),
-        radial-gradient(3px 3px at 65% 85%, var(--accent-2) 50%, transparent 50%),
-        radial-gradient(3px 3px at 95% 25%, var(--accent-3) 50%, transparent 50%);
-      animation: twinkle 8s ease-in-out infinite;
+        /* Diamond ore sparkles */
+        radial-gradient(2px 2px at 15% 25%, var(--accent-3) 50%, transparent 50%),
+        radial-gradient(2px 2px at 75% 15%, var(--accent-8) 50%, transparent 50%),
+        radial-gradient(1px 1px at 85% 45%, var(--accent-3) 50%, transparent 50%),
+        /* Gold ore sparkles */
+        radial-gradient(2px 2px at 25% 75%, var(--accent-6) 50%, transparent 50%),
+        radial-gradient(1px 1px at 55% 85%, var(--accent-6) 50%, transparent 50%),
+        /* Redstone glow */
+        radial-gradient(2px 2px at 35% 35%, var(--accent-4) 50%, transparent 50%),
+        radial-gradient(1px 1px at 65% 65%, var(--accent-4) 50%, transparent 50%),
+        /* Lava glow */
+        radial-gradient(3px 3px at 5% 95%, var(--warning) 50%, transparent 50%),
+        radial-gradient(2px 2px at 95% 90%, var(--warning) 50%, transparent 50%),
+        /* Ambient particles */
+        radial-gradient(1px 1px at 20% 50%, var(--text-muted) 50%, transparent 50%),
+        radial-gradient(1px 1px at 40% 20%, var(--text-muted) 50%, transparent 50%),
+        radial-gradient(1px 1px at 60% 80%, var(--text-muted) 50%, transparent 50%),
+        radial-gradient(1px 1px at 80% 40%, var(--text-muted) 50%, transparent 50%);
+      animation: caveAmbient 6s ease-in-out infinite;
     }
 
-    @keyframes twinkle {
+    @keyframes caveAmbient {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+      50% { opacity: 0.6; }
     }
 
-    /* CRT Scanline effect (subtle) */
+    /* Subtle noise texture overlay */
     body::after {
       content: '';
       position: fixed;
@@ -236,9 +319,38 @@ const i18nClientScript = getI18nClientScript();
         0deg,
         transparent,
         transparent 2px,
-        rgba(0, 0, 0, 0.03) 2px,
-        rgba(0, 0, 0, 0.03) 4px
+        rgba(0, 0, 0, 0.02) 2px,
+        rgba(0, 0, 0, 0.02) 4px
       );
+    }
+
+    /* Danger zone effect for special areas */
+    .danger-zone {
+      position: relative;
+    }
+
+    .danger-zone::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 2px solid var(--danger);
+      animation: dangerPulse 1s steps(4) infinite;
+      pointer-events: none;
+    }
+
+    @keyframes dangerPulse {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Monster glow effect */
+    .monster-glow {
+      animation: monsterGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes monsterGlow {
+      0%, 100% { filter: drop-shadow(0 0 2px var(--danger-glow)); }
+      50% { filter: drop-shadow(0 0 6px var(--danger-glow)); }
     }
 
     /* ===== Hero Section ===== */
@@ -252,7 +364,7 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .hero-name {
-      font-family: 'Press Start 2P', cursive;
+      font-family: 'Zpix', 'Press Start 2P', cursive;
       font-size: clamp(1.5rem, 6vw, 2.5rem);
       letter-spacing: -0.02em;
       line-height: 1.4;
@@ -281,15 +393,15 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .hero-tagline {
-      font-family: 'VT323', monospace;
+      font-family: 'Zpix', 'VT323', monospace;
       font-size: clamp(1.1rem, 3vw, 1.4rem);
-      color: var(--accent-2);
+      color: var(--accent);
       padding-left: 1rem;
       margin-bottom: 1.5rem;
       line-height: 1.5;
       max-width: 100%;
-      border-left: 4px solid var(--accent-2);
-      background: linear-gradient(90deg, rgba(107, 203, 119, 0.1) 0%, transparent 100%);
+      border-left: 4px solid var(--accent);
+      background: linear-gradient(90deg, rgba(93, 206, 46, 0.1) 0%, transparent 100%);
     }
 
     .hero-links {
@@ -304,38 +416,39 @@ const i18nClientScript = getI18nClientScript();
       gap: 0.5rem;
       color: var(--text-primary);
       text-decoration: none;
-      font-family: 'Press Start 2P', cursive;
+      font-family: 'Zpix', 'Press Start 2P', cursive;
       font-size: 0.6rem;
       letter-spacing: 0.02em;
       cursor: pointer;
       padding: 0.75rem 1rem;
       background: var(--surface);
       border: none;
-      box-shadow: var(--shadow-pixel);
+      box-shadow: var(--shadow-block);
       transition: transform var(--transition-fast);
       position: relative;
     }
 
     .hero-link:hover {
-      transform: translate(-2px, -2px);
+      transform: translate(-3px, -3px);
       box-shadow:
-        6px 0 0 var(--accent),
-        -6px 0 0 var(--accent),
-        0 6px 0 var(--accent),
-        0 -6px 0 var(--accent),
+        inset -4px 0 0 var(--block-shadow),
+        inset 0 -4px 0 var(--block-shadow),
+        inset 4px 0 0 var(--block-light),
+        inset 0 4px 0 var(--block-light),
         6px 6px 0 var(--accent);
     }
 
     .hero-link:active {
       transform: translate(2px, 2px);
       box-shadow:
-        2px 0 0 var(--accent),
-        -2px 0 0 var(--accent),
-        0 2px 0 var(--accent),
-        0 -2px 0 var(--accent);
+        inset -2px 0 0 var(--block-shadow),
+        inset 0 -2px 0 var(--block-shadow),
+        inset 2px 0 0 var(--block-light),
+        inset 0 2px 0 var(--block-light),
+        2px 2px 0 var(--block-shadow);
     }
 
-    /* ===== Hero Stats (Adventure Style) ===== */
+    /* ===== Hero Stats (Minecraft Stats) ===== */
     .hero-stats {
       display: flex;
       gap: 2rem;
@@ -351,14 +464,14 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .stat-value {
-      font-family: 'Press Start 2P', cursive;
+      font-family: 'Zpix', 'Press Start 2P', cursive;
       font-size: 1rem;
-      color: var(--accent);
-      text-shadow: 2px 2px 0 rgba(255, 217, 61, 0.3);
+      color: var(--accent-6);
+      text-shadow: 2px 2px 0 rgba(255, 170, 0, 0.3);
     }
 
     .stat-label {
-      font-family: 'VT323', monospace;
+      font-family: 'Zpix', 'VT323', monospace;
       font-size: 0.9rem;
       color: var(--text-muted);
       letter-spacing: 0.05em;
@@ -372,7 +485,7 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .section-title {
-      font-family: 'Press Start 2P', cursive;
+      font-family: 'Zpix', 'Press Start 2P', cursive;
       font-size: 0.65rem;
       letter-spacing: 0.1em;
       color: var(--accent);
@@ -423,7 +536,7 @@ const i18nClientScript = getI18nClientScript();
           var(--surface-alt) 8px
         );
       padding: 1.5rem;
-      box-shadow: var(--shadow-pixel);
+      box-shadow: var(--shadow-block);
     }
 
     .coming-list {
@@ -433,7 +546,7 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .coming-item {
-      font-family: 'VT323', monospace;
+      font-family: 'Zpix', 'VT323', monospace;
       font-size: 1.1rem;
       color: var(--text-secondary);
       padding-left: 1.5rem;
@@ -445,7 +558,7 @@ const i18nClientScript = getI18nClientScript();
       content: '▸';
       position: absolute;
       left: 0;
-      color: var(--accent);
+      color: var(--accent-6);
     }
 
     .coming-item:hover {
@@ -453,7 +566,7 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .coming-item:hover::before {
-      color: var(--accent-2);
+      color: var(--accent);
       animation: pixelBlink 0.5s steps(2) infinite;
     }
 
@@ -478,7 +591,7 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .footer-copy {
-      font-family: 'Press Start 2P', cursive;
+      font-family: 'Zpix', 'Press Start 2P', cursive;
       font-size: 0.5rem;
       color: var(--text-muted);
       letter-spacing: 0.05em;
@@ -490,7 +603,7 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .footer-link {
-      font-family: 'Press Start 2P', cursive;
+      font-family: 'Zpix', 'Press Start 2P', cursive;
       font-size: 0.5rem;
       color: var(--text-secondary);
       text-decoration: none;
@@ -498,20 +611,23 @@ const i18nClientScript = getI18nClientScript();
       padding: 0.5rem 0.75rem;
       background: var(--surface);
       box-shadow:
-        2px 0 0 var(--border),
-        -2px 0 0 var(--border),
-        0 2px 0 var(--border),
-        0 -2px 0 var(--border);
+        inset -2px 0 0 var(--block-shadow),
+        inset 0 -2px 0 var(--block-shadow),
+        inset 2px 0 0 var(--block-light),
+        inset 0 2px 0 var(--block-light),
+        2px 2px 0 var(--block-shadow);
       transition: all var(--transition-fast);
     }
 
     .footer-link:hover {
       color: var(--accent);
       box-shadow:
-        2px 0 0 var(--accent),
-        -2px 0 0 var(--accent),
-        0 2px 0 var(--accent),
-        0 -2px 0 var(--accent);
+        inset -2px 0 0 var(--block-shadow),
+        inset 0 -2px 0 var(--block-shadow),
+        inset 2px 0 0 var(--block-light),
+        inset 0 2px 0 var(--block-light),
+        3px 3px 0 var(--accent);
+      transform: translate(-1px, -1px);
     }
 
     /* ===== Tech Section ===== */
@@ -613,6 +729,9 @@ const i18nClientScript = getI18nClientScript();
   </style>
 </head>
 <body>
+  <Monster />
+  <XPBar />
+  <Hotbar />
   <div class="page">
     <div class="container">
       <Hero profile={profile} />
@@ -661,9 +780,7 @@ const i18nClientScript = getI18nClientScript();
   </div>
 
   <!-- i18n: Inject translations from server -->
-  <script is:inline>
-    window.__I18N_TRANSLATIONS__ = JSON.parse(document.currentScript.getAttribute('data-translations'));
-  </script>
-  <script is:inline data-translations={clientTranslations} set:html={i18nClientScript} />
+  <script is:inline set:html={`window.__I18N_TRANSLATIONS__ = ${clientTranslations};`} />
+  <script is:inline set:html={i18nClientScript} />
 </body>
 </html>

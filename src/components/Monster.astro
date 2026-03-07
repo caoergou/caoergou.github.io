@@ -1,0 +1,262 @@
+---
+// Hidden monsters that appear randomly - Minecraft mob style
+// Creepers, Endermen, etc.
+---
+
+<div class="monsters-container" id="monstersContainer">
+  <!-- Monsters will be spawned by JavaScript -->
+</div>
+
+<style>
+  .monsters-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    overflow: hidden;
+  }
+
+  .monster {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0;
+    filter: drop-shadow(0 0 10px rgba(255, 85, 85, 0.3));
+    transition: opacity 0.5s, transform 0.5s;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .monster.visible {
+    opacity: 0.6;
+  }
+
+  .monster:hover {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 20px rgba(255, 85, 85, 0.6));
+  }
+
+  .monster.fleeing {
+    opacity: 0;
+    transform: scale(0.5) rotate(180deg);
+  }
+
+  /* Creeper style */
+  .monster.creeper {
+    animation: creeperFloat 3s ease-in-out infinite;
+  }
+
+  @keyframes creeperFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Enderman style */
+  .monster.enderman {
+    animation: endermanTeleport 2s steps(2) infinite;
+  }
+
+  @keyframes endermanTeleport {
+    0%, 100% { opacity: 0.6; }
+    25% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+    75% { opacity: 0.2; }
+  }
+
+  /* Warning flash when monster is near */
+  .monster.near {
+    filter: drop-shadow(0 0 15px var(--danger));
+    animation: dangerPulse 0.5s steps(2) infinite;
+  }
+
+  @keyframes dangerPulse {
+    0%, 100% { filter: drop-shadow(0 0 15px var(--danger)); }
+    50% { filter: drop-shadow(0 0 25px var(--danger)); }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .monster {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Monster system
+  const container = document.getElementById('monstersContainer');
+
+  // Monster types
+  const monsterTypes = [
+    { type: 'creeper', icon: '🟩', nameKey: 'monster.creeper' },
+    { type: 'enderman', icon: '🟫', nameKey: 'monster.enderman' },
+    { type: 'skeleton', icon: '💀', nameKey: 'monster.skeleton' },
+    { type: 'spider', icon: '🕷️', nameKey: 'monster.spider' },
+    { type: 'zombie', icon: '🧟', nameKey: 'monster.zombie' },
+  ];
+
+  // Vibration helper (works on Android, ignored on iOS)
+  function vibrate(pattern: number | number[]) {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(pattern);
+    }
+  }
+
+  // Get translated text
+  function getI18nText(key: string, params?: Record<string, string>): string {
+    const i18n = (window as any).__I18N__;
+    const lang = localStorage.getItem('lang') || 'zh';
+    if (!i18n) return key;
+    let text = i18n.t(lang, key);
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), v);
+      });
+    }
+    return text;
+  }
+
+  // Spawn a random monster
+  function spawnMonster() {
+    if (!container) return;
+
+    const monster = monsterTypes[Math.floor(Math.random() * monsterTypes.length)];
+    const monsterName = getI18nText(monster.nameKey);
+    const appearedText = getI18nText('monster.appeared', { name: monsterName });
+
+    // Warning vibration when monster appears
+    vibrate([100, 50, 100]);
+
+    // Random position at edge of screen
+    const edge = Math.floor(Math.random() * 4); // 0: top, 1: right, 2: bottom, 3: left
+    let x = 0, y = 0;
+
+    switch (edge) {
+      case 0: // top
+        x = Math.random() * window.innerWidth;
+        y = -30;
+        break;
+      case 1: // right
+        x = window.innerWidth + 30;
+        y = Math.random() * window.innerHeight;
+        break;
+      case 2: // bottom
+        x = Math.random() * window.innerWidth;
+        y = window.innerHeight + 30;
+        break;
+      case 3: // left
+        x = -30;
+        y = Math.random() * window.innerHeight;
+        break;
+    }
+
+    const el = document.createElement('div');
+    el.className = `monster ${monster.type}`;
+    el.textContent = monster.icon;
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    el.setAttribute('aria-label', monsterName);
+    el.setAttribute('title', appearedText);
+    el.setAttribute('data-monster-type', monster.type);
+
+    // Click to make it flee
+    el.addEventListener('click', () => {
+      // Success vibration
+      vibrate([50, 30, 50]);
+      el.classList.add('fleeing');
+      // Add XP reward
+      window.dispatchEvent(new CustomEvent('monsterFled'));
+      setTimeout(() => el.remove(), 500);
+    });
+
+    // Auto-flee after random time
+    const fleeTime = 5000 + Math.random() * 10000;
+
+    container.appendChild(el);
+
+    // Fade in
+    setTimeout(() => el.classList.add('visible'), 100);
+
+    // Move towards screen center slowly
+    const targetX = window.innerWidth * 0.3 + Math.random() * window.innerWidth * 0.4;
+    const targetY = window.innerHeight * 0.3 + Math.random() * window.innerHeight * 0.4;
+
+    const duration = 10000 + Math.random() * 10000;
+    const startTime = Date.now();
+
+    function animate() {
+      if (!el.parentElement) return;
+
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      el.style.left = `${x + (targetX - x) * progress}px`;
+      el.style.top = `${y + (targetY - y) * progress}px`;
+
+      // Check if near center (danger zone)
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const distFromCenter = Math.sqrt(
+        Math.pow(parseFloat(el.style.left) - centerX, 2) +
+        Math.pow(parseFloat(el.style.top) - centerY, 2)
+      );
+
+      if (distFromCenter < 200) {
+        el.classList.add('near');
+      } else {
+        el.classList.remove('near');
+      }
+
+      if (progress < 1 && !el.classList.contains('fleeing')) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    requestAnimationFrame(animate);
+
+    // Auto-remove after time
+    setTimeout(() => {
+      if (el.parentElement) {
+        el.classList.add('fleeing');
+        setTimeout(() => el.remove(), 500);
+      }
+    }, fleeTime);
+  }
+
+  // Update existing monsters' labels when language changes
+  function updateMonsterLabels() {
+    if (!container) return;
+    container.querySelectorAll('.monster').forEach(el => {
+      const type = el.getAttribute('data-monster-type');
+      if (type) {
+        const monsterInfo = monsterTypes.find(m => m.type === type);
+        if (monsterInfo) {
+          const monsterName = getI18nText(monsterInfo.nameKey);
+          el.setAttribute('aria-label', monsterName);
+          el.setAttribute('title', getI18nText('monster.appeared', { name: monsterName }));
+        }
+      }
+    });
+  }
+
+  // Spawn monsters periodically (rarely)
+  function initMonsters() {
+    // Initial spawn after a delay
+    setTimeout(spawnMonster, 5000);
+
+    // Periodic spawns (every 30-60 seconds)
+    setInterval(() => {
+      if (Math.random() > 0.5) { // 50% chance
+        spawnMonster();
+      }
+    }, 30000 + Math.random() * 30000);
+
+    // Listen for language changes
+    window.addEventListener('langChange', updateMonsterLabels);
+  }
+
+  // Only spawn on desktop
+  if (window.innerWidth >= 768) {
+    document.addEventListener('DOMContentLoaded', initMonsters);
+  }
+</script>

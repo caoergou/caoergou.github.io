@@ -1,0 +1,309 @@
+---
+// Minecraft-style hotbar for navigation
+const slots = [
+  { id: 'hero', icon: '👤', labelKey: 'hotbar.profile', key: '1' },
+  { id: 'skills', icon: '⚔️', labelKey: 'hotbar.skills', key: '2' },
+  { id: 'projects', icon: '🗺️', labelKey: 'hotbar.projects', key: '3' },
+  { id: 'thoughts', icon: '🔮', labelKey: 'hotbar.thoughts', key: '4' },
+  { id: 'coming', icon: '📦', labelKey: 'hotbar.coming', key: '5' },
+];
+---
+
+<div class="hotbar" id="hotbar">
+  {slots.map((slot, i) => (
+    <button
+      class="hotbar-slot"
+      data-slot={slot.id}
+      data-index={i}
+      data-i18n-label={slot.labelKey}
+      tabindex="0"
+    >
+      <span class="slot-icon">{slot.icon}</span>
+      <span class="slot-key">{slot.key}</span>
+    </button>
+  ))}
+  <div class="hotbar-selector" id="hotbarSelector"></div>
+</div>
+
+<style>
+  .hotbar {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2px;
+    padding: 4px;
+    background: rgba(0, 0, 0, 0.85);
+    box-shadow:
+      inset -3px 0 0 rgba(0,0,0,0.6),
+      inset 0 -3px 0 rgba(0,0,0,0.6),
+      inset 3px 0 0 rgba(80,80,80,0.4),
+      inset 0 3px 0 rgba(80,80,80,0.4);
+    z-index: 200;
+  }
+
+  .hotbar-slot {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #555;
+    border: none;
+    cursor: pointer;
+    transition: all 0.1s step-end;
+    box-shadow:
+      inset -2px 0 0 rgba(0,0,0,0.5),
+      inset 0 -2px 0 rgba(0,0,0,0.5),
+      inset 2px 0 0 rgba(120,120,120,0.4),
+      inset 0 2px 0 rgba(120,120,120,0.4);
+  }
+
+  .hotbar-slot:hover {
+    background: #666;
+  }
+
+  .hotbar-slot.active {
+    background: #666;
+    box-shadow:
+      inset -2px 0 0 rgba(0,0,0,0.5),
+      inset 0 -2px 0 rgba(0,0,0,0.5),
+      inset 2px 0 0 rgba(120,120,120,0.4),
+      inset 0 2px 0 rgba(120,120,120,0.4),
+      0 0 0 3px white;
+  }
+
+  .hotbar-slot:focus {
+    outline: none;
+    box-shadow:
+      inset -2px 0 0 rgba(0,0,0,0.5),
+      inset 0 -2px 0 rgba(0,0,0,0.5),
+      inset 2px 0 0 rgba(120,120,120,0.4),
+      inset 0 2px 0 rgba(120,120,120,0.4),
+      0 0 0 3px var(--accent);
+  }
+
+  .slot-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.5));
+  }
+
+  .slot-key {
+    position: absolute;
+    bottom: 2px;
+    right: 3px;
+    font-family: 'Zpix', 'Press Start 2P', cursive;
+    font-size: 0.3rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .hotbar-selector {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border: 3px solid white;
+    pointer-events: none;
+    transition: transform 0.1s step-end;
+    display: none;
+  }
+
+  .hotbar-selector.visible {
+    display: block;
+  }
+
+  /* Tooltip */
+  .hotbar-slot::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.25rem 0.5rem;
+    background: #1a0a30;
+    border: 2px solid #250a50;
+    font-family: 'Zpix', 'VT323', monospace;
+    font-size: 0.7rem;
+    color: white;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  .hotbar-slot:hover::after,
+  .hotbar-slot:focus::after {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hotbar {
+      bottom: 0.5rem;
+      padding: 3px;
+      gap: 1px;
+    }
+
+    .hotbar-slot {
+      width: 36px;
+      height: 36px;
+    }
+
+    .slot-icon {
+      font-size: 1.2rem;
+    }
+
+    .slot-key {
+      font-size: 0.25rem;
+    }
+
+    .hotbar-selector {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .hotbar-slot {
+      width: 32px;
+      height: 32px;
+    }
+
+    .slot-icon {
+      font-size: 1rem;
+    }
+
+    .hotbar-slot::after {
+      display: none;
+    }
+
+    .hotbar-selector {
+      width: 32px;
+      height: 32px;
+    }
+  }
+</style>
+
+<script>
+  // Hotbar navigation
+  const slots = document.querySelectorAll('.hotbar-slot');
+  const selector = document.getElementById('hotbarSelector');
+  let activeIndex = 0;
+
+  // Section mapping
+  const sectionMap: Record<string, string> = {
+    'hero': '.hero',
+    'skills': '.tech-section',
+    'projects': '.projects-list',
+    'thoughts': '.thoughts-list',
+    'coming': '.coming-soon'
+  };
+
+  // Vibration helper (works on Android, ignored on iOS)
+  function vibrate(pattern: number | number[]) {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(pattern);
+    }
+  }
+
+  // Update tooltips with current language
+  function updateTooltips() {
+    const lang = localStorage.getItem('lang') || 'zh';
+    const i18n = (window as any).__I18N__;
+
+    slots.forEach(slot => {
+      const labelKey = slot.getAttribute('data-i18n-label');
+      if (labelKey && i18n) {
+        const text = i18n.t(lang, labelKey);
+        slot.setAttribute('data-tooltip', text);
+        slot.setAttribute('aria-label', text);
+      }
+    });
+  }
+
+  // Initialize
+  function init() {
+    if (slots.length === 0) return;
+
+    // Set first slot as active
+    setActiveSlot(0);
+
+    // Initialize tooltips
+    updateTooltips();
+
+    // Click handlers
+    slots.forEach((slot, index) => {
+      slot.addEventListener('click', () => {
+        // Light haptic feedback on click
+        vibrate(30);
+        setActiveSlot(index);
+        navigateToSlot(slot.getAttribute('data-slot') || '');
+      });
+    });
+
+    // Keyboard shortcuts (1-5)
+    window.addEventListener('keydown', (e) => {
+      const key = parseInt(e.key);
+      if (key >= 1 && key <= 5) {
+        const index = key - 1;
+        setActiveSlot(index);
+        const slotId = slots[index]?.getAttribute('data-slot');
+        if (slotId) navigateToSlot(slotId);
+      }
+    });
+
+    // Update active slot on scroll
+    window.addEventListener('scroll', updateActiveOnScroll, { passive: true });
+
+    // Listen for language changes
+    window.addEventListener('langChange', updateTooltips);
+  }
+
+  function setActiveSlot(index: number) {
+    slots.forEach((s, i) => {
+      s.classList.toggle('active', i === index);
+    });
+    activeIndex = index;
+
+    // Update selector position
+    if (selector) {
+      const slot = slots[index];
+      if (slot) {
+        const offsetLeft = (slot as HTMLElement).offsetLeft;
+        selector.style.transform = `translateX(${offsetLeft}px)`;
+        selector.classList.add('visible');
+      }
+    }
+  }
+
+  function navigateToSlot(slotId: string) {
+    const selector = sectionMap[slotId];
+    if (!selector) return;
+
+    const element = document.querySelector(selector);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function updateActiveOnScroll() {
+    const scrollY = window.scrollY;
+
+    // Check which section is in view
+    Object.entries(sectionMap).forEach(([slotId, selector], index) => {
+      const element = document.querySelector(selector);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
+          setActiveSlot(index);
+        }
+      }
+    });
+  }
+
+  // Initialize on load
+  document.addEventListener('DOMContentLoaded', init);
+</script>

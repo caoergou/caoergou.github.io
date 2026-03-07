@@ -1,4 +1,6 @@
 ---
+import { t } from '../i18n';
+
 const skills = [
   // AI Agent Skills
   { name: 'AI Agent', level: 5, icon: '🤖' },
@@ -36,227 +38,376 @@ const skills = [
   { name: 'Engineering Practices', level: 3, icon: '📐' },
 ];
 
-// Level colors
+// Level colors - Minecraft rarity style
 const levelColors: Record<number, string> = {
-  5: 'var(--accent)',    // Gold - Master
-  4: 'var(--accent-2)',  // Green - Expert
-  3: 'var(--accent-3)',  // Blue - Skilled
+  5: 'var(--accent-6)',   // Gold - Legendary
+  4: 'var(--accent-3)',   // Diamond Blue - Epic
+  3: 'var(--accent)',     // Green - Rare
 };
 
-// Level star count
-const levelStars = (level: number) => '⭐'.repeat(level);
+// Level rarity keys (for i18n)
+const rarityKeys: Record<number, string> = {
+  5: 'legendary',
+  4: 'epic',
+  3: 'rare',
+};
 ---
 
-<div class="skills-section">
-  <div class="skills-header">
-    <span class="skills-icon">⚔️</span>
-    <span class="skills-title" data-text-zh="解锁的能力" data-text-en="Unlocked Skills">解锁的能力</span>
-    <button class="shuffle-btn" id="shuffleBtn" aria-label="Shuffle skills">
-      <span class="shuffle-icon">🎲</span>
+<div class="inventory-section">
+  <div class="inventory-header">
+    <span class="inventory-icon">📦</span>
+    <span class="inventory-title" data-i18n="inventory.title">{t('zh', 'inventory.title')}</span>
+    <button class="sort-btn" id="sortBtn" aria-label="Sort items">
+      <span class="sort-icon">🔄</span>
     </button>
   </div>
 
-  <div class="skills-grid" id="skillsGrid">
+  <div class="inventory-grid" id="inventoryGrid">
     {skills.map((skill, i) => (
       <div
-        class="skill-badge"
+        class="inventory-slot"
         data-level={skill.level}
         data-index={i}
-        style={`--delay: ${i * 0.04}s; --color: ${levelColors[skill.level]};`}
+        data-rarity-key={rarityKeys[skill.level]}
+        style={`--delay: ${i * 0.03}s; --rarity-color: ${levelColors[skill.level]};`}
+        tabindex="0"
       >
-        <span class="skill-icon">{skill.icon}</span>
-        <span class="skill-name">{skill.name}</span>
-        <span class="skill-stars">{levelStars(skill.level)}</span>
+        <div class="item-container">
+          <span class="item-icon">{skill.icon}</span>
+          <span class="item-count">{skill.level}</span>
+        </div>
+        <span class="item-name">{skill.name}</span>
+
+        <!-- Tooltip -->
+        <div class="item-tooltip">
+          <div class="tooltip-header">
+            <span class="tooltip-icon">{skill.icon}</span>
+            <span class="tooltip-name">{skill.name}</span>
+          </div>
+          <div class="tooltip-rarity" data-i18n={`inventory.${rarityKeys[skill.level]}`} style={`color: ${levelColors[skill.level]}`}>
+            {t('zh', `inventory.${rarityKeys[skill.level]}`)}
+          </div>
+          <div class="tooltip-stats">
+            <span class="stat-line" data-attack>⚔️ {t('zh', 'inventory.attack')} +{skill.level * 5}</span>
+            <span class="stat-line" data-defense>🛡️ {t('zh', 'inventory.defense')} +{skill.level * 2}</span>
+          </div>
+        </div>
       </div>
     ))}
   </div>
 </div>
 
 <style>
-  .skills-section {
+  .inventory-section {
     padding: 0.75rem 0;
   }
 
-  .skills-header {
+  .inventory-header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1rem;
+    padding: 0.5rem;
+    background: var(--surface);
+    box-shadow:
+      inset -3px 0 0 var(--block-shadow),
+      inset 0 -3px 0 var(--block-shadow),
+      inset 3px 0 0 var(--block-light),
+      inset 0 3px 0 var(--block-light);
   }
 
-  .skills-icon {
+  .inventory-icon {
     font-size: 1.25rem;
     filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
   }
 
-  .skills-title {
-    font-family: 'Press Start 2P', cursive;
+  .inventory-title {
+    font-family: 'Zpix', 'Press Start 2P', cursive;
     font-size: 0.55rem;
     color: var(--text-primary);
     flex: 1;
   }
 
-  .shuffle-btn {
+  .sort-btn {
     width: 2rem;
     height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--surface);
+    background: var(--bg);
     box-shadow:
-      2px 0 0 var(--border),
-      -2px 0 0 var(--border),
-      0 2px 0 var(--border),
-      0 -2px 0 var(--border);
+      inset -2px 0 0 var(--block-shadow),
+      inset 0 -2px 0 var(--block-shadow),
+      inset 2px 0 0 var(--block-light),
+      inset 0 2px 0 var(--block-light);
     border: none;
     color: var(--text-muted);
     cursor: pointer;
     transition: all 0.15s step-end;
   }
 
-  .shuffle-btn:hover {
+  .sort-btn:hover {
+    color: var(--accent);
+    transform: translate(-1px, -1px);
     box-shadow:
-      2px 0 0 var(--accent),
-      -2px 0 0 var(--accent),
-      0 2px 0 var(--accent),
-      0 -2px 0 var(--accent);
+      inset -2px 0 0 var(--block-shadow),
+      inset 0 -2px 0 var(--block-shadow),
+      inset 2px 0 0 var(--block-light),
+      inset 0 2px 0 var(--block-light),
+      3px 3px 0 var(--accent);
   }
 
-  .shuffle-btn:active {
+  .sort-btn:active {
     transform: translate(1px, 1px);
   }
 
-  .shuffle-icon {
+  .sort-icon {
     font-size: 0.9rem;
-    transition: transform 0.2s;
+    transition: transform 0.3s;
   }
 
-  .shuffle-btn:hover .shuffle-icon {
+  .sort-btn:hover .sort-icon {
     transform: rotate(180deg);
   }
 
-  /* Skills Grid */
-  .skills-grid {
-    display: flex;
-    flex-wrap: wrap;
+  /* Inventory Grid */
+  .inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 0.5rem;
   }
 
-  /* Skill Badge */
-  .skill-badge {
-    display: inline-flex;
+  /* Inventory Slot - Minecraft style */
+  .inventory-slot {
+    position: relative;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.4rem 0.6rem;
+    justify-content: center;
+    gap: 0.15rem;
     background: var(--surface);
     box-shadow:
-      3px 0 0 var(--border),
-      -3px 0 0 var(--border),
-      0 3px 0 var(--border),
-      0 -3px 0 var(--border);
-    cursor: default;
+      inset -3px 0 0 var(--block-shadow),
+      inset 0 -3px 0 var(--block-shadow),
+      inset 3px 0 0 var(--block-light),
+      inset 0 3px 0 var(--block-light);
+    cursor: pointer;
     transition: all 0.15s step-end;
-    animation: badgeFadeIn 0.5s steps(6) forwards;
+    animation: slotFadeIn 0.4s steps(4) forwards;
     animation-delay: var(--delay);
     opacity: 0;
   }
 
-  @keyframes badgeFadeIn {
+  @keyframes slotFadeIn {
     from {
       opacity: 0;
-      transform: translateY(-4px);
+      transform: scale(0.8);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: scale(1);
     }
   }
 
-  .skill-badge:hover {
+  .inventory-slot:hover {
     transform: translate(-2px, -2px);
     box-shadow:
-      5px 0 0 var(--color),
-      -5px 0 0 var(--color),
-      0 5px 0 var(--color),
-      0 -5px 0 var(--color);
+      inset -3px 0 0 var(--block-shadow),
+      inset 0 -3px 0 var(--block-shadow),
+      inset 3px 0 0 var(--block-light),
+      inset 0 3px 0 var(--block-light),
+      4px 4px 0 var(--rarity-color);
+    z-index: 10;
   }
 
-  /* Level-based sizing */
-  .skill-badge[data-level="5"] { }
-  .skill-badge[data-level="4"] { opacity: 0.9; }
-  .skill-badge[data-level="3"] { opacity: 0.8; }
+  .inventory-slot:focus {
+    outline: none;
+    box-shadow:
+      inset -3px 0 0 var(--rarity-color),
+      inset 0 -3px 0 var(--rarity-color),
+      inset 3px 0 0 var(--rarity-color),
+      inset 0 3px 0 var(--rarity-color);
+  }
 
-  .skill-icon {
-    font-size: 0.85rem;
-    filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.2));
+  /* Item Container */
+  .item-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .item-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
     line-height: 1;
   }
 
-  .skill-name {
-    font-family: 'VT323', monospace;
-    font-size: 1rem;
+  .item-count {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    font-family: 'Zpix', 'Press Start 2P', cursive;
+    font-size: 0.4rem;
     color: var(--text-primary);
-    white-space: nowrap;
+    background: var(--bg);
+    padding: 0 3px;
+    box-shadow:
+      inset -1px 0 0 var(--block-shadow),
+      inset 0 -1px 0 var(--block-shadow),
+      inset 1px 0 0 var(--block-light),
+      inset 0 1px 0 var(--block-light);
   }
 
-  .skill-stars {
+  .item-name {
+    font-family: 'Zpix', 'VT323', monospace;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 0.25rem;
+  }
+
+  /* Tooltip - Minecraft style */
+  .item-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 150px;
+    background: #1a0a30;
+    border: 2px solid #250a50;
+    padding: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 100;
+    pointer-events: none;
+    box-shadow:
+      inset -2px 0 0 rgba(0,0,0,0.5),
+      inset 0 -2px 0 rgba(0,0,0,0.5),
+      inset 2px 0 0 rgba(100,50,150,0.3),
+      inset 0 2px 0 rgba(100,50,150,0.3);
+  }
+
+  .inventory-slot:hover .item-tooltip,
+  .inventory-slot:focus .item-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .tooltip-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .tooltip-icon {
+    font-size: 1rem;
+  }
+
+  .tooltip-name {
+    font-family: 'Zpix', 'VT323', monospace;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+  }
+
+  .tooltip-rarity {
+    font-family: 'Zpix', 'Press Start 2P', cursive;
     font-size: 0.5rem;
-    line-height: 1;
-    filter: drop-shadow(0 0 2px var(--color));
+    margin-bottom: 0.25rem;
+  }
+
+  .tooltip-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding-top: 0.25rem;
+    border-top: 1px solid #250a50;
+  }
+
+  .stat-line {
+    font-family: 'Zpix', 'VT323', monospace;
+    font-size: 0.75rem;
+    color: #55ff55;
+  }
+
+  /* Rarity glow effect */
+  .inventory-slot[data-level="5"] .item-icon {
+    filter: drop-shadow(0 0 4px var(--accent-6)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+    animation: legendaryGlow 2s ease-in-out infinite;
+  }
+
+  @keyframes legendaryGlow {
+    0%, 100% { filter: drop-shadow(0 0 4px var(--accent-6)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3)); }
+    50% { filter: drop-shadow(0 0 8px var(--accent-6)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3)); }
+  }
+
+  .inventory-slot[data-level="4"] .item-icon {
+    filter: drop-shadow(0 0 2px var(--accent-3)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
   }
 
   /* Responsive */
   @media (max-width: 640px) {
-    .skill-badge {
-      padding: 0.35rem 0.5rem;
+    .inventory-grid {
+      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
     }
 
-    .skill-name {
-      font-size: 0.9rem;
+    .item-icon {
+      font-size: 1.25rem;
     }
 
-    .skill-stars {
-      font-size: 0.4rem;
+    .item-name {
+      font-size: 0.6rem;
     }
   }
 
   @media (max-width: 480px) {
-    .skill-icon {
+    .inventory-grid {
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+
+    .item-tooltip {
       display: none;
     }
 
-    .skill-stars {
-      display: none;
+    .item-name {
+      font-size: 0.55rem;
     }
   }
 </style>
 
 <script>
-  // Shuffle functionality
-  const grid = document.getElementById('skillsGrid');
-  const shuffleBtn = document.getElementById('shuffleBtn');
+  // Sort functionality for inventory
+  const grid = document.getElementById('inventoryGrid');
+  const sortBtn = document.getElementById('sortBtn');
 
-  if (grid && shuffleBtn) {
+  if (grid && sortBtn) {
     let sortMode = 0;
     const sortModes = ['original', 'level-desc', 'level-asc', 'alpha', 'random'];
     let originalOrder: HTMLElement[] = [];
 
     document.addEventListener('DOMContentLoaded', () => {
-      originalOrder = Array.from(grid.querySelectorAll('.skill-badge')) as HTMLElement[];
+      originalOrder = Array.from(grid.querySelectorAll('.inventory-slot')) as HTMLElement[];
     });
 
-    shuffleBtn.addEventListener('click', () => {
-      const badges = Array.from(grid.querySelectorAll('.skill-badge')) as HTMLElement[];
+    sortBtn.addEventListener('click', () => {
+      const slots = Array.from(grid.querySelectorAll('.inventory-slot')) as HTMLElement[];
 
       // Animate out
-      badges.forEach((badge) => {
-        badge.style.transform = 'translateY(-8px) scale(0.9)';
-        badge.style.opacity = '0';
+      slots.forEach((slot) => {
+        slot.style.transform = 'scale(0.8)';
+        slot.style.opacity = '0';
       });
 
       setTimeout(() => {
         sortMode = (sortMode + 1) % sortModes.length;
-        let sorted = [...badges];
+        let sorted = [...slots];
 
         switch (sortModes[sortMode]) {
           case 'original':
@@ -276,8 +427,8 @@ const levelStars = (level: number) => '⭐'.repeat(level);
             break;
           case 'alpha':
             sorted.sort((a, b) => {
-              const nameA = a.querySelector('.skill-name')?.textContent || '';
-              const nameB = b.querySelector('.skill-name')?.textContent || '';
+              const nameA = a.querySelector('.item-name')?.textContent || '';
+              const nameB = b.querySelector('.item-name')?.textContent || '';
               return nameA.localeCompare(nameB);
             });
             break;
@@ -290,17 +441,45 @@ const levelStars = (level: number) => '⭐'.repeat(level);
         }
 
         // Re-append
-        sorted.forEach(badge => grid.appendChild(badge));
+        sorted.forEach(slot => grid.appendChild(slot));
 
-        // Animate in
-        sorted.forEach((badge, i) => {
-          setTimeout(() => {
-            badge.style.transform = 'translateY(0) scale(1)';
-            badge.style.opacity = badge.getAttribute('data-level') === '5' ? '1' :
-                                   badge.getAttribute('data-level') === '4' ? '0.9' : '0.8';
-          }, i * 20);
+        // Animate in with new animation
+        sorted.forEach((slot, i) => {
+          slot.style.animation = 'none';
+          slot.offsetHeight; // Trigger reflow
+          slot.style.animation = `slotFadeIn 0.4s steps(4) forwards ${i * 0.02}s`;
         });
       }, 200);
     });
   }
+
+  // Update tooltips on language change
+  function updateInventoryText(lang: string) {
+    if (!window.__I18N__) return;
+    const { t } = window.__I18N__;
+
+    // Update rarity text
+    document.querySelectorAll('.tooltip-rarity[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (key) el.textContent = t(lang, key);
+    });
+
+    // Update attack/defense text
+    document.querySelectorAll('.stat-line[data-attack]').forEach(el => {
+      const slot = el.closest('.inventory-slot');
+      const level = slot?.getAttribute('data-level') || '0';
+      el.textContent = `⚔️ ${t(lang, 'inventory.attack')} +${parseInt(level) * 5}`;
+    });
+
+    document.querySelectorAll('.stat-line[data-defense]').forEach(el => {
+      const slot = el.closest('.inventory-slot');
+      const level = slot?.getAttribute('data-level') || '0';
+      el.textContent = `🛡️ ${t(lang, 'inventory.defense')} +${parseInt(level) * 2}`;
+    });
+  }
+
+  // Listen for language change
+  window.addEventListener('langChange', (e: CustomEvent) => {
+    updateInventoryText(e.detail.lang);
+  });
 </script>

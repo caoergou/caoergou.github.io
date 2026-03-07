@@ -431,10 +431,8 @@ const i18nClientScript = getI18nClientScript();
   </div>
 
   <!-- i18n: Inject translations from server -->
-  <script is:inline>
-    window.__I18N_TRANSLATIONS__ = JSON.parse(document.currentScript.getAttribute('data-translations'));
-  </script>
-  <script is:inline data-translations={clientTranslations} set:html={i18nClientScript} />
+  <script is:inline set:html={`window.__I18N_TRANSLATIONS__ = ${clientTranslations};`} />
+  <script is:inline set:html={i18nClientScript} />
 
   <!-- Page-specific i18n handlers -->
   <script is:inline>
