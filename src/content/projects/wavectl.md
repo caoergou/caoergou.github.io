@@ -5,6 +5,7 @@ url: "https://github.com/caoergou/wavectl"
 stars: 1
 tags: ["python", "waveterm", "cli", "config"]
 featured: false
-desc_zh: "WaveTerm 交互式配置助手——简化 JSON 配置流程，让终端工具配置不再繁琐。"
-desc_en: "WaveTerm interactive configuration assistant—simplifies JSON config workflow for terminal tools."
+description:
+  zh: "WaveTerm 交互式配置助手——简化 JSON 配置流程，让终端工具配置不再繁琐。"
+  en: "WaveTerm interactive configuration assistant—simplifies JSON config workflow for terminal tools."
 ---

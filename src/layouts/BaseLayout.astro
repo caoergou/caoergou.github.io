@@ -4,6 +4,7 @@ import Hero from '../components/Hero.astro';
 import Project from '../components/Project.astro';
 import Thought from '../components/Thought.astro';
 import TechCloud from '../components/TechCloud.astro';
+import { t, getClientTranslations, getI18nClientScript, type Lang } from '../i18n';
 
 interface Props {
   profile: CollectionEntry<'profile'>;
@@ -13,6 +14,13 @@ interface Props {
 
 const { profile, projects, thoughts } = Astro.props;
 const siteUrl = 'https://eric.run.place';
+
+// i18n helper for server-side rendering
+const getTranslation = (lang: Lang, key: string) => t(lang, key);
+
+// Get translations for client-side injection
+const clientTranslations = getClientTranslations();
+const i18nClientScript = getI18nClientScript();
 ---
 
 <!DOCTYPE html>
@@ -20,34 +28,66 @@ const siteUrl = 'https://eric.run.place';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eric Cao — 在AI席卷的浪潮中努力扑腾</title>
-  <meta name="description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾。">
-  <meta name="keywords" content="Eric Cao, Python, AI Agent, Dify, Airflow, 大数据, 开源, TypeScript, React">
+  <title data-i18n="site.title">{getTranslation('zh', 'site.title')}</title>
+  <meta name="description" content={getTranslation('zh', 'site.description')} data-i18n-content="site.description">
+  <meta name="keywords" content="Eric Cao, Python, AI Agent, Dify, Airflow, 大数据, 开源, TypeScript, React, Full-Stack, Developer">
   <meta name="author" content="Eric Cao">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
 
   <!-- Search Engine Verification -->
   <meta name="google-site-verification" content="XuYZmP0E0M5Day61XIADItGmZMHKZ4kIHaHpnbEHtf8" />
   <meta name="baidu-site-verification" content="codeva-4Lwu94LneY" />
 
+  <!-- i18n: Language and Alternate Links -->
+  <link rel="alternate" hreflang="zh-CN" href={siteUrl} />
+  <link rel="alternate" hreflang="en-US" href={siteUrl} />
+  <link rel="alternate" hreflang="x-default" href={siteUrl} />
+
   <!-- Open Graph / Social -->
   <meta property="og:type" content="website">
   <meta property="og:url" content={siteUrl}>
-  <meta property="og:title" content="Eric Cao — 在AI席卷的浪潮中努力扑腾">
-  <meta property="og:description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾。">
+  <meta property="og:title" content={getTranslation('zh', 'site.title')} data-i18n-content="site.title">
+  <meta property="og:description" content={getTranslation('zh', 'site.description')} data-i18n-content="site.description">
   <meta property="og:site_name" content="Eric Cao">
-  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale" content="zh_CN" data-og-locale="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content={`${siteUrl}/og-image.png`}>
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@caoergou">
   <meta name="twitter:url" content={siteUrl}>
-  <meta name="twitter:title" content="Eric Cao — 在AI席卷的浪潮中努力扑腾">
-  <meta name="twitter:description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾。">
+  <meta name="twitter:title" content={getTranslation('zh', 'site.title')} data-i18n-content="site.title">
+  <meta name="twitter:description" content={getTranslation('zh', 'site.description')} data-i18n-content="site.description">
 
   <!-- Canonical URL -->
   <link rel="canonical" href={siteUrl}>
 
   <!-- Sitemap -->
   <link rel="sitemap" type="application/xml" href="/sitemap-index.xml">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Eric Cao",
+    "alternateName": "caoergou",
+    "url": siteUrl,
+    "image": `${siteUrl}/avatar.png`,
+    "sameAs": [
+      "https://github.com/caoergou",
+      "https://jike.city/ergou"
+    ],
+    "jobTitle": "Full-Stack Developer",
+    "description": getTranslation('zh', 'site.description'),
+    "knowsAbout": ["Python", "TypeScript", "AI Agent", "Dify", "Airflow", "Big Data", "React"],
+    "inLanguage": {
+      "@type": "Language",
+      "name": "Chinese",
+      "alternateName": "zh-CN"
+    }
+  })} />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Pixel fonts for game style -->
@@ -582,7 +622,7 @@ const siteUrl = 'https://eric.run.place';
       </section>
 
       <section class="section">
-        <h2 class="section-title" data-text-zh="作品" data-text-en="Projects">作品</h2>
+        <h2 class="section-title" data-i18n="sections.projects">{getTranslation('zh', 'sections.projects')}</h2>
         <div class="projects-list">
           {projects.map((project) => (
             <Project key={project.id} project={project} />
@@ -591,7 +631,7 @@ const siteUrl = 'https://eric.run.place';
       </section>
 
       <section class="section">
-        <h2 class="section-title" data-text-zh="探索方向" data-text-en="Explorations">探索方向</h2>
+        <h2 class="section-title" data-i18n="sections.explorations">{getTranslation('zh', 'sections.explorations')}</h2>
         <div class="thoughts-list">
           {thoughts.map((thought) => (
             <Thought key={thought.id} thought={thought} />
@@ -600,12 +640,9 @@ const siteUrl = 'https://eric.run.place';
       </section>
 
       <section class="section coming-soon">
-        <h2 class="section-title">Coming Soon</h2>
-        <div class="coming-list">
-          <div class="coming-item" data-text-zh="个人/团队专属 AI Agent 工作流的从零搭建全流程" data-text-en="Complete guide to building personal/team AI Agent workflows from scratch">个人/团队专属 AI Agent 工作流的从零搭建全流程</div>
-          <div class="coming-item" data-text-zh="企业级场景下 Agent 自动化流程的落地实战记录" data-text-en="Enterprise Agent automation implementation case studies">企业级场景下 Agent 自动化流程的落地实战记录</div>
-          <div class="coming-item" data-text-zh="大数据与 AI Agent 结合的场景化解决方案" data-text-en="Big Data + AI Agent scenario-based solutions">大数据与 AI Agent 结合的场景化解决方案</div>
-          <div class="coming-item" data-text-zh="全链路性能优化的系列避坑指南与实战技巧" data-text-en="End-to-end performance optimization pitfalls and practical tips">全链路性能优化的系列避坑指南与实战技巧</div>
+        <h2 class="section-title" data-i18n="comingSoon.title">{getTranslation('zh', 'comingSoon.title')}</h2>
+        <div class="coming-list" id="coming-list">
+          {/* Items will be rendered by JavaScript for i18n support */}
         </div>
       </section>
 
@@ -623,56 +660,10 @@ const siteUrl = 'https://eric.run.place';
     </div>
   </div>
 
+  <!-- i18n: Inject translations from server -->
   <script is:inline>
-    // Global language switching - direct text replacement (no typewriter for stability)
-    let currentLang = localStorage.getItem('lang') || 'zh';
-
-    function updateAllText(lang) {
-      currentLang = lang;
-      localStorage.setItem('lang', lang);
-
-      // Update section titles
-      document.querySelectorAll('[data-text-zh]').forEach(el => {
-        const text = el.getAttribute(`data-text-${lang}`);
-        if (text) el.textContent = text;
-      });
-
-      // Update project descriptions
-      document.querySelectorAll('[data-desc-zh]').forEach(el => {
-        const text = el.getAttribute(`data-desc-${lang}`);
-        if (text) el.textContent = text;
-      });
-
-      // Update project demo links
-      document.querySelectorAll('[data-link-zh]').forEach(el => {
-        const text = el.getAttribute(`data-link-${lang}`);
-        if (text) el.textContent = text;
-      });
-
-      // Update thought titles
-      document.querySelectorAll('[data-title-zh]').forEach(el => {
-        const text = el.getAttribute(`data-title-${lang}`);
-        if (text) el.textContent = text;
-      });
-
-      // Update buttons
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-      });
-
-      // Dispatch custom event for Hero component
-      window.dispatchEvent(new CustomEvent('langChange', { detail: { lang } }));
-    }
-
-    // Initialize on load
-    document.addEventListener('DOMContentLoaded', () => {
-      updateAllText(currentLang);
-
-      // Language switch listeners
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.addEventListener('click', () => updateAllText(btn.dataset.lang));
-      });
-    });
+    window.__I18N_TRANSLATIONS__ = JSON.parse(document.currentScript.getAttribute('data-translations'));
   </script>
+  <script is:inline data-translations={clientTranslations} set:html={i18nClientScript} />
 </body>
 </html>

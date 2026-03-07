@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { t } from '../i18n';
 
 interface Props {
   thought: CollectionEntry<'thoughts'>;
@@ -15,13 +16,13 @@ const statusIcon = statusIcons[Math.floor(Math.random() * statusIcons.length)];
 <article class="thought">
   <div class="thought-header">
     <span class="status-icon">{statusIcon}</span>
-    <h3 class="thought-title" data-title-zh={thought.data.title_zh} data-title-en={thought.data.title_en}>{thought.data.title_zh}</h3>
+    <h3 class="thought-title" data-title-zh={thought.data.title.zh} data-title-en={thought.data.title.en}>{thought.data.title.zh}</h3>
   </div>
-  <p class="thought-text" data-desc-zh={thought.data.desc_zh} data-desc-en={thought.data.desc_en}>{thought.data.desc_zh}</p>
+  <p class="thought-text" data-desc-zh={thought.data.description.zh} data-desc-en={thought.data.description.en}>{thought.data.description.zh}</p>
   <div class="thought-status">
     <span class="status-badge">
       <span class="status-dot"></span>
-      <span data-text-zh="探索中" data-text-en="Exploring">探索中</span>
+      <span data-i18n="thought.exploring">{t('zh', 'thought.exploring')}</span>
     </span>
   </div>
 </article>

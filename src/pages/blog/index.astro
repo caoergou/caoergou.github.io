@@ -1,5 +1,13 @@
 ---
 // Blog page - Pixel Adventure Style
+import { t, getClientTranslations, getI18nClientScript } from '../../i18n';
+
+const siteUrl = 'https://eric.run.place';
+const blogUrl = `${siteUrl}/blog/`;
+
+// Get translations for client-side injection
+const clientTranslations = getClientTranslations();
+const i18nClientScript = getI18nClientScript();
 ---
 
 <!DOCTYPE html>
@@ -7,8 +15,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>博客 - Eric Cao</title>
-  <meta name="description" content="分享我的思考和技术文章">
+  <title data-i18n="blog.title">{t('zh', 'blog.title').replace('📜 ', '')} - Eric Cao</title>
+  <meta name="description" content={t('zh', 'blog.description')} data-i18n-content="blog.description">
+  <meta name="keywords" content="Eric Cao, Blog, Python, AI Agent, Distributed Systems, Web Development">
+  <meta name="author" content="Eric Cao">
+  <meta name="robots" content="index, follow">
+
+  <!-- i18n: Language and Alternate Links -->
+  <link rel="alternate" hreflang="zh-CN" href={blogUrl} />
+  <link rel="alternate" hreflang="en-US" href={blogUrl} />
+  <link rel="alternate" hreflang="x-default" href={blogUrl} />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={blogUrl}>
+  <meta property="og:title" content={t('zh', 'blog.title').replace('📜 ', '')} data-i18n-content="blog.title">
+  <meta property="og:description" content={t('zh', 'blog.description')} data-i18n-content="blog.description">
+  <meta property="og:site_name" content="Eric Cao">
+  <meta property="og:locale" content="zh_CN" data-og-locale="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@caoergou">
+  <meta name="twitter:url" content={blogUrl}>
+  <meta name="twitter:title" content={t('zh', 'blog.title').replace('📜 ', '')} data-i18n-content="blog.title">
+  <meta name="twitter:description" content={t('zh', 'blog.description')} data-i18n-content="blog.description">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href={blogUrl}>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -33,6 +69,24 @@
       --accent-3: #4d96ff;
       --accent-4: #ff6b6b;
       --accent-5: #c9b1ff;
+    }
+
+    /* Light Theme */
+    .light-mode {
+      --bg: #e8f4f8;
+      --bg-secondary: #d4e8e0;
+      --surface: #ffffff;
+      --surface-alt: #f5f5f0;
+      --border: #a0b0a0;
+      --border-light: #c0d0c0;
+      --text-primary: #2a3a4a;
+      --text-secondary: #4a5a6a;
+      --text-muted: #7a8a9a;
+      --accent: #e6a800;
+      --accent-2: #4a9e5a;
+      --accent-3: #2a7ecc;
+      --accent-4: #d64545;
+      --accent-5: #9a7acc;
     }
 
     html { scroll-behavior: smooth; }
@@ -82,6 +136,75 @@
       max-width: 720px;
       margin: 0 auto;
       padding: 0 1.5rem;
+    }
+
+    /* ===== Top Controls ===== */
+    .top-controls {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 100;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .control-btn {
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: none;
+      box-shadow:
+        3px 0 0 var(--border),
+        -3px 0 0 var(--border),
+        0 3px 0 var(--border),
+        0 -3px 0 var(--border);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.5rem;
+      transition: all 0.15s step-end;
+    }
+
+    .control-btn:hover {
+      color: var(--accent);
+      box-shadow:
+        3px 0 0 var(--accent),
+        -3px 0 0 var(--accent),
+        0 3px 0 var(--accent),
+        0 -3px 0 var(--accent);
+    }
+
+    .control-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow:
+        1px 0 0 var(--accent),
+        -1px 0 0 var(--accent),
+        0 1px 0 var(--accent),
+        0 -1px 0 var(--accent);
+    }
+
+    .lang-text {
+      text-transform: uppercase;
+    }
+
+    .theme-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .theme-icon.light {
+      display: none;
+    }
+
+    .light-mode .theme-icon.dark {
+      display: none;
+    }
+
+    .light-mode .theme-icon.light {
+      display: block;
     }
 
     /* ===== Navigation ===== */
@@ -249,6 +372,10 @@
     /* ===== Responsive ===== */
     @media (max-width: 640px) {
       .container { padding: 0 1rem; }
+      .top-controls {
+        top: 1rem;
+        right: 1rem;
+      }
       .post-item {
         flex-direction: column;
         gap: 0.25rem;
@@ -257,27 +384,43 @@
   </style>
 </head>
 <body>
+  <!-- Top Controls: Language + Theme -->
+  <div class="top-controls">
+    <button id="langToggle" class="control-btn" aria-label="Switch language">
+      <span class="lang-text" data-i18n="hero.langToggle">{t('zh', 'hero.langToggle')}</span>
+    </button>
+    <button id="themeToggle" class="control-btn theme-btn" aria-label="Toggle theme">
+      <svg class="theme-icon dark" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
+        <circle cx="12" cy="12" r="4"/>
+      </svg>
+      <svg class="theme-icon light" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </div>
+
   <div class="page">
     <div class="container">
       <nav class="nav">
         <a href="/" class="nav-back">
           <span>◄</span>
-          <span>首页</span>
+          <span data-i18n="nav.home">{t('zh', 'nav.home')}</span>
         </a>
         <span class="nav-sep">|</span>
-        <span class="nav-current">博客</span>
+        <span class="nav-current" data-i18n="nav.blog">{t('zh', 'nav.blog')}</span>
       </nav>
 
       <header class="page-header">
-        <h1 class="page-title">📜 博客</h1>
-        <p class="page-desc">Python · 分布式系统 · Web 开发 · AI 应用</p>
+        <h1 class="page-title" data-i18n="blog.title">{t('zh', 'blog.title')}</h1>
+        <p class="page-desc" data-i18n="blog.description">{t('zh', 'blog.description')}</p>
       </header>
 
       <main class="post-list">
         <div class="empty">
           <div class="empty-icon">🗺️</div>
-          <p class="empty-title">新地图正在绘制中...</p>
-          <p class="empty-desc">探险日志即将解锁，敬请期待。</p>
+          <p class="empty-title" data-i18n="blog.emptyTitle">{t('zh', 'blog.emptyTitle')}</p>
+          <p class="empty-desc" data-i18n="blog.emptyDesc">{t('zh', 'blog.emptyDesc')}</p>
         </div>
       </main>
 
@@ -286,5 +429,58 @@
       </footer>
     </div>
   </div>
+
+  <!-- i18n: Inject translations from server -->
+  <script is:inline>
+    window.__I18N_TRANSLATIONS__ = JSON.parse(document.currentScript.getAttribute('data-translations'));
+  </script>
+  <script is:inline data-translations={clientTranslations} set:html={i18nClientScript} />
+
+  <!-- Page-specific i18n handlers -->
+  <script is:inline>
+    // Update title specifically for blog page
+    function updateBlogTitle(lang) {
+      if (!window.__I18N__) return;
+      const titleKey = document.querySelector('title')?.getAttribute('data-i18n');
+      if (titleKey) {
+        const text = window.__I18N__.t(lang, titleKey);
+        document.title = text.replace('📜 ', '') + ' - Eric Cao';
+      }
+    }
+
+    // Override updateAllText to include blog-specific updates
+    const originalUpdateAllText = window.__I18N__?.updateAllText;
+    if (originalUpdateAllText) {
+      window.__I18N__.updateAllText = function(lang) {
+        originalUpdateAllText(lang);
+        updateBlogTitle(lang);
+      };
+    }
+
+    // Language toggle
+    const langToggle = document.getElementById('langToggle');
+    langToggle.addEventListener('click', () => {
+      const currentLang = localStorage.getItem('lang') || 'zh';
+      const newLang = currentLang === 'zh' ? 'en' : 'zh';
+      if (window.__I18N__) {
+        window.__I18N__.updateAllText(newLang);
+      }
+    });
+
+    // Theme switching
+    const themeToggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      root.classList.add('light-mode');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      root.classList.toggle('light-mode');
+      const isLight = root.classList.contains('light-mode');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+  </script>
 </body>
 </html>
