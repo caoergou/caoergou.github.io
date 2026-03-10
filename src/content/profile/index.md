@@ -1,14 +1,11 @@
 ---
 name: "Eric Cao"
-title:
-  zh: "在确定性与混沌之间构建秩序"
-  en: "Building order between certainty and chaos"
-tagline:
-  zh: "一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾"
-  en: "A developer who loves tinkering, swimming hard in the sweeping tides of AI"
-quote:
-  zh: ""
-  en: ""
+title_zh: "在确定性与混沌之间构建秩序"
+title_en: "Building order between certainty and chaos"
+tagline_zh: "一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨"
+tagline_en: "A developer who loves tinkering, swimming hard in the sweeping tides of AI"
+quote_zh: ""
+quote_en: ""
 quote_author: ""
 avatar: ""
 social_links:
