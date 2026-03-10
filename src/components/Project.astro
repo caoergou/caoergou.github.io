@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { t } from '../i18n';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -8,50 +7,32 @@ interface Props {
 
 const { project } = Astro.props;
 
-// Region type icons
-const regionIcons: Record<string, string> = {
-  personal: '🏛️',
-  linked: '🔗',
-  default: '🗺️'
-};
-
-const regionIcon = regionIcons[project.data.type || 'default'] || regionIcons.default;
-
 // Extract repo name from URL for live star fetching
 const repoName = project.data.url?.split('github.com/')[1] || '';
 ---
 
 <article class="project" data-type={project.data.type} data-repo={repoName}>
   <div class="project-header">
-    <div class="region-icon">{regionIcon}</div>
-    <div class="region-info">
-      {project.data.url ? (
-        <a href={project.data.url} class="project-name" target="_blank" rel="noopener">
-          {project.data.title}
-        </a>
-      ) : (
-        <h3 class="project-name">{project.data.title}</h3>
-      )}
-      <div class="project-meta">
-        <span class="project-stars" data-stars={project.data.stars || 0}>
-          ⭐ <span class="star-count">{project.data.stars || 0}</span>
-        </span>
-        <span class="explorers-label" data-i18n="project.explorers">{t('zh', 'project.explorers')}</span>
-      </div>
-    </div>
+    {project.data.url ? (
+      <a href={project.data.url} class="project-name" target="_blank" rel="noopener">
+        {project.data.title}
+      </a>
+    ) : (
+      <h3 class="project-name">{project.data.title}</h3>
+    )}
+    <span class="project-stars" data-stars={project.data.stars || 0}>
+      ★ {project.data.stars || 0}
+    </span>
   </div>
-
   {project.data.demo_url && (
-    <a href={project.data.demo_url} class="project-demo-link" target="_blank" rel="noopener">
-      <span class="demo-icon">🎮</span>
-      <span data-link-zh="进入区域" data-link-en="Enter Region">{t('zh', 'project.enterRegion')}</span>
-    </a>
+    <div class="project-links">
+      <a href={project.data.demo_url} class="project-demo-link" target="_blank" rel="noopener" data-link-zh="在线体验" data-link-en="Live Demo">
+        在线体验
+      </a>
+    </div>
   )}
-
-  <p class="project-desc" data-desc-zh={project.data.description.zh} data-desc-en={project.data.description.en}>{project.data.description.zh}</p>
-
+  <p class="project-desc" data-desc-zh={project.data.desc_zh} data-desc-en={project.data.desc_en}>{project.data.desc_zh}</p>
   <div class="project-tags">
-    <span class="tags-label" data-i18n="project.requiredSkills">{t('zh', 'project.requiredSkills')}</span>
     {project.data.tags.map((tag) => (
       <span class="tag">{tag}</span>
     ))}
@@ -59,322 +40,196 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
 </article>
 
 <script>
-  // Fetch live star counts
-  document.addEventListener('DOMContentLoaded', async () => {
-    const projects = document.querySelectorAll('.project[data-repo]');
+  // Fetch live star counts — parallel requests, session cache to avoid repeat fetches
+  document.addEventListener('DOMContentLoaded', () => {
+    const projects = Array.from(document.querySelectorAll('.project[data-repo]'));
+    const CACHE_KEY_PREFIX = 'gh_stars_';
+    const CACHE_TTL = 1000 * 60 * 30; // 30 minutes
 
-    for (const project of projects) {
-      const repo = project.getAttribute('data-repo');
-      if (!repo) continue;
+    const updateStar = (starEl: Element, stars: number) => {
+      starEl.setAttribute('data-stars', String(stars));
+      starEl.textContent = stars >= 1000 ? `★ ${(stars / 1000).toFixed(1)}k` : `★ ${stars}`;
+      starEl.classList.add('loaded');
+    };
 
-      const starEl = project.querySelector('.project-stars');
-      const starCountEl = project.querySelector('.star-count');
-      if (!starEl || !starCountEl) continue;
-
+    const fetchRepo = async (repo: string): Promise<number | null> => {
+      const cacheKey = CACHE_KEY_PREFIX + repo;
       try {
-        const res = await fetch(`https://api.github.com/repos/${repo}`);
-        if (res.ok) {
-          const data = await res.json();
-          const stars = data.stargazers_count;
-          starEl.setAttribute('data-stars', stars);
-
-          // Format number
-          if (stars >= 1000) {
-            starCountEl.textContent = `${(stars / 1000).toFixed(1)}k`;
-          } else {
-            starCountEl.textContent = `${stars}`;
-          }
-
-          // Add animation
-          starEl.classList.add('loaded');
+        const cached = sessionStorage.getItem(cacheKey);
+        if (cached) {
+          const { stars, ts } = JSON.parse(cached);
+          if (Date.now() - ts < CACHE_TTL) return stars;
         }
-      } catch (e) {
-        // Keep static value if fetch fails
+        const res = await fetch(`https://api.github.com/repos/${repo}`);
+        if (!res.ok) return null;
+        const { stargazers_count } = await res.json();
+        sessionStorage.setItem(cacheKey, JSON.stringify({ stars: stargazers_count, ts: Date.now() }));
+        return stargazers_count;
+      } catch {
+        return null;
       }
-    }
+    };
+
+    // Fire all requests in parallel
+    Promise.all(
+      projects.map(async (project) => {
+        const repo = project.getAttribute('data-repo');
+        if (!repo) return;
+        const starEl = project.querySelector('.project-stars');
+        if (!starEl) return;
+        const stars = await fetchRepo(repo);
+        if (stars !== null) updateStar(starEl, stars);
+      })
+    );
   });
 </script>
 
 <style>
-  /* Project Card - Minecraft Biome/Region Style */
   .project {
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.75rem;
-    padding: 1rem 1.25rem;
+    padding: 1.25rem 1.5rem;
     margin-bottom: 0.5rem;
     background: var(--surface);
-    box-shadow:
-      inset -4px 0 0 var(--block-shadow),
-      inset 0 -4px 0 var(--block-shadow),
-      inset 4px 0 0 var(--block-light),
-      inset 0 4px 0 var(--block-light),
-      5px 5px 0 var(--block-shadow);
+    border: 1px solid var(--border);
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
     position: relative;
     cursor: pointer;
-    transition: all 0.15s step-end;
-  }
-
-  .project::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--accent);
-    opacity: 0;
-    transition: opacity 0.15s step-end;
   }
 
   .project:hover {
-    transform: translate(-3px, -3px);
-    box-shadow:
-      inset -4px 0 0 var(--block-shadow),
-      inset 0 -4px 0 var(--block-shadow),
-      inset 4px 0 0 var(--block-light),
-      inset 0 4px 0 var(--block-light),
-      8px 8px 0 var(--accent);
+    border-left-color: var(--accent);
+    background: var(--bg-secondary);
+    transform: translateX(4px);
+    box-shadow: -4px 0 20px var(--accent-glow);
   }
 
-  .project:hover::before {
-    opacity: 1;
-  }
-
-  .project:active {
-    transform: translate(2px, 2px);
-    box-shadow:
-      inset -2px 0 0 var(--block-shadow),
-      inset 0 -2px 0 var(--block-shadow),
-      inset 2px 0 0 var(--block-light),
-      inset 0 2px 0 var(--block-light),
-      2px 2px 0 var(--block-shadow);
-  }
-
-  /* Type-based colors - Biome themes */
-  .project[data-type="linked"] {
-    box-shadow:
-      inset -4px 0 0 var(--block-shadow),
-      inset 0 -4px 0 var(--block-shadow),
-      inset 4px 0 0 var(--block-light),
-      inset 0 4px 0 var(--block-light),
-      5px 5px 0 var(--accent-3);
-  }
-
-  .project[data-type="linked"]::before {
-    background: var(--accent-3);
-  }
-
-  .project[data-type="linked"]:hover {
-    box-shadow:
-      inset -4px 0 0 var(--block-shadow),
-      inset 0 -4px 0 var(--block-shadow),
-      inset 4px 0 0 var(--block-light),
-      inset 0 4px 0 var(--block-light),
-      8px 8px 0 var(--accent-3);
-  }
-
-  .project[data-type="personal"] {
-    box-shadow:
-      inset -4px 0 0 var(--block-shadow),
-      inset 0 -4px 0 var(--block-shadow),
-      inset 4px 0 0 var(--block-light),
-      inset 0 4px 0 var(--block-light),
-      5px 5px 0 var(--accent-6);
-  }
-
-  .project[data-type="personal"]::before {
-    background: var(--accent-6);
-  }
-
-  .project[data-type="personal"]:hover {
-    box-shadow:
-      inset -4px 0 0 var(--block-shadow),
-      inset 0 -4px 0 var(--block-shadow),
-      inset 4px 0 0 var(--block-light),
-      inset 0 4px 0 var(--block-light),
-      8px 8px 0 var(--accent-6);
-  }
-
-  /* Header */
   .project-header {
     display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-
-  .region-icon {
-    font-size: 1.5rem;
-    line-height: 1;
-    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
-    flex-shrink: 0;
-  }
-
-  .region-info {
-    flex: 1;
-    min-width: 0;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
   }
 
   .project-name {
-    font-family: 'Zpix', 'Press Start 2P', cursive;
-    font-size: 0.65rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
     color: var(--text-primary);
     text-decoration: none;
+    transition: color 0.2s ease;
     cursor: pointer;
-    line-height: 1.4;
-    display: block;
-    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
   }
 
   .project-name:hover {
     color: var(--accent);
-  }
-
-  .project-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
+    text-shadow: 0 0 10px var(--accent-glow);
   }
 
   .project-stars {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.2rem;
-    font-family: 'Zpix', 'Press Start 2P', cursive;
-    font-size: 0.5rem;
-    color: var(--accent-6);
-    opacity: 0.7;
-    transition: opacity 0.15s step-end;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    white-space: nowrap;
+    font-weight: 700;
+    text-shadow: 0 0 10px var(--accent-glow);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
   }
 
   .project-stars.loaded {
     opacity: 1;
-    animation: starBounce 0.4s steps(4);
+    animation: starPop 0.3s ease;
   }
 
-  @keyframes starBounce {
-    0% { transform: scale(1.2); }
+  @keyframes starPop {
+    0% { transform: scale(1.3); }
     100% { transform: scale(1); }
   }
 
-  .explorers-label {
-    font-family: 'Zpix', 'VT323', monospace;
-    font-size: 0.85rem;
-    color: var(--text-muted);
+  .project-stars::before {
+    content: '★ ';
   }
 
-  /* Demo Link - Portal style */
+  .project-links {
+    margin-bottom: 0.25rem;
+  }
+
   .project-demo-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: 'Zpix', 'VT323', monospace;
-    font-size: 0.95rem;
-    color: var(--accent-7);
+    font-size: 0.7rem;
+    color: var(--accent-3);
     text-decoration: none;
-    padding: 0.25rem 0.5rem;
-    background: rgba(127, 63, 191, 0.1);
-    box-shadow:
-      inset -2px 0 0 var(--block-shadow),
-      inset 0 -2px 0 var(--block-shadow),
-      inset 2px 0 0 rgba(127, 63, 191, 0.3),
-      inset 0 2px 0 rgba(127, 63, 191, 0.3);
-    transition: all 0.15s step-end;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
   }
 
   .project-demo-link:hover {
-    color: var(--text-primary);
-    background: rgba(127, 63, 191, 0.2);
-    transform: translate(-2px, -2px);
-    box-shadow:
-      inset -2px 0 0 var(--block-shadow),
-      inset 0 -2px 0 var(--block-shadow),
-      inset 2px 0 0 rgba(127, 63, 191, 0.3),
-      inset 0 2px 0 rgba(127, 63, 191, 0.3),
-      4px 4px 0 var(--accent-7);
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-glow);
   }
 
-  .demo-icon {
-    font-size: 0.9rem;
-  }
-
-  /* Description */
   .project-desc {
-    font-family: 'Zpix', 'VT323', monospace;
-    font-size: 1.05rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    line-height: 1.5;
+    line-height: 1.6;
     margin: 0;
   }
 
-  /* Tags - Minecraft item tags */
   .project-tags {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     gap: 0.4rem;
-  }
-
-  .tags-label {
-    font-family: 'Zpix', 'VT323', monospace;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-right: 0.25rem;
+    flex-wrap: wrap;
   }
 
   .tag {
-    font-family: 'Zpix', 'Press Start 2P', cursive;
-    font-size: 0.4rem;
-    padding: 0.3rem 0.5rem;
-    background: var(--surface-alt);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    background: transparent;
+    border: 1px solid var(--border);
     color: var(--text-secondary);
-    box-shadow:
-      inset -2px 0 0 var(--block-shadow),
-      inset 0 -2px 0 var(--block-shadow),
-      inset 2px 0 0 var(--block-light),
-      inset 0 2px 0 var(--block-light);
-    transition: all 0.15s step-end;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.2s ease;
   }
 
   .tag:hover {
+    border-color: var(--accent);
     color: var(--accent);
-    transform: translate(-1px, -1px);
-    box-shadow:
-      inset -2px 0 0 var(--block-shadow),
-      inset 0 -2px 0 var(--block-shadow),
-      inset 2px 0 0 var(--block-light),
-      inset 0 2px 0 var(--block-light),
-      3px 3px 0 var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
   }
 
-  /* Responsive */
   @media (max-width: 640px) {
     .project {
-      padding: 0.875rem 1rem;
+      padding: 1rem;
     }
-
-    .region-icon {
-      font-size: 1.25rem;
-    }
-
-    .project-name {
-      font-size: 0.55rem;
-    }
-
-    .project-desc {
-      font-size: 0.95rem;
+    .project-header {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 
-  @media (max-width: 480px) {
-    .project-header {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+  /* Linked vs Personal project visual distinction */
+  .project[data-type="linked"] {
+    border-left-color: var(--accent-3);
+  }
 
-    .tags-label {
-      display: none;
-    }
+  .project[data-type="linked"]:hover {
+    border-left-color: var(--accent-3);
+    box-shadow: -4px 0 20px rgba(0, 212, 255, 0.2);
+  }
+
+  .project[data-type="personal"] {
+    border-left-color: var(--accent-2);
+  }
+
+  .project[data-type="personal"]:hover {
+    border-left-color: var(--accent-2);
+    box-shadow: -4px 0 20px rgba(255, 0, 102, 0.2);
   }
 </style>

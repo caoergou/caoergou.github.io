@@ -4,10 +4,6 @@ import Hero from '../components/Hero.astro';
 import Project from '../components/Project.astro';
 import Thought from '../components/Thought.astro';
 import TechCloud from '../components/TechCloud.astro';
-import XPBar from '../components/XPBar.astro';
-import Hotbar from '../components/Hotbar.astro';
-import Monster from '../components/Monster.astro';
-import { t, getClientTranslations, getI18nClientScript, type Lang } from '../i18n';
 
 interface Props {
   profile: CollectionEntry<'profile'>;
@@ -17,13 +13,6 @@ interface Props {
 
 const { profile, projects, thoughts } = Astro.props;
 const siteUrl = 'https://eric.run.place';
-
-// i18n helper for server-side rendering
-const getTranslation = (lang: Lang, key: string) => t(lang, key);
-
-// Get translations for client-side injection
-const clientTranslations = getClientTranslations();
-const i18nClientScript = getI18nClientScript();
 ---
 
 <!DOCTYPE html>
@@ -31,242 +20,91 @@ const i18nClientScript = getI18nClientScript();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="site.title">{getTranslation('zh', 'site.title')}</title>
-  <meta name="description" content={getTranslation('zh', 'site.description')} data-i18n-content="site.description">
-  <meta name="keywords" content="Eric Cao, Python, AI Agent, Dify, Airflow, 大数据, 开源, TypeScript, React, Full-Stack, Developer">
+  <title>Eric Cao — 在AI席卷的浪潮中努力狗刨</title>
+  <meta name="description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。">
+  <meta name="keywords" content="Eric Cao, Python, AI Agent, Dify, Airflow, 大数据, 开源, TypeScript, React">
   <meta name="author" content="Eric Cao">
-  <meta name="robots" content="index, follow">
-  <meta name="googlebot" content="index, follow">
 
   <!-- Search Engine Verification -->
   <meta name="google-site-verification" content="XuYZmP0E0M5Day61XIADItGmZMHKZ4kIHaHpnbEHtf8" />
   <meta name="baidu-site-verification" content="codeva-4Lwu94LneY" />
 
-  <!-- i18n: Language and Alternate Links -->
-  <link rel="alternate" hreflang="zh-CN" href={siteUrl} />
-  <link rel="alternate" hreflang="en-US" href={siteUrl} />
-  <link rel="alternate" hreflang="x-default" href={siteUrl} />
-
   <!-- Open Graph / Social -->
   <meta property="og:type" content="website">
   <meta property="og:url" content={siteUrl}>
-  <meta property="og:title" content={getTranslation('zh', 'site.title')} data-i18n-content="site.title">
-  <meta property="og:description" content={getTranslation('zh', 'site.description')} data-i18n-content="site.description">
+  <meta property="og:title" content="Eric Cao — 在AI席卷的浪潮中努力狗刨">
+  <meta property="og:description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。">
   <meta property="og:site_name" content="Eric Cao">
-  <meta property="og:locale" content="zh_CN" data-og-locale="zh_CN">
-  <meta property="og:locale:alternate" content="en_US">
-  <meta property="og:image" content={`${siteUrl}/og-image.png`}>
+  <meta property="og:locale" content="zh_CN">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@caoergou">
   <meta name="twitter:url" content={siteUrl}>
-  <meta name="twitter:title" content={getTranslation('zh', 'site.title')} data-i18n-content="site.title">
-  <meta name="twitter:description" content={getTranslation('zh', 'site.description')} data-i18n-content="site.description">
+  <meta name="twitter:title" content="Eric Cao — 在AI席卷的浪潮中努力狗刨">
+  <meta name="twitter:description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。">
 
   <!-- Canonical URL -->
   <link rel="canonical" href={siteUrl}>
 
   <!-- Sitemap -->
   <link rel="sitemap" type="application/xml" href="/sitemap-index.xml">
-
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Eric Cao",
-    "alternateName": "caoergou",
-    "url": siteUrl,
-    "image": `${siteUrl}/avatar.png`,
-    "sameAs": [
-      "https://github.com/caoergou",
-      "https://jike.city/ergou"
-    ],
-    "jobTitle": "Full-Stack Developer",
-    "description": getTranslation('zh', 'site.description'),
-    "knowsAbout": ["Python", "TypeScript", "AI Agent", "Dify", "Airflow", "Big Data", "React"],
-    "inLanguage": {
-      "@type": "Language",
-      "name": "Chinese",
-      "alternateName": "zh-CN"
-    }
-  })} />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Pixel fonts for game style -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;500&family=Noto+Serif+SC:wght@400&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;500&family=Noto+Serif+SC:wght@400&display=swap" rel="stylesheet"></noscript>
   <style is:global>
-    /* ===== Zpix Chinese Pixel Font ===== */
-    @font-face {
-      font-family: 'Zpix';
-      src: url('/fonts/zpix.woff2') format('woff2');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
-
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* ===== Minecraft Theme - Block World Adventure ===== */
+    /* Dark Theme (default) */
     :root {
-      /* Dark Theme - Underground/Cave Adventure */
-      --bg: #1a1a1a;
-      --bg-secondary: #2d2d2d;
-      --surface: #3d3d3d;
-      --surface-alt: #4a4a4a;
-      --border: #5a5a5a;
-      --border-light: #7a7a7a;
-      --text-primary: #f8f8f8;
-      --text-secondary: #a8a8a8;
-      --text-muted: #6a6a6a;
-
-      /* Minecraft-inspired accent colors */
-      --accent: #5DCE2E;       /* Grass block green */
-      --accent-2: #6B8E23;     /* Oak leaves */
-      --accent-3: #3B8AFF;     /* Diamond blue */
-      --accent-4: #C41E3A;     /* Redstone red */
-      --accent-5: #8B4513;     /* Dirt brown */
-      --accent-6: #FFAA00;     /* Gold ingot */
-      --accent-7: #7F3FBF;     /* Nether portal purple */
-      --accent-8: #00BFCB;     /* Diamond ore cyan */
-
-      /* Danger/Monster colors */
-      --danger: #FF5555;       /* Creeper explosion */
-      --danger-glow: #FF0000;  /* Hostile mob eyes */
-      --warning: #FFAA00;      /* Fire/Lava */
-      --success: #5DCE2E;      /* Health/XP */
-
-      /* 3D Block effects */
-      --block-light: rgba(255, 255, 255, 0.15);
-      --block-shadow: rgba(0, 0, 0, 0.4);
-      --block-depth: 4px;
-
-      /* Pixel-specific */
-      --pixel-size: 4px;
-      --pixel-border: 4px solid var(--border);
-
-      /* 3D Block shadows */
-      --shadow-block:
-        inset -4px 0 0 var(--block-shadow),
-        inset 0 -4px 0 var(--block-shadow),
-        inset 4px 0 0 var(--block-light),
-        inset 0 4px 0 var(--block-light),
-        4px 4px 0 var(--block-shadow);
-      --shadow-block-accent:
-        inset -4px 0 0 rgba(0,0,0,0.3),
-        inset 0 -4px 0 rgba(0,0,0,0.3),
-        inset 4px 0 0 rgba(255,255,255,0.2),
-        inset 0 4px 0 rgba(255,255,255,0.2),
-        4px 4px 0 rgba(0,0,0,0.4);
-      --shadow-pixel:
-        4px 0 0 var(--border),
-        -4px 0 0 var(--border),
-        0 4px 0 var(--border),
-        0 -4px 0 var(--border);
-      --shadow-pixel-accent:
-        4px 0 0 var(--accent),
-        -4px 0 0 var(--accent),
-        0 4px 0 var(--accent),
-        0 -4px 0 var(--accent);
-
-      /* Animation */
-      --transition-fast: 0.15s step-end;
-      --transition-normal: 0.3s step-end;
+      --bg: #0d0d0d;
+      --bg-secondary: #1a1a1a;
+      --surface: #141414;
+      --border: #2a2a2a;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a0;
+      --text-muted: #666666;
+      --accent: #00ff88;
+      --accent-2: #ff0066;
+      --accent-3: #00d4ff;
+      --accent-glow: rgba(0, 255, 136, 0.3);
+      --grid-color: rgba(255, 255, 255, 0.03);
     }
 
-    /* Light Theme - Overworld Day */
+    /* Light Theme */
     .light-mode {
-      --bg: #87CEEB;
-      --bg-secondary: #78A7B8;
-      --surface: #F5F5DC;
-      --surface-alt: #E8E8D0;
-      --border: #8B7355;
-      --border-light: #A08060;
-      --text-primary: #2F2F2F;
-      --text-secondary: #4A4A4A;
-      --text-muted: #6A6A6A;
-
-      --accent: #5DCE2E;
-      --accent-2: #228B22;
-      --accent-3: #2E7FD6;
-      --accent-4: #B33A3A;
-      --accent-5: #6B4423;
-      --accent-6: #DAA520;
-
-      --block-light: rgba(255, 255, 255, 0.3);
-      --block-shadow: rgba(0, 0, 0, 0.25);
+      --bg: #f8f9fa;
+      --bg-secondary: #e9ecef;
+      --surface: #ffffff;
+      --border: #dee2e6;
+      --text-primary: #1a1a1a;
+      --text-secondary: #495057;
+      --text-muted: #868e96;
+      --accent: #007bff;
+      --accent-2: #dc3545;
+      --accent-3: #17a2b8;
+      --accent-glow: rgba(0, 123, 255, 0.2);
+      --grid-color: rgba(0, 0, 0, 0.03);
     }
 
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Zpix', 'VT323', monospace;
+      font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text-primary);
-      line-height: 1.6;
+      line-height: 1.7;
       overflow-x: hidden;
-      -webkit-font-smoothing: none;
-      -moz-osx-font-smoothing: none;
-      image-rendering: pixelated;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Pixel fonts utility */
-    .pixel-font { font-family: 'Zpix', 'Press Start 2P', cursive; }
-    .pixel-body { font-family: 'Zpix', 'VT323', monospace; }
-    .pixel-en { font-family: 'Press Start 2P', cursive; }
+    .serif { font-family: 'Noto Serif SC', serif; }
+    .grotesk { font-family: 'Space Grotesk', sans-serif; }
 
-    /* 3D Block utility classes */
-    .block-3d {
-      position: relative;
-      background: var(--surface);
-      border: none;
-      box-shadow: var(--shadow-block);
-    }
+    .page { position: relative; z-index: 1; min-height: 100vh; }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 1.5rem; }
 
-    .block-grass {
-      background: linear-gradient(
-        to bottom,
-        var(--accent) 0%,
-        var(--accent) 30%,
-        var(--accent-5) 30%,
-        var(--accent-5) 100%
-      );
-    }
-
-    .block-stone {
-      background:
-        repeating-linear-gradient(
-          90deg,
-          var(--surface) 0px,
-          var(--surface) 2px,
-          var(--surface-alt) 2px,
-          var(--surface-alt) 4px
-        ),
-        repeating-linear-gradient(
-          0deg,
-          var(--surface) 0px,
-          var(--surface) 2px,
-          var(--surface-alt) 2px,
-          var(--surface-alt) 4px
-        );
-    }
-
-    .page {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    /* ===== Minecraft Cave Background ===== */
+    /* Cyber grid background */
     body::before {
       content: '';
       position: fixed;
@@ -274,38 +112,15 @@ const i18nClientScript = getI18nClientScript();
       left: 0;
       width: 100%;
       height: 100%;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 50px 50px;
       pointer-events: none;
       z-index: 0;
-      background-color: var(--bg);
-      /* Cave ambient particles - ore sparkles */
-      background-image:
-        /* Diamond ore sparkles */
-        radial-gradient(2px 2px at 15% 25%, var(--accent-3) 50%, transparent 50%),
-        radial-gradient(2px 2px at 75% 15%, var(--accent-8) 50%, transparent 50%),
-        radial-gradient(1px 1px at 85% 45%, var(--accent-3) 50%, transparent 50%),
-        /* Gold ore sparkles */
-        radial-gradient(2px 2px at 25% 75%, var(--accent-6) 50%, transparent 50%),
-        radial-gradient(1px 1px at 55% 85%, var(--accent-6) 50%, transparent 50%),
-        /* Redstone glow */
-        radial-gradient(2px 2px at 35% 35%, var(--accent-4) 50%, transparent 50%),
-        radial-gradient(1px 1px at 65% 65%, var(--accent-4) 50%, transparent 50%),
-        /* Lava glow */
-        radial-gradient(3px 3px at 5% 95%, var(--warning) 50%, transparent 50%),
-        radial-gradient(2px 2px at 95% 90%, var(--warning) 50%, transparent 50%),
-        /* Ambient particles */
-        radial-gradient(1px 1px at 20% 50%, var(--text-muted) 50%, transparent 50%),
-        radial-gradient(1px 1px at 40% 20%, var(--text-muted) 50%, transparent 50%),
-        radial-gradient(1px 1px at 60% 80%, var(--text-muted) 50%, transparent 50%),
-        radial-gradient(1px 1px at 80% 40%, var(--text-muted) 50%, transparent 50%);
-      animation: caveAmbient 6s ease-in-out infinite;
     }
 
-    @keyframes caveAmbient {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
-
-    /* Subtle noise texture overlay */
+    /* Scanline effect — use CSS mask instead of full-page gradient repaint */
     body::after {
       content: '';
       position: fixed;
@@ -313,95 +128,71 @@ const i18nClientScript = getI18nClientScript();
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
-      z-index: 1000;
       background: repeating-linear-gradient(
-        0deg,
-        transparent,
+        to bottom,
+        transparent 0px,
         transparent 2px,
-        rgba(0, 0, 0, 0.02) 2px,
-        rgba(0, 0, 0, 0.02) 4px
+        var(--accent-glow) 2px,
+        var(--accent-glow) 4px
       );
-    }
-
-    /* Danger zone effect for special areas */
-    .danger-zone {
-      position: relative;
-    }
-
-    .danger-zone::before {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      border: 2px solid var(--danger);
-      animation: dangerPulse 1s steps(4) infinite;
       pointer-events: none;
+      z-index: 0;
+      opacity: 0.15;
+      will-change: opacity;
     }
 
-    @keyframes dangerPulse {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 0.5; }
-    }
-
-    /* Monster glow effect */
-    .monster-glow {
-      animation: monsterGlow 2s ease-in-out infinite;
-    }
-
-    @keyframes monsterGlow {
-      0%, 100% { filter: drop-shadow(0 0 2px var(--danger-glow)); }
-      50% { filter: drop-shadow(0 0 6px var(--danger-glow)); }
-    }
-
-    /* ===== Hero Section ===== */
-    .hero {
-      min-height: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 3rem 0 2rem;
-      position: relative;
-    }
+    /* Hero */
+    .hero { min-height: auto; display: flex; flex-direction: column; justify-content: center; padding: 3rem 0 2rem; }
 
     .hero-name {
-      font-family: 'Zpix', 'Press Start 2P', cursive;
-      font-size: clamp(1.5rem, 6vw, 2.5rem);
-      letter-spacing: -0.02em;
-      line-height: 1.4;
-      margin-bottom: 0.75rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      margin-bottom: 1rem;
       color: var(--text-primary);
-      text-shadow:
-        3px 3px 0 var(--accent),
-        -1px -1px 0 var(--border);
-      animation: pixelFadeIn 0.8s steps(8) forwards;
+      text-transform: uppercase;
+      position: relative;
+      display: inline-block;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-3) 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 30px var(--accent-glow));
+      animation: gradientShift 4s ease infinite;
     }
 
-    @keyframes pixelFadeIn {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     .hero-name:hover {
-      animation: pixelShake 0.3s steps(4) forwards;
+      animation: glitch 0.3s ease;
     }
 
-    @keyframes pixelShake {
-      0%, 100% { transform: translate(0); }
-      25% { transform: translate(-2px, 2px); }
-      50% { transform: translate(2px, -2px); }
-      75% { transform: translate(-2px, -2px); }
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
     }
 
     .hero-tagline {
-      font-family: 'Zpix', 'VT323', monospace;
-      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-size: clamp(0.9rem, 2.5vw, 1.05rem);
       color: var(--accent);
+      font-style: normal;
+      border-left: 3px solid var(--accent);
       padding-left: 1rem;
       margin-bottom: 1.5rem;
-      line-height: 1.5;
+      font-weight: 500;
+      line-height: 1.7;
       max-width: 100%;
-      border-left: 4px solid var(--accent);
-      background: linear-gradient(90deg, rgba(93, 206, 46, 0.1) 0%, transparent 100%);
+      opacity: 0;
     }
 
     .hero-links {
@@ -413,48 +204,47 @@ const i18nClientScript = getI18nClientScript();
     .hero-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
       color: var(--text-primary);
       text-decoration: none;
-      font-family: 'Zpix', 'Press Start 2P', cursive;
-      font-size: 0.6rem;
-      letter-spacing: 0.02em;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.2s ease;
       cursor: pointer;
-      padding: 0.75rem 1rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
       background: var(--surface);
-      border: none;
-      box-shadow: var(--shadow-block);
-      transition: transform var(--transition-fast);
       position: relative;
+      overflow: hidden;
     }
-
+    .hero-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+      transition: left 0.5s ease;
+    }
+    .hero-link:hover::before {
+      left: 100%;
+    }
     .hero-link:hover {
-      transform: translate(-3px, -3px);
-      box-shadow:
-        inset -4px 0 0 var(--block-shadow),
-        inset 0 -4px 0 var(--block-shadow),
-        inset 4px 0 0 var(--block-light),
-        inset 0 4px 0 var(--block-light),
-        6px 6px 0 var(--accent);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
     }
 
-    .hero-link:active {
-      transform: translate(2px, 2px);
-      box-shadow:
-        inset -2px 0 0 var(--block-shadow),
-        inset 0 -2px 0 var(--block-shadow),
-        inset 2px 0 0 var(--block-light),
-        inset 0 2px 0 var(--block-light),
-        2px 2px 0 var(--block-shadow);
-    }
-
-    /* ===== Hero Stats (Minecraft Stats) ===== */
+    /* Stats */
     .hero-stats {
       display: flex;
       gap: 2rem;
       margin-top: 2rem;
       padding-top: 1.5rem;
-      border-top: 4px solid var(--border);
+      border-top: 1px solid var(--border);
     }
 
     .stat {
@@ -464,79 +254,50 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .stat-value {
-      font-family: 'Zpix', 'Press Start 2P', cursive;
-      font-size: 1rem;
-      color: var(--accent-6);
-      text-shadow: 2px 2px 0 rgba(255, 170, 0, 0.3);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
     }
 
     .stat-label {
-      font-family: 'Zpix', 'VT323', monospace;
-      font-size: 0.9rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
-      letter-spacing: 0.05em;
-    }
-
-    /* ===== Sections ===== */
-    .section {
-      padding: 2.5rem 0;
-      border-top: 4px solid var(--border);
-      position: relative;
-    }
-
-    .section-title {
-      font-family: 'Zpix', 'Press Start 2P', cursive;
-      font-size: 0.65rem;
+      text-transform: uppercase;
       letter-spacing: 0.1em;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section */
+    .section { padding: 2.5rem 0; border-top: 1px solid var(--border); }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 1.5rem;
       position: relative;
       display: inline-block;
-      padding-bottom: 0.5rem;
+      text-shadow: 0 0 20px var(--accent-glow);
     }
 
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: var(--accent);
-      animation: pixelExpand 1s steps(10) forwards;
-    }
+    /* Projects */
+    .projects-list { display: flex; flex-direction: column; gap: 0; }
 
-    @keyframes pixelExpand {
-      from { width: 0; }
-      to { width: 100%; }
-    }
+    /* Thoughts */
+    .thoughts-list { display: flex; flex-direction: column; gap: 0; }
 
-    /* ===== Project List ===== */
-    .projects-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    /* ===== Thoughts List ===== */
-    .thoughts-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    /* ===== Coming Soon Section ===== */
+    /* Coming Soon */
     .coming-soon {
-      background:
-        repeating-linear-gradient(
-          45deg,
-          var(--surface) 0px,
-          var(--surface) 4px,
-          var(--surface-alt) 4px,
-          var(--surface-alt) 8px
-        );
-      padding: 1.5rem;
-      box-shadow: var(--shadow-block);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 212, 255, 0.05) 100%);
+      border-radius: 4px;
+      border: 1px dashed var(--border);
     }
 
     .coming-list {
@@ -546,19 +307,19 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .coming-item {
-      font-family: 'Zpix', 'VT323', monospace;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       color: var(--text-secondary);
       padding-left: 1.5rem;
       position: relative;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .coming-item::before {
-      content: '▸';
+      content: '→';
       position: absolute;
       left: 0;
-      color: var(--accent-6);
+      color: var(--accent);
+      opacity: 0.6;
     }
 
     .coming-item:hover {
@@ -566,135 +327,44 @@ const i18nClientScript = getI18nClientScript();
     }
 
     .coming-item:hover::before {
-      color: var(--accent);
-      animation: pixelBlink 0.5s steps(2) infinite;
+      opacity: 1;
+      text-shadow: 0 0 10px var(--accent-glow);
     }
 
-    @keyframes pixelBlink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    /* ===== Footer ===== */
-    .footer {
-      padding: 2rem 0;
-      border-top: 4px solid var(--border);
-      margin-top: 2rem;
-    }
-
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .footer-copy {
-      font-family: 'Zpix', 'Press Start 2P', cursive;
-      font-size: 0.5rem;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 1rem;
-    }
-
+    /* Footer */
+    .footer { padding: 2rem 0; border-top: 1px solid var(--border); margin-top: 2rem; }
+    .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-copy { font-size: 0.7rem; color: var(--text-muted); font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
+    .footer-links { display: flex; gap: 1.5rem; }
     .footer-link {
-      font-family: 'Zpix', 'Press Start 2P', cursive;
-      font-size: 0.5rem;
+      font-size: 0.7rem;
       color: var(--text-secondary);
       text-decoration: none;
+      transition: all 0.2s ease;
       cursor: pointer;
-      padding: 0.5rem 0.75rem;
-      background: var(--surface);
-      box-shadow:
-        inset -2px 0 0 var(--block-shadow),
-        inset 0 -2px 0 var(--block-shadow),
-        inset 2px 0 0 var(--block-light),
-        inset 0 2px 0 var(--block-light),
-        2px 2px 0 var(--block-shadow);
-      transition: all var(--transition-fast);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
-
     .footer-link:hover {
       color: var(--accent);
-      box-shadow:
-        inset -2px 0 0 var(--block-shadow),
-        inset 0 -2px 0 var(--block-shadow),
-        inset 2px 0 0 var(--block-light),
-        inset 0 2px 0 var(--block-light),
-        3px 3px 0 var(--accent);
-      transform: translate(-1px, -1px);
+      text-shadow: 0 0 10px var(--accent-glow);
     }
 
-    /* ===== Tech Section ===== */
+    /* Tech Section */
     .tech-section {
       padding: 1.5rem 0;
       border-top: none;
     }
 
-    /* ===== Responsive Design ===== */
-    @media (max-width: 768px) {
-      .container { padding: 0 1rem; }
-
-      .hero { padding: 2rem 0 1.5rem; }
-      .hero-name { font-size: 1.25rem; }
-      .hero-tagline { font-size: 1rem; }
-      .hero-link { font-size: 0.5rem; padding: 0.6rem 0.8rem; }
-
-      .hero-stats {
-        flex-wrap: wrap;
-        gap: 1.5rem;
-      }
-
-      .section { padding: 2rem 0; }
-      .section-title { font-size: 0.55rem; }
-
-      .footer-content {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .footer-copy { font-size: 0.45rem; }
-      .footer-link { font-size: 0.45rem; }
+    /* Responsive */
+    @media (max-width: 640px) {
+      .container { padding: 0 1.25rem; }
+      .hero { padding: 4rem 0 3rem; }
+      .section { padding: 4rem 0; }
+      .footer-content { flex-direction: column; align-items: flex-start; }
     }
 
-    @media (max-width: 480px) {
-      .hero-links {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .hero-link {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .stat-value { font-size: 0.8rem; }
-      .stat-label { font-size: 0.8rem; }
-    }
-
-    /* ===== Safari Compatibility ===== */
-    @supports (-webkit-hyphens: none) {
-      /* Safari-specific fixes */
-      .hero-name {
-        -webkit-text-stroke: 0;
-      }
-
-      body::after {
-        -webkit-backdrop-filter: none;
-      }
-
-      /* Fix for Safari position: fixed issues */
-      .page {
-        -webkit-overflow-scrolling: touch;
-      }
-    }
-
-    /* ===== Reduced Motion ===== */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -702,36 +372,9 @@ const i18nClientScript = getI18nClientScript();
         transition-duration: 0.01ms !important;
       }
     }
-
-    /* ===== Selection Styling ===== */
-    ::selection {
-      background: var(--accent);
-      color: var(--bg);
-    }
-
-    /* ===== Scrollbar Styling ===== */
-    ::-webkit-scrollbar {
-      width: 12px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--bg-secondary);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border: 2px solid var(--bg-secondary);
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent);
-    }
   </style>
 </head>
 <body>
-  <Monster />
-  <XPBar />
-  <Hotbar />
   <div class="page">
     <div class="container">
       <Hero profile={profile} />
@@ -741,7 +384,7 @@ const i18nClientScript = getI18nClientScript();
       </section>
 
       <section class="section">
-        <h2 class="section-title" data-i18n="sections.projects">{getTranslation('zh', 'sections.projects')}</h2>
+        <h2 class="section-title" data-text-zh="作品" data-text-en="Projects">作品</h2>
         <div class="projects-list">
           {projects.map((project) => (
             <Project key={project.id} project={project} />
@@ -750,7 +393,7 @@ const i18nClientScript = getI18nClientScript();
       </section>
 
       <section class="section">
-        <h2 class="section-title" data-i18n="sections.explorations">{getTranslation('zh', 'sections.explorations')}</h2>
+        <h2 class="section-title" data-text-zh="探索方向" data-text-en="Explorations">探索方向</h2>
         <div class="thoughts-list">
           {thoughts.map((thought) => (
             <Thought key={thought.id} thought={thought} />
@@ -759,9 +402,12 @@ const i18nClientScript = getI18nClientScript();
       </section>
 
       <section class="section coming-soon">
-        <h2 class="section-title" data-i18n="comingSoon.title">{getTranslation('zh', 'comingSoon.title')}</h2>
-        <div class="coming-list" id="coming-list">
-          {/* Items will be rendered by JavaScript for i18n support */}
+        <h2 class="section-title">Coming Soon</h2>
+        <div class="coming-list">
+          <div class="coming-item" data-text-zh="个人/团队专属 AI Agent 工作流的从零搭建全流程" data-text-en="Complete guide to building personal/team AI Agent workflows from scratch">个人/团队专属 AI Agent 工作流的从零搭建全流程</div>
+          <div class="coming-item" data-text-zh="企业级场景下 Agent 自动化流程的落地实战记录" data-text-en="Enterprise Agent automation implementation case studies">企业级场景下 Agent 自动化流程的落地实战记录</div>
+          <div class="coming-item" data-text-zh="大数据与 AI Agent 结合的场景化解决方案" data-text-en="Big Data + AI Agent scenario-based solutions">大数据与 AI Agent 结合的场景化解决方案</div>
+          <div class="coming-item" data-text-zh="全链路性能优化的系列避坑指南与实战技巧" data-text-en="End-to-end performance optimization pitfalls and practical tips">全链路性能优化的系列避坑指南与实战技巧</div>
         </div>
       </section>
 
@@ -779,8 +425,56 @@ const i18nClientScript = getI18nClientScript();
     </div>
   </div>
 
-  <!-- i18n: Inject translations from server -->
-  <script is:inline set:html={`window.__I18N_TRANSLATIONS__ = ${clientTranslations};`} />
-  <script is:inline set:html={i18nClientScript} />
+  <script is:inline>
+    // Global language switching - direct text replacement (no typewriter for stability)
+    let currentLang = localStorage.getItem('lang') || 'zh';
+
+    function updateAllText(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+
+      // Update section titles
+      document.querySelectorAll('[data-text-zh]').forEach(el => {
+        const text = el.getAttribute(`data-text-${lang}`);
+        if (text) el.textContent = text;
+      });
+
+      // Update project descriptions
+      document.querySelectorAll('[data-desc-zh]').forEach(el => {
+        const text = el.getAttribute(`data-desc-${lang}`);
+        if (text) el.textContent = text;
+      });
+
+      // Update project demo links
+      document.querySelectorAll('[data-link-zh]').forEach(el => {
+        const text = el.getAttribute(`data-link-${lang}`);
+        if (text) el.textContent = text;
+      });
+
+      // Update thought titles
+      document.querySelectorAll('[data-title-zh]').forEach(el => {
+        const text = el.getAttribute(`data-title-${lang}`);
+        if (text) el.textContent = text;
+      });
+
+      // Update buttons
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      // Dispatch custom event for Hero component
+      window.dispatchEvent(new CustomEvent('langChange', { detail: { lang } }));
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateAllText(currentLang);
+
+      // Language switch listeners
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => updateAllText(btn.dataset.lang));
+      });
+    });
+  </script>
 </body>
 </html>

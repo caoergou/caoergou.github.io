@@ -1,13 +1,5 @@
 ---
-// Blog page - Pixel Adventure Style
-import { t, getClientTranslations, getI18nClientScript } from '../../i18n';
-
-const siteUrl = 'https://eric.run.place';
-const blogUrl = `${siteUrl}/blog/`;
-
-// Get translations for client-side injection
-const clientTranslations = getClientTranslations();
-const i18nClientScript = getI18nClientScript();
+import ThreeBackground from '../../components/ThreeBackground';
 ---
 
 <!DOCTYPE html>
@@ -15,115 +7,38 @@ const i18nClientScript = getI18nClientScript();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="blog.title">{t('zh', 'blog.title').replace('📜 ', '')} - Eric Cao</title>
-  <meta name="description" content={t('zh', 'blog.description')} data-i18n-content="blog.description">
-  <meta name="keywords" content="Eric Cao, Blog, Python, AI Agent, Distributed Systems, Web Development">
-  <meta name="author" content="Eric Cao">
-  <meta name="robots" content="index, follow">
-
-  <!-- i18n: Language and Alternate Links -->
-  <link rel="alternate" hreflang="zh-CN" href={blogUrl} />
-  <link rel="alternate" hreflang="en-US" href={blogUrl} />
-  <link rel="alternate" hreflang="x-default" href={blogUrl} />
-
-  <!-- Open Graph / Social -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content={blogUrl}>
-  <meta property="og:title" content={t('zh', 'blog.title').replace('📜 ', '')} data-i18n-content="blog.title">
-  <meta property="og:description" content={t('zh', 'blog.description')} data-i18n-content="blog.description">
-  <meta property="og:site_name" content="Eric Cao">
-  <meta property="og:locale" content="zh_CN" data-og-locale="zh_CN">
-  <meta property="og:locale:alternate" content="en_US">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@caoergou">
-  <meta name="twitter:url" content={blogUrl}>
-  <meta name="twitter:title" content={t('zh', 'blog.title').replace('📜 ', '')} data-i18n-content="blog.title">
-  <meta name="twitter:description" content={t('zh', 'blog.description')} data-i18n-content="blog.description">
-
-  <!-- Canonical URL -->
-  <link rel="canonical" href={blogUrl}>
-
+  <title>博客 - Eric Cao</title>
+  <meta name="description" content="分享我的思考和技术文章">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+SC:wght@400&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+SC:wght@400&display=swap" rel="stylesheet"></noscript>
   <style>
     *, *::before, *::after {
       margin: 0; padding: 0; box-sizing: border-box;
     }
 
-    /* ===== Pixel Game Theme ===== */
     :root {
-      --bg: #1a1a2e;
-      --bg-secondary: #16213e;
-      --surface: #2d3a4f;
-      --surface-alt: #3d4a5f;
-      --border: #5a6a7a;
-      --border-light: #7a8a9a;
-      --text-primary: #f0f0e8;
-      --text-secondary: #a8b8c8;
-      --text-muted: #6a7a8a;
-      --accent: #ffd93d;
-      --accent-2: #6bcb77;
-      --accent-3: #4d96ff;
-      --accent-4: #ff6b6b;
-      --accent-5: #c9b1ff;
-    }
-
-    /* Light Theme */
-    .light-mode {
-      --bg: #e8f4f8;
-      --bg-secondary: #d4e8e0;
-      --surface: #ffffff;
-      --surface-alt: #f5f5f0;
-      --border: #a0b0a0;
-      --border-light: #c0d0c0;
-      --text-primary: #2a3a4a;
-      --text-secondary: #4a5a6a;
-      --text-muted: #7a8a9a;
-      --accent: #e6a800;
-      --accent-2: #4a9e5a;
-      --accent-3: #2a7ecc;
-      --accent-4: #d64545;
-      --accent-5: #9a7acc;
+      --bg: #080c14;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-hover: rgba(255, 255, 255, 0.07);
+      --border: rgba(255, 255, 255, 0.08);
+      --text-primary: rgba(255, 255, 255, 0.92);
+      --text-secondary: rgba(255, 255, 255, 0.5);
+      --text-muted: rgba(255, 255, 255, 0.3);
+      --accent: #63b3ed;
+      --accent-dim: rgba(99, 179, 237, 0.12);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'VT323', monospace;
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text-primary);
       line-height: 1.6;
       overflow-x: hidden;
-      -webkit-font-smoothing: none;
-      image-rendering: pixelated;
-    }
-
-    /* Pixel star background */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      background-color: var(--bg);
-      background-image:
-        radial-gradient(1px 1px at 10% 20%, var(--accent) 50%, transparent 50%),
-        radial-gradient(1px 1px at 30% 50%, var(--accent-2) 50%, transparent 50%),
-        radial-gradient(1px 1px at 50% 10%, var(--accent-3) 50%, transparent 50%),
-        radial-gradient(2px 2px at 70% 40%, var(--accent-5) 50%, transparent 50%),
-        radial-gradient(2px 2px at 90% 60%, var(--accent) 50%, transparent 50%);
-      animation: twinkle 8s ease-in-out infinite;
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+      -webkit-font-smoothing: antialiased;
     }
 
     .page {
@@ -135,81 +50,12 @@ const i18nClientScript = getI18nClientScript();
     .container {
       max-width: 720px;
       margin: 0 auto;
-      padding: 0 1.5rem;
+      padding: 0 2rem;
     }
 
-    /* ===== Top Controls ===== */
-    .top-controls {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      z-index: 100;
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .control-btn {
-      width: 2.5rem;
-      height: 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--surface);
-      border: none;
-      box-shadow:
-        3px 0 0 var(--border),
-        -3px 0 0 var(--border),
-        0 3px 0 var(--border),
-        0 -3px 0 var(--border);
-      color: var(--text-secondary);
-      cursor: pointer;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 0.5rem;
-      transition: all 0.15s step-end;
-    }
-
-    .control-btn:hover {
-      color: var(--accent);
-      box-shadow:
-        3px 0 0 var(--accent),
-        -3px 0 0 var(--accent),
-        0 3px 0 var(--accent),
-        0 -3px 0 var(--accent);
-    }
-
-    .control-btn:active {
-      transform: translate(2px, 2px);
-      box-shadow:
-        1px 0 0 var(--accent),
-        -1px 0 0 var(--accent),
-        0 1px 0 var(--accent),
-        0 -1px 0 var(--accent);
-    }
-
-    .lang-text {
-      text-transform: uppercase;
-    }
-
-    .theme-icon {
-      width: 16px;
-      height: 16px;
-    }
-
-    .theme-icon.light {
-      display: none;
-    }
-
-    .light-mode .theme-icon.dark {
-      display: none;
-    }
-
-    .light-mode .theme-icon.light {
-      display: block;
-    }
-
-    /* ===== Navigation ===== */
+    /* ── Nav ── */
     .nav {
-      padding: 1.5rem 0;
+      padding: 2rem 0;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -219,62 +65,45 @@ const i18nClientScript = getI18nClientScript();
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 0.5rem;
+      font-size: 0.875rem;
       color: var(--text-muted);
       text-decoration: none;
-      padding: 0.4rem 0.6rem;
-      background: var(--surface);
-      box-shadow:
-        2px 0 0 var(--border),
-        -2px 0 0 var(--border),
-        0 2px 0 var(--border),
-        0 -2px 0 var(--border);
-      transition: all 0.15s step-end;
+      transition: color 0.2s ease;
     }
 
-    .nav-back:hover {
-      color: var(--accent);
-      box-shadow:
-        2px 0 0 var(--accent),
-        -2px 0 0 var(--accent),
-        0 2px 0 var(--accent),
-        0 -2px 0 var(--accent);
-    }
+    .nav-back:hover { color: var(--accent); }
 
     .nav-sep {
       color: var(--text-muted);
-      font-family: 'VT323', monospace;
-      font-size: 1rem;
+      font-size: 0.875rem;
     }
 
     .nav-current {
-      font-family: 'VT323', monospace;
-      font-size: 1rem;
+      font-size: 0.875rem;
       color: var(--text-secondary);
     }
 
-    /* ===== Header ===== */
+    /* ── Header ── */
     .page-header {
-      padding: 2rem 0 2.5rem;
-      border-bottom: 4px solid var(--border);
+      padding: 3rem 0 3.5rem;
+      border-bottom: 1px solid var(--border);
     }
 
     .page-title {
-      font-family: 'Press Start 2P', cursive;
-      font-size: clamp(1.2rem, 4vw, 1.6rem);
-      color: var(--accent);
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
       margin-bottom: 0.5rem;
-      text-shadow: 3px 3px 0 var(--bg-secondary);
     }
 
     .page-desc {
-      font-family: 'VT323', monospace;
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       color: var(--text-secondary);
+      font-weight: 300;
     }
 
-    /* ===== Post List ===== */
+    /* ── Post list ── */
     .post-list {
       display: flex;
       flex-direction: column;
@@ -286,141 +115,91 @@ const i18nClientScript = getI18nClientScript();
       align-items: baseline;
       justify-content: space-between;
       gap: 2rem;
-      padding: 1rem;
-      margin-bottom: 0.5rem;
-      background: var(--surface);
-      box-shadow:
-        3px 0 0 var(--border),
-        -3px 0 0 var(--border),
-        0 3px 0 var(--border),
-        0 -3px 0 var(--border);
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
       text-decoration: none;
       color: inherit;
-      transition: all 0.15s step-end;
+      transition: all 0.2s ease;
     }
 
-    .post-item:hover {
-      transform: translate(-2px, -2px);
-      box-shadow:
-        5px 0 0 var(--accent),
-        -5px 0 0 var(--accent),
-        0 5px 0 var(--accent),
-        0 -5px 0 var(--accent);
-    }
-
-    .post-item:hover .post-title {
-      color: var(--accent);
-    }
+    .post-item:hover .post-title { color: var(--accent); }
 
     .post-title {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 0.55rem;
+      font-size: 0.95rem;
       color: var(--text-primary);
-      transition: color 0.15s step-end;
+      font-weight: 400;
+      transition: color 0.2s ease;
     }
 
     .post-date {
-      font-family: 'VT323', monospace;
-      font-size: 0.95rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
 
-    /* ===== Empty State ===== */
+    /* ── Empty state ── */
     .empty {
-      padding: 3rem 0;
+      padding: 4rem 0;
       text-align: center;
     }
 
     .empty-title {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 0.65rem;
+      font-size: 1rem;
       color: var(--text-secondary);
-      margin-bottom: 0.75rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
     }
 
     .empty-desc {
-      font-family: 'VT323', monospace;
-      font-size: 1.1rem;
+      font-size: 0.875rem;
       color: var(--text-muted);
+      font-weight: 300;
     }
 
-    .empty-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      animation: float 2s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-
-    /* ===== Footer ===== */
+    /* ── Footer ── */
     .footer {
-      padding: 2rem 0;
-      border-top: 4px solid var(--border);
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
       margin-top: 2rem;
     }
 
     .footer-copy {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 0.45rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
     }
 
-    /* ===== Responsive ===== */
     @media (max-width: 640px) {
-      .container { padding: 0 1rem; }
-      .top-controls {
-        top: 1rem;
-        right: 1rem;
-      }
-      .post-item {
-        flex-direction: column;
-        gap: 0.25rem;
-      }
+      .container { padding: 0 1.25rem; }
+      .post-item { flex-direction: column; gap: 0.2rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Top Controls: Language + Theme -->
-  <div class="top-controls">
-    <button id="langToggle" class="control-btn" aria-label="Switch language">
-      <span class="lang-text" data-i18n="hero.langToggle">{t('zh', 'hero.langToggle')}</span>
-    </button>
-    <button id="themeToggle" class="control-btn theme-btn" aria-label="Toggle theme">
-      <svg class="theme-icon dark" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
-        <circle cx="12" cy="12" r="4"/>
-      </svg>
-      <svg class="theme-icon light" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-      </svg>
-    </button>
-  </div>
+  <ThreeBackground client:idle />
 
   <div class="page">
     <div class="container">
       <nav class="nav">
         <a href="/" class="nav-back">
-          <span>◄</span>
-          <span data-i18n="nav.home">{t('zh', 'nav.home')}</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          首页
         </a>
-        <span class="nav-sep">|</span>
-        <span class="nav-current" data-i18n="nav.blog">{t('zh', 'nav.blog')}</span>
+        <span class="nav-sep">/</span>
+        <span class="nav-current">博客</span>
       </nav>
 
       <header class="page-header">
-        <h1 class="page-title" data-i18n="blog.title">{t('zh', 'blog.title')}</h1>
-        <p class="page-desc" data-i18n="blog.description">{t('zh', 'blog.description')}</p>
+        <h1 class="page-title">博客</h1>
+        <p class="page-desc">Python · 分布式系统 · Web 开发 · AI 应用</p>
       </header>
 
       <main class="post-list">
         <div class="empty">
-          <div class="empty-icon">🗺️</div>
-          <p class="empty-title" data-i18n="blog.emptyTitle">{t('zh', 'blog.emptyTitle')}</p>
-          <p class="empty-desc" data-i18n="blog.emptyDesc">{t('zh', 'blog.emptyDesc')}</p>
+          <p class="empty-title">文章正在路上</p>
+          <p class="empty-desc">持续更新中，敬请期待。</p>
         </div>
       </main>
 
@@ -429,56 +208,5 @@ const i18nClientScript = getI18nClientScript();
       </footer>
     </div>
   </div>
-
-  <!-- i18n: Inject translations from server -->
-  <script is:inline set:html={`window.__I18N_TRANSLATIONS__ = ${clientTranslations};`} />
-  <script is:inline set:html={i18nClientScript} />
-
-  <!-- Page-specific i18n handlers -->
-  <script is:inline>
-    // Update title specifically for blog page
-    function updateBlogTitle(lang) {
-      if (!window.__I18N__) return;
-      const titleKey = document.querySelector('title')?.getAttribute('data-i18n');
-      if (titleKey) {
-        const text = window.__I18N__.t(lang, titleKey);
-        document.title = text.replace('📜 ', '') + ' - Eric Cao';
-      }
-    }
-
-    // Override updateAllText to include blog-specific updates
-    const originalUpdateAllText = window.__I18N__?.updateAllText;
-    if (originalUpdateAllText) {
-      window.__I18N__.updateAllText = function(lang) {
-        originalUpdateAllText(lang);
-        updateBlogTitle(lang);
-      };
-    }
-
-    // Language toggle
-    const langToggle = document.getElementById('langToggle');
-    langToggle.addEventListener('click', () => {
-      const currentLang = localStorage.getItem('lang') || 'zh';
-      const newLang = currentLang === 'zh' ? 'en' : 'zh';
-      if (window.__I18N__) {
-        window.__I18N__.updateAllText(newLang);
-      }
-    });
-
-    // Theme switching
-    const themeToggle = document.getElementById('themeToggle');
-    const root = document.documentElement;
-
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-      root.classList.add('light-mode');
-    }
-
-    themeToggle.addEventListener('click', () => {
-      root.classList.toggle('light-mode');
-      const isLight = root.classList.contains('light-mode');
-      localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    });
-  </script>
 </body>
 </html>

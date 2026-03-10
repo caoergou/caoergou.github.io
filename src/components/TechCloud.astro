@@ -1,436 +1,229 @@
 ---
-import { t } from '../i18n';
+const techs = [
+  // AI Agent
+  { name: 'AI Agent', weight: 5 },
+  { name: 'Dify', weight: 4 },
+  { name: 'Context Engineering', weight: 4 },
+  { name: 'Prompt Engineering', weight: 4 },
+  { name: 'Tool Use', weight: 4 },
+  { name: 'RAG', weight: 3 },
+  { name: 'MCP', weight: 3 },
+  // Data Engineering
+  { name: 'Airflow', weight: 5 },
+  { name: 'LakeFS', weight: 4 },
+  { name: 'Data Pipeline', weight: 4 },
+  { name: 'ETL/ELT', weight: 4 },
+  { name: 'Spark', weight: 3 },
+  { name: 'Data Versioning', weight: 3 },
+  { name: 'Stream Processing', weight: 3 },
 
-const skills = [
-  // AI Agent Skills
-  { name: 'AI Agent', level: 5, icon: '🤖' },
-  { name: 'Dify', level: 4, icon: '🔧' },
-  { name: 'Context Engineering', level: 4, icon: '📝' },
-  { name: 'Prompt Engineering', level: 4, icon: '💬' },
-  { name: 'Tool Use', level: 4, icon: '🛠️' },
-  { name: 'RAG', level: 3, icon: '📚' },
-  { name: 'MCP', level: 3, icon: '🔌' },
-  { name: 'Function Calling', level: 3, icon: '⚡' },
+  // Performance
+  { name: 'Performance Tuning', weight: 4 },
+  { name: 'End-to-End Optimization', weight: 4 },
+  { name: 'QPS/TPS', weight: 3 },
 
-  // Data Engineering Skills
-  { name: 'Airflow', level: 5, icon: '🌬️' },
-  { name: 'LakeFS', level: 4, icon: '💾' },
-  { name: 'Data Pipeline', level: 4, icon: '🔄' },
-  { name: 'ETL/ELT', level: 4, icon: '📊' },
-  { name: 'Spark', level: 3, icon: '✨' },
-  { name: 'Data Versioning', level: 3, icon: '📦' },
-  { name: 'Stream Processing', level: 3, icon: '🌊' },
+  // Tech Stack
+  { name: 'Python', weight: 5 },
+  { name: 'TypeScript', weight: 4 },
+  { name: 'React', weight: 4 },
+  { name: 'Docker', weight: 3 },
 
-  // Performance Skills
-  { name: 'Performance Tuning', level: 4, icon: '🚀' },
-  { name: 'E2E Optimization', level: 4, icon: '🎯' },
-  { name: 'QPS/TPS', level: 3, icon: '📈' },
-
-  // Tech Stack Skills
-  { name: 'Python', level: 5, icon: '🐍' },
-  { name: 'TypeScript', level: 4, icon: '📘' },
-  { name: 'React', level: 4, icon: '⚛️' },
-  { name: 'Docker', level: 3, icon: '🐳' },
-
-  // Philosophy Skills
-  { name: 'Open Source', level: 4, icon: '🌟' },
-  { name: 'Automation First', level: 4, icon: '⚙️' },
-  { name: 'Engineering Practices', level: 3, icon: '📐' },
+  // Philosophy
+  { name: 'Open Source', weight: 4 },
+  { name: 'Automation First', weight: 4 },
+  { name: 'Engineering Practices', weight: 3 },
 ];
 
-// Level colors - Minecraft rarity style
-const levelColors: Record<number, string> = {
-  5: 'var(--accent-6)',   // Gold - Legendary
-  4: 'var(--accent-3)',   // Diamond Blue - Epic
-  3: 'var(--accent)',     // Green - Rare
-};
-
-// Level rarity keys (for i18n)
-const rarityKeys: Record<number, string> = {
-  5: 'legendary',
-  4: 'epic',
-  3: 'rare',
-};
+const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
 ---
 
-<div class="inventory-section">
-  <div class="inventory-header">
-    <span class="inventory-icon">📦</span>
-    <span class="inventory-title" data-i18n="inventory.title">{t('zh', 'inventory.title')}</span>
-    <button class="sort-btn" id="sortBtn" aria-label="Sort items">
-      <span class="sort-icon">🔄</span>
-    </button>
-  </div>
-
-  <div class="inventory-grid" id="inventoryGrid">
-    {skills.map((skill, i) => (
-      <div
-        class="inventory-slot"
-        data-level={skill.level}
+<div class="tech-cloud-wrapper">
+  <div class="tech-cloud" id="techCloud">
+    {techs.map((tech, i) => (
+      <span
+        class="tech-tag"
+        data-weight={tech.weight}
         data-index={i}
-        data-rarity-key={rarityKeys[skill.level]}
-        style={`--delay: ${i * 0.03}s; --rarity-color: ${levelColors[skill.level]};`}
-        tabindex="0"
+        style={`--delay: ${i * 0.03}s; --color: ${colors[i % 3]};`}
       >
-        <div class="item-container">
-          <span class="item-icon">{skill.icon}</span>
-          <span class="item-count">{skill.level}</span>
-        </div>
-        <span class="item-name">{skill.name}</span>
-
-        <!-- Tooltip -->
-        <div class="item-tooltip">
-          <div class="tooltip-header">
-            <span class="tooltip-icon">{skill.icon}</span>
-            <span class="tooltip-name">{skill.name}</span>
-          </div>
-          <div class="tooltip-rarity" data-i18n={`inventory.${rarityKeys[skill.level]}`} style={`color: ${levelColors[skill.level]}`}>
-            {t('zh', `inventory.${rarityKeys[skill.level]}`)}
-          </div>
-          <div class="tooltip-stats">
-            <span class="stat-line" data-attack>⚔️ {t('zh', 'inventory.attack')} +{skill.level * 5}</span>
-            <span class="stat-line" data-defense>🛡️ {t('zh', 'inventory.defense')} +{skill.level * 2}</span>
-          </div>
-        </div>
-      </div>
+        {tech.name}
+      </span>
     ))}
   </div>
+  <button class="shuffle-btn" id="shuffleBtn" aria-label="Shuffle tags" title="点击排序">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="2" y="2" width="8" height="8" rx="1"/>
+      <rect x="14" y="2" width="8" height="8" rx="1"/>
+      <rect x="2" y="14" width="8" height="8" rx="1"/>
+      <rect x="14" y="14" width="8" height="8" rx="1"/>
+      <circle cx="6" cy="6" r="1" fill="currentColor"/>
+      <circle cx="18" cy="6" r="1" fill="currentColor"/>
+      <circle cx="6" cy="18" r="1" fill="currentColor"/>
+      <circle cx="18" cy="18" r="1" fill="currentColor"/>
+    </svg>
+  </button>
 </div>
 
 <style>
-  .inventory-section {
-    padding: 0.75rem 0;
-  }
-
-  .inventory-header {
+  .tech-cloud-wrapper {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .tech-cloud {
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    background: var(--surface);
-    box-shadow:
-      inset -3px 0 0 var(--block-shadow),
-      inset 0 -3px 0 var(--block-shadow),
-      inset 3px 0 0 var(--block-light),
-      inset 0 3px 0 var(--block-light);
-  }
-
-  .inventory-icon {
-    font-size: 1.25rem;
-    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
-  }
-
-  .inventory-title {
-    font-family: 'Zpix', 'Press Start 2P', cursive;
-    font-size: 0.55rem;
-    color: var(--text-primary);
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.5rem 0;
+    position: relative;
+    min-height: 80px;
     flex: 1;
   }
 
-  .sort-btn {
+  .shuffle-btn {
     width: 2rem;
     height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg);
-    box-shadow:
-      inset -2px 0 0 var(--block-shadow),
-      inset 0 -2px 0 var(--block-shadow),
-      inset 2px 0 0 var(--block-light),
-      inset 0 2px 0 var(--block-light);
-    border: none;
+    background: transparent;
+    border: 1px solid var(--border);
     color: var(--text-muted);
     cursor: pointer;
-    transition: all 0.15s step-end;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-top: 0.5rem;
   }
 
-  .sort-btn:hover {
+  .shuffle-btn:hover {
+    border-color: var(--accent);
     color: var(--accent);
-    transform: translate(-1px, -1px);
-    box-shadow:
-      inset -2px 0 0 var(--block-shadow),
-      inset 0 -2px 0 var(--block-shadow),
-      inset 2px 0 0 var(--block-light),
-      inset 0 2px 0 var(--block-light),
-      3px 3px 0 var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: rotate(15deg);
   }
 
-  .sort-btn:active {
-    transform: translate(1px, 1px);
+  .shuffle-btn svg {
+    width: 16px;
+    height: 16px;
   }
 
-  .sort-icon {
-    font-size: 0.9rem;
-    transition: transform 0.3s;
-  }
-
-  .sort-btn:hover .sort-icon {
-    transform: rotate(180deg);
-  }
-
-  /* Inventory Grid */
-  .inventory-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 0.5rem;
-  }
-
-  /* Inventory Slot - Minecraft style */
-  .inventory-slot {
-    position: relative;
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.15rem;
-    background: var(--surface);
-    box-shadow:
-      inset -3px 0 0 var(--block-shadow),
-      inset 0 -3px 0 var(--block-shadow),
-      inset 3px 0 0 var(--block-light),
-      inset 0 3px 0 var(--block-light);
-    cursor: pointer;
-    transition: all 0.15s step-end;
-    animation: slotFadeIn 0.4s steps(4) forwards;
-    animation-delay: var(--delay);
+  .tech-tag {
+    display: inline-block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--color);
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: default;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: tagFadeIn 0.6s ease forwards, tagFloat 4s ease-in-out infinite;
+    animation-delay: var(--delay), calc(var(--delay) + 0.6s);
     opacity: 0;
-  }
-
-  @keyframes slotFadeIn {
-    from {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  .inventory-slot:hover {
-    transform: translate(-2px, -2px);
-    box-shadow:
-      inset -3px 0 0 var(--block-shadow),
-      inset 0 -3px 0 var(--block-shadow),
-      inset 3px 0 0 var(--block-light),
-      inset 0 3px 0 var(--block-light),
-      4px 4px 0 var(--rarity-color);
-    z-index: 10;
-  }
-
-  .inventory-slot:focus {
-    outline: none;
-    box-shadow:
-      inset -3px 0 0 var(--rarity-color),
-      inset 0 -3px 0 var(--rarity-color),
-      inset 3px 0 0 var(--rarity-color),
-      inset 0 3px 0 var(--rarity-color);
-  }
-
-  /* Item Container */
-  .item-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .item-icon {
-    font-size: 1.5rem;
-    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
-    line-height: 1;
-  }
-
-  .item-count {
-    position: absolute;
-    bottom: -4px;
-    right: -4px;
-    font-family: 'Zpix', 'Press Start 2P', cursive;
-    font-size: 0.4rem;
-    color: var(--text-primary);
-    background: var(--bg);
-    padding: 0 3px;
-    box-shadow:
-      inset -1px 0 0 var(--block-shadow),
-      inset 0 -1px 0 var(--block-shadow),
-      inset 1px 0 0 var(--block-light),
-      inset 0 1px 0 var(--block-light);
-  }
-
-  .item-name {
-    font-family: 'Zpix', 'VT323', monospace;
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-    text-align: center;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 0 0.25rem;
+    position: relative;
+    will-change: transform;
   }
 
-  /* Tooltip - Minecraft style */
-  .item-tooltip {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 150px;
-    background: #1a0a30;
-    border: 2px solid #250a50;
-    padding: 0.5rem;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s;
-    z-index: 100;
-    pointer-events: none;
-    box-shadow:
-      inset -2px 0 0 rgba(0,0,0,0.5),
-      inset 0 -2px 0 rgba(0,0,0,0.5),
-      inset 2px 0 0 rgba(100,50,150,0.3),
-      inset 0 2px 0 rgba(100,50,150,0.3);
+  .tech-tag[data-weight="5"] { font-size: 1rem; }
+  .tech-tag[data-weight="4"] { font-size: 0.85rem; }
+  .tech-tag[data-weight="3"] { font-size: 0.75rem; }
+
+  .tech-tag:hover {
+    background: var(--color);
+    color: var(--bg);
+    border-color: var(--color);
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 0 20px var(--accent-glow);
+    z-index: 10;
+    animation-play-state: paused;
   }
 
-  .inventory-slot:hover .item-tooltip,
-  .inventory-slot:focus .item-tooltip {
-    opacity: 1;
-    visibility: visible;
+  @keyframes tagFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(15px) rotate(5deg);
+    }
+    60% {
+      opacity: 0.8;
+      transform: translateY(-5px) rotate(-2deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) rotate(0);
+    }
   }
 
-  .tooltip-header {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-bottom: 0.25rem;
+  @keyframes tagFloat {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
   }
 
-  .tooltip-icon {
-    font-size: 1rem;
-  }
-
-  .tooltip-name {
-    font-family: 'Zpix', 'VT323', monospace;
-    font-size: 0.85rem;
-    color: var(--text-primary);
-  }
-
-  .tooltip-rarity {
-    font-family: 'Zpix', 'Press Start 2P', cursive;
-    font-size: 0.5rem;
-    margin-bottom: 0.25rem;
-  }
-
-  .tooltip-stats {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    padding-top: 0.25rem;
-    border-top: 1px solid #250a50;
-  }
-
-  .stat-line {
-    font-family: 'Zpix', 'VT323', monospace;
-    font-size: 0.75rem;
-    color: #55ff55;
-  }
-
-  /* Rarity glow effect */
-  .inventory-slot[data-level="5"] .item-icon {
-    filter: drop-shadow(0 0 4px var(--accent-6)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
-    animation: legendaryGlow 2s ease-in-out infinite;
-  }
-
-  @keyframes legendaryGlow {
-    0%, 100% { filter: drop-shadow(0 0 4px var(--accent-6)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3)); }
-    50% { filter: drop-shadow(0 0 8px var(--accent-6)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3)); }
-  }
-
-  .inventory-slot[data-level="4"] .item-icon {
-    filter: drop-shadow(0 0 2px var(--accent-3)) drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
-  }
-
-  /* Responsive */
   @media (max-width: 640px) {
-    .inventory-grid {
-      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    }
-
-    .item-icon {
-      font-size: 1.25rem;
-    }
-
-    .item-name {
-      font-size: 0.6rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .inventory-grid {
-      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    }
-
-    .item-tooltip {
-      display: none;
-    }
-
-    .item-name {
-      font-size: 0.55rem;
-    }
+    .tech-tag[data-weight="5"] { font-size: 0.85rem; }
+    .tech-tag[data-weight="4"] { font-size: 0.75rem; }
+    .tech-tag[data-weight="3"] { font-size: 0.7rem; }
   }
 </style>
 
 <script>
-  // Sort functionality for inventory
-  const grid = document.getElementById('inventoryGrid');
-  const sortBtn = document.getElementById('sortBtn');
+  // Algorithm-style sorting effect on shuffle button click
+  const cloud = document.getElementById('techCloud');
+  const shuffleBtn = document.getElementById('shuffleBtn');
 
-  if (grid && sortBtn) {
+  if (cloud && shuffleBtn) {
     let sortMode = 0;
-    const sortModes = ['original', 'level-desc', 'level-asc', 'alpha', 'random'];
+    const sortModes = ['original', 'length-asc', 'length-desc', 'weight', 'alpha', 'random'];
     let originalOrder: HTMLElement[] = [];
 
+    // Store original order on load
     document.addEventListener('DOMContentLoaded', () => {
-      originalOrder = Array.from(grid.querySelectorAll('.inventory-slot')) as HTMLElement[];
+      originalOrder = Array.from(cloud.querySelectorAll('.tech-tag')) as HTMLElement[];
     });
 
-    sortBtn.addEventListener('click', () => {
-      const slots = Array.from(grid.querySelectorAll('.inventory-slot')) as HTMLElement[];
+    shuffleBtn.addEventListener('click', () => {
+      const tags = Array.from(cloud.querySelectorAll('.tech-tag')) as HTMLElement[];
 
-      // Animate out
-      slots.forEach((slot) => {
-        slot.style.transform = 'scale(0.8)';
-        slot.style.opacity = '0';
+      // Animate all tags out
+      tags.forEach((tag) => {
+        tag.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        tag.style.transform = 'translateY(-20px) rotate(5deg)';
+        tag.style.opacity = '0';
       });
 
+      // Rotate button
+      shuffleBtn.style.transform = 'rotate(360deg)';
       setTimeout(() => {
+        shuffleBtn.style.transform = '';
+      }, 300);
+
+      setTimeout(() => {
+        // Sort based on current mode
         sortMode = (sortMode + 1) % sortModes.length;
-        let sorted = [...slots];
+        let sorted = [...tags];
 
         switch (sortModes[sortMode]) {
           case 'original':
             sorted = [...originalOrder];
             break;
-          case 'level-desc':
-            sorted.sort((a, b) =>
-              parseInt(b.getAttribute('data-level') || '0') -
-              parseInt(a.getAttribute('data-level') || '0')
-            );
+          case 'length-asc':
+            sorted.sort((a, b) => (a.textContent?.length || 0) - (b.textContent?.length || 0));
             break;
-          case 'level-asc':
-            sorted.sort((a, b) =>
-              parseInt(a.getAttribute('data-level') || '0') -
-              parseInt(b.getAttribute('data-level') || '0')
-            );
+          case 'length-desc':
+            sorted.sort((a, b) => (b.textContent?.length || 0) - (a.textContent?.length || 0));
+            break;
+          case 'weight':
+            sorted.sort((a, b) => parseInt(b.getAttribute('data-weight') || '0') - parseInt(a.getAttribute('data-weight') || '0'));
             break;
           case 'alpha':
-            sorted.sort((a, b) => {
-              const nameA = a.querySelector('.item-name')?.textContent || '';
-              const nameB = b.querySelector('.item-name')?.textContent || '';
-              return nameA.localeCompare(nameB);
-            });
+            sorted.sort((a, b) => (a.textContent || '').localeCompare(b.textContent || ''));
             break;
           case 'random':
             for (let i = sorted.length - 1; i > 0; i--) {
@@ -440,46 +233,17 @@ const rarityKeys: Record<number, string> = {
             break;
         }
 
-        // Re-append
-        sorted.forEach(slot => grid.appendChild(slot));
+        // Re-append in new order
+        sorted.forEach(tag => cloud.appendChild(tag));
 
-        // Animate in with new animation
-        sorted.forEach((slot, i) => {
-          slot.style.animation = 'none';
-          slot.offsetHeight; // Trigger reflow
-          slot.style.animation = `slotFadeIn 0.4s steps(4) forwards ${i * 0.02}s`;
+        // Animate back in with stagger
+        sorted.forEach((tag, i) => {
+          setTimeout(() => {
+            tag.style.transform = 'translateY(0) rotate(0)';
+            tag.style.opacity = '1';
+          }, i * 25);
         });
-      }, 200);
+      }, 300);
     });
   }
-
-  // Update tooltips on language change
-  function updateInventoryText(lang: string) {
-    if (!window.__I18N__) return;
-    const { t } = window.__I18N__;
-
-    // Update rarity text
-    document.querySelectorAll('.tooltip-rarity[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (key) el.textContent = t(lang, key);
-    });
-
-    // Update attack/defense text
-    document.querySelectorAll('.stat-line[data-attack]').forEach(el => {
-      const slot = el.closest('.inventory-slot');
-      const level = slot?.getAttribute('data-level') || '0';
-      el.textContent = `⚔️ ${t(lang, 'inventory.attack')} +${parseInt(level) * 5}`;
-    });
-
-    document.querySelectorAll('.stat-line[data-defense]').forEach(el => {
-      const slot = el.closest('.inventory-slot');
-      const level = slot?.getAttribute('data-level') || '0';
-      el.textContent = `🛡️ ${t(lang, 'inventory.defense')} +${parseInt(level) * 2}`;
-    });
-  }
-
-  // Listen for language change
-  window.addEventListener('langChange', (e: CustomEvent) => {
-    updateInventoryText(e.detail.lang);
-  });
 </script>
