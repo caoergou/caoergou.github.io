@@ -10,27 +10,15 @@ export default defineConfig({
     react(),
     mdx(),
     sitemap({
-      i18n: {
-        defaultLocale: 'zh',
-        locales: {
-          zh: 'zh-CN',
-          en: 'en-US',
-        },
-      },
       filter: (page) => true,
       customPages: [
         'https://eric.run.place/',
         'https://eric.run.place/blog/',
-        // MermZen 子路径
         'https://eric.run.place/MermZen/',
-        'https://eric.run.place/MermZen/blog/zh/',
-        'https://eric.run.place/MermZen/blog/en/',
-        // Windows XP
         'https://eric.run.place/windows-xp/',
       ],
       changefreq: 'weekly',
       priority: 0.7,
-      lastmod: new Date(),
     }),
   ],
   markdown: {
