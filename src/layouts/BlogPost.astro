@@ -3,9 +3,35 @@ interface Props {
   title: string;
   date: string;
   description?: string;
+  slug?: string;
 }
 
-const { title, date, description } = Astro.props;
+const { title, date, description, slug } = Astro.props;
+const siteUrl = 'https://eric.run.place';
+const canonicalUrl = slug ? `${siteUrl}/blog/${slug}/` : `${siteUrl}/blog/`;
+const ogImage = `${siteUrl}/og-image.png`;
+const metaDescription = description || `${title} - Eric Cao 的技术文章`;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title,
+  "description": metaDescription,
+  "url": canonicalUrl,
+  "datePublished": date,
+  "dateModified": date,
+  "image": ogImage,
+  "author": {
+    "@type": "Person",
+    "name": "Eric Cao",
+    "url": siteUrl
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Eric Cao",
+    "url": siteUrl
+  }
+};
 ---
 
 <!DOCTYPE html>
@@ -14,7 +40,37 @@ const { title, date, description } = Astro.props;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title} - Eric Cao</title>
-  <meta name="description" content={description || title}>
+  <meta name="description" content={metaDescription}>
+  <meta name="author" content="Eric Cao">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href={canonicalUrl}>
+
+  <!-- Sitemap -->
+  <link rel="sitemap" type="application/xml" href="/sitemap-index.xml">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content={canonicalUrl}>
+  <meta property="og:title" content={`${title} - Eric Cao`}>
+  <meta property="og:description" content={metaDescription}>
+  <meta property="og:image" content={ogImage}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Eric Cao">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="article:published_time" content={date}>
+  <meta property="article:author" content="Eric Cao">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={`${title} - Eric Cao`}>
+  <meta name="twitter:description" content={metaDescription}>
+  <meta name="twitter:image" content={ogImage}>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">

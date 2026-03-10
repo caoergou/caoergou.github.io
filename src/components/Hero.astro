@@ -230,6 +230,8 @@ const nameChars = profile.data.name.split('');
 <script is:inline>
   // Update hero text on language change
   function updateHeroText(lang) {
+    // Sync html[lang] for accessibility and SEO
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
     const taglineEl = document.querySelector('[data-tagline-zh]');
     if (taglineEl) {
       taglineEl.textContent = taglineEl.getAttribute(`data-tagline-${lang}`) || '';

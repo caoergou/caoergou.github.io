@@ -13,6 +13,31 @@ interface Props {
 
 const { profile, projects, thoughts } = Astro.props;
 const siteUrl = 'https://eric.run.place';
+const canonicalUrl = `${siteUrl}/`;
+const ogImage = `${siteUrl}/og-image.png`;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Eric Cao",
+  "url": siteUrl,
+  "sameAs": [
+    "https://github.com/caoergou",
+    "https://jike.city/ergou"
+  ],
+  "jobTitle": "Software Developer",
+  "knowsAbout": ["Python", "TypeScript", "AI Agent", "Airflow", "Big Data", "Dify"],
+  "email": "itsericsmail@gmail.com"
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Eric Cao",
+  "url": siteUrl,
+  "description": "一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。",
+  "author": { "@type": "Person", "name": "Eric Cao" }
+};
 ---
 
 <!DOCTYPE html>
@@ -31,23 +56,32 @@ const siteUrl = 'https://eric.run.place';
 
   <!-- Open Graph / Social -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content={siteUrl}>
+  <meta property="og:url" content={canonicalUrl}>
   <meta property="og:title" content="Eric Cao — 在AI席卷的浪潮中努力狗刨">
   <meta property="og:description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。">
+  <meta property="og:image" content={ogImage}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Eric Cao — 开发者个人主页">
   <meta property="og:site_name" content="Eric Cao">
   <meta property="og:locale" content="zh_CN">
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:url" content={siteUrl}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content={canonicalUrl}>
   <meta name="twitter:title" content="Eric Cao — 在AI席卷的浪潮中努力狗刨">
   <meta name="twitter:description" content="一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。">
+  <meta name="twitter:image" content={ogImage}>
 
   <!-- Canonical URL -->
-  <link rel="canonical" href={siteUrl}>
+  <link rel="canonical" href={canonicalUrl}>
 
   <!-- Sitemap -->
   <link rel="sitemap" type="application/xml" href="/sitemap-index.xml">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;500&family=Noto+Serif+SC:wght@400&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
