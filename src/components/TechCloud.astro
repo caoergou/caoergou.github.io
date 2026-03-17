@@ -152,11 +152,6 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
     animation: pixelBlink 1.5s steps(2) infinite;
   }
 
-  /* ===== Zelda Pixel Tags ===== */
-  .tech-cloud {
-    /* No transition here — sort flash is handled by JS opacity toggle */
-  }
-
   .tech-tag {
     display: inline-block;
     font-family: 'VT323', monospace;
@@ -229,14 +224,18 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
     shuffleBtn.addEventListener('click', () => {
       const tags = Array.from(cloud.querySelectorAll('.tech-tag')) as HTMLElement[];
 
-      // Pixel flash: cloud blinks off instantly
-      cloud.style.opacity = '0';
-      cloud.style.pointerEvents = 'none';
+      // Animate all tags out (pixel-step style)
+      tags.forEach((tag) => {
+        tag.style.transition = 'all 0.15s step-end';
+        tag.style.transform = 'translateY(-16px)';
+        tag.style.opacity = '0';
+      });
 
-      // Button press feedback (pixel push-down)
+      // Button press feedback
       (shuffleBtn as HTMLElement).style.transform = 'translate(2px, 2px)';
-      (shuffleBtn as HTMLElement).style.boxShadow =
-        '1px 0 0 var(--accent),-1px 0 0 var(--accent),0 1px 0 var(--accent),0 -1px 0 var(--accent)';
+      setTimeout(() => {
+        (shuffleBtn as HTMLElement).style.transform = '';
+      }, 150);
 
       setTimeout(() => {
         // Advance sort mode
@@ -270,22 +269,17 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
         // Update mode label
         if (sortModeEl) sortModeEl.textContent = sortModeNames[sortMode];
 
-        // Re-append in new order — clear any leftover inline styles from previous sorts
-        sorted.forEach(tag => {
-          tag.style.transform = '';
-          tag.style.opacity = '';
-          tag.style.transition = '';
-          cloud.appendChild(tag);
+        // Re-append in new order
+        sorted.forEach(tag => cloud.appendChild(tag));
+
+        // Animate back in with pixel stagger
+        sorted.forEach((tag, i) => {
+          setTimeout(() => {
+            tag.style.transform = 'translateY(0)';
+            tag.style.opacity = '1';
+          }, i * 20);
         });
-
-        // Pixel flash: cloud blinks back on
-        cloud.style.opacity = '1';
-        cloud.style.pointerEvents = '';
-
-        // Restore button
-        (shuffleBtn as HTMLElement).style.transform = '';
-        (shuffleBtn as HTMLElement).style.boxShadow = '';
-      }, 110);
+      }, 150);
     });
   }
 </script>
