@@ -50,17 +50,11 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
       </span>
     ))}
   </div>
-  <button class="shuffle-btn" id="shuffleBtn" aria-label="Shuffle tags" title="点击排序">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="2" y="2" width="8" height="8" rx="1"/>
-      <rect x="14" y="2" width="8" height="8" rx="1"/>
-      <rect x="2" y="14" width="8" height="8" rx="1"/>
-      <rect x="14" y="14" width="8" height="8" rx="1"/>
-      <circle cx="6" cy="6" r="1" fill="currentColor"/>
-      <circle cx="18" cy="6" r="1" fill="currentColor"/>
-      <circle cx="6" cy="18" r="1" fill="currentColor"/>
-      <circle cx="18" cy="18" r="1" fill="currentColor"/>
-    </svg>
+  <button class="zelda-sort-btn" id="shuffleBtn" aria-label="Sort skills">
+    <span class="sort-gem">◆</span>
+    <span class="sort-label">SORT</span>
+    <span class="sort-mode-name" id="sortModeName">ORIGINAL</span>
+    <span class="sort-cursor">▼</span>
   </button>
 </div>
 
@@ -83,31 +77,79 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
     flex: 1;
   }
 
-  .shuffle-btn {
-    width: 2rem;
-    height: 2rem;
+  /* ===== Zelda Crystal Sort Button ===== */
+  .zelda-sort-btn {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
+    gap: 0.2rem;
+    padding: 0.5rem 0.6rem;
+    min-width: 52px;
+    background: var(--surface);
+    border: none;
+    box-shadow:
+      3px 0 0 var(--accent-3),
+      -3px 0 0 var(--accent-3),
+      0 3px 0 var(--accent-3),
+      0 -3px 0 var(--accent-3);
+    color: var(--accent-3);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.15s step-end;
     flex-shrink: 0;
     margin-top: 0.5rem;
   }
 
-  .shuffle-btn:hover {
-    border-color: var(--accent);
+  .zelda-sort-btn:hover {
+    box-shadow:
+      3px 0 0 var(--accent),
+      -3px 0 0 var(--accent),
+      0 3px 0 var(--accent),
+      0 -3px 0 var(--accent);
     color: var(--accent);
-    box-shadow: 0 0 15px var(--accent-glow);
-    transform: rotate(15deg);
+    transform: translate(-1px, -1px);
   }
 
-  .shuffle-btn svg {
-    width: 16px;
-    height: 16px;
+  .zelda-sort-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow:
+      1px 0 0 var(--accent),
+      -1px 0 0 var(--accent),
+      0 1px 0 var(--accent),
+      0 -1px 0 var(--accent);
+  }
+
+  .sort-gem {
+    font-size: 1rem;
+    display: block;
+    animation: gemGlow 2s steps(2) infinite;
+  }
+
+  @keyframes gemGlow {
+    0%, 100% { color: var(--accent-3); }
+    50% { color: var(--accent-5); }
+  }
+
+  .sort-label {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.28rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .sort-mode-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.28rem;
+    color: var(--accent-2);
+    letter-spacing: 0.05em;
+    text-align: center;
+    line-height: 1.5;
+    white-space: pre-line;
+  }
+
+  .sort-cursor {
+    font-size: 0.45rem;
+    color: var(--text-muted);
+    animation: pixelBlink 1.5s steps(2) infinite;
   }
 
   .tech-tag {
@@ -174,13 +216,16 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
 </style>
 
 <script>
-  // Algorithm-style sorting effect on shuffle button click
+  // Zelda crystal sort — cycles through sort modes on click
   const cloud = document.getElementById('techCloud');
   const shuffleBtn = document.getElementById('shuffleBtn');
+  const sortModeEl = document.getElementById('sortModeName');
 
   if (cloud && shuffleBtn) {
     let sortMode = 0;
     const sortModes = ['original', 'length-asc', 'length-desc', 'weight', 'alpha', 'random'];
+    // Zelda-flavored mode labels (two lines via \n)
+    const sortModeNames = ['ORIGINAL', 'SHORT\n▲', 'LONG\n▼', 'BY\nPOWER', 'A→Z\nORDER', 'CHAOS\nMODE!'];
     let originalOrder: HTMLElement[] = [];
 
     // Store original order on load
@@ -191,21 +236,21 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
     shuffleBtn.addEventListener('click', () => {
       const tags = Array.from(cloud.querySelectorAll('.tech-tag')) as HTMLElement[];
 
-      // Animate all tags out
+      // Animate all tags out (pixel-step style)
       tags.forEach((tag) => {
-        tag.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-        tag.style.transform = 'translateY(-20px) rotate(5deg)';
+        tag.style.transition = 'all 0.15s step-end';
+        tag.style.transform = 'translateY(-16px)';
         tag.style.opacity = '0';
       });
 
-      // Rotate button
-      shuffleBtn.style.transform = 'rotate(360deg)';
+      // Button press feedback
+      (shuffleBtn as HTMLElement).style.transform = 'translate(2px, 2px)';
       setTimeout(() => {
-        shuffleBtn.style.transform = '';
-      }, 300);
+        (shuffleBtn as HTMLElement).style.transform = '';
+      }, 150);
 
       setTimeout(() => {
-        // Sort based on current mode
+        // Advance sort mode
         sortMode = (sortMode + 1) % sortModes.length;
         let sorted = [...tags];
 
@@ -233,17 +278,20 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
             break;
         }
 
+        // Update mode label
+        if (sortModeEl) sortModeEl.textContent = sortModeNames[sortMode];
+
         // Re-append in new order
         sorted.forEach(tag => cloud.appendChild(tag));
 
-        // Animate back in with stagger
+        // Animate back in with pixel stagger
         sorted.forEach((tag, i) => {
           setTimeout(() => {
-            tag.style.transform = 'translateY(0) rotate(0)';
+            tag.style.transform = 'translateY(0)';
             tag.style.opacity = '1';
-          }, i * 25);
+          }, i * 20);
         });
-      }, 300);
+      }, 150);
     });
   }
 </script>

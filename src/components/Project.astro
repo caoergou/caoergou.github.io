@@ -7,19 +7,30 @@ interface Props {
 
 const { project } = Astro.props;
 
+// Region icon by project type (dungeon room theme)
+const typeIcons: Record<string, string> = {
+  linked: '🏰',
+  personal: '⚔️',
+  os: '🗝️',
+};
+const regionIcon = typeIcons[project.data.type] || '🏛';
+
 // Extract repo name from URL for live star fetching
 const repoName = project.data.url?.split('github.com/')[1] || '';
 ---
 
 <article class="project" data-type={project.data.type} data-repo={repoName}>
   <div class="project-header">
-    {project.data.url ? (
-      <a href={project.data.url} class="project-name" target="_blank" rel="noopener">
-        {project.data.title}
-      </a>
-    ) : (
-      <h3 class="project-name">{project.data.title}</h3>
-    )}
+    <div class="project-title-row">
+      <span class="region-icon">{regionIcon}</span>
+      {project.data.url ? (
+        <a href={project.data.url} class="project-name" target="_blank" rel="noopener">
+          {project.data.title}
+        </a>
+      ) : (
+        <h3 class="project-name">{project.data.title}</h3>
+      )}
+    </div>
     <span class="project-stars" data-stars={project.data.stars || 0}>
       ★ {project.data.stars || 0}
     </span>
@@ -85,151 +96,219 @@ const repoName = project.data.url?.split('github.com/')[1] || '';
 </script>
 
 <style>
+  /* ===== Zelda Dungeon Room Style ===== */
   .project {
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.75rem;
-    padding: 1.25rem 1.5rem;
+    padding: 1.1rem 1.25rem;
     margin-bottom: 0.5rem;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid transparent;
-    transition: all 0.3s ease;
+    box-shadow:
+      4px 0 0 var(--border),
+      -4px 0 0 var(--border),
+      0 4px 0 var(--border),
+      0 -4px 0 var(--border);
     position: relative;
     cursor: pointer;
+    transition: all 0.15s step-end;
   }
 
   .project:hover {
-    border-left-color: var(--accent);
+    transform: translate(-2px, -2px);
     background: var(--bg-secondary);
-    transform: translateX(4px);
-    box-shadow: -4px 0 20px var(--accent-glow);
+    box-shadow:
+      6px 0 0 var(--accent),
+      -6px 0 0 var(--accent),
+      0 6px 0 var(--accent),
+      0 -6px 0 var(--accent);
+  }
+
+  .project:active {
+    transform: translate(2px, 2px);
+    box-shadow:
+      2px 0 0 var(--accent),
+      -2px 0 0 var(--accent),
+      0 2px 0 var(--accent),
+      0 -2px 0 var(--accent);
   }
 
   .project-header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.75rem;
+  }
+
+  .project-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .region-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+    transition: transform 0.15s step-end;
+  }
+
+  .project:hover .region-icon {
+    transform: scale(1.2);
   }
 
   .project-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
+    font-family: 'VT323', monospace;
+    font-size: 1.25rem;
+    font-weight: 400;
     color: var(--text-primary);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.15s step-end;
     cursor: pointer;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
   }
 
   .project-name:hover {
     color: var(--accent);
-    text-shadow: 0 0 10px var(--accent-glow);
   }
 
   .project-stars {
-    font-family: 'Space Grotesk', monospace;
-    font-size: 0.75rem;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.45rem;
     color: var(--accent);
     white-space: nowrap;
-    font-weight: 700;
-    text-shadow: 0 0 10px var(--accent-glow);
+    flex-shrink: 0;
     opacity: 0.6;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.15s step-end;
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 217, 61, 0.08);
+    box-shadow:
+      2px 0 0 var(--border),
+      -2px 0 0 var(--border),
+      0 2px 0 var(--border),
+      0 -2px 0 var(--border);
   }
 
   .project-stars.loaded {
     opacity: 1;
-    animation: starPop 0.3s ease;
+    animation: starPop 0.15s step-end;
   }
 
   @keyframes starPop {
-    0% { transform: scale(1.3); }
-    100% { transform: scale(1); }
-  }
-
-  .project-stars::before {
-    content: '★ ';
+    0% { transform: scale(1.3); color: var(--accent-2); }
+    100% { transform: scale(1); color: var(--accent); }
   }
 
   .project-links {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.1rem;
   }
 
   .project-demo-link {
-    font-size: 0.7rem;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.4rem;
     color: var(--accent-3);
     text-decoration: none;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    cursor: pointer;
+    letter-spacing: 0.05em;
+    padding: 0.3rem 0.6rem;
+    box-shadow:
+      2px 0 0 var(--accent-3),
+      -2px 0 0 var(--accent-3),
+      0 2px 0 var(--accent-3),
+      0 -2px 0 var(--accent-3);
+    transition: all 0.15s step-end;
+    display: inline-block;
   }
 
   .project-demo-link:hover {
     color: var(--accent);
-    text-shadow: 0 0 10px var(--accent-glow);
+    box-shadow:
+      2px 0 0 var(--accent),
+      -2px 0 0 var(--accent),
+      0 2px 0 var(--accent),
+      0 -2px 0 var(--accent);
+    transform: translate(-1px, -1px);
   }
 
   .project-desc {
-    font-size: 0.85rem;
+    font-family: 'VT323', monospace;
+    font-size: 1.05rem;
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.5;
     margin: 0;
+    padding-left: 0.25rem;
+    border-left: 3px solid var(--border);
   }
 
   .project-tags {
     display: flex;
-    gap: 0.4rem;
+    gap: 0.35rem;
     flex-wrap: wrap;
   }
 
+  /* Inventory-style pixel tags */
   .tag {
-    font-size: 0.65rem;
-    padding: 0.2rem 0.6rem;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.3rem;
+    padding: 0.25rem 0.5rem;
     background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-    font-weight: 600;
-    font-family: 'Space Grotesk', sans-serif;
-    text-transform: uppercase;
+    box-shadow:
+      2px 0 0 var(--border),
+      -2px 0 0 var(--border),
+      0 2px 0 var(--border),
+      0 -2px 0 var(--border);
+    color: var(--text-muted);
     letter-spacing: 0.05em;
-    transition: all 0.2s ease;
+    text-transform: uppercase;
+    transition: all 0.15s step-end;
   }
 
   .tag:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    box-shadow: 0 0 10px var(--accent-glow);
+    color: var(--accent-2);
+    box-shadow:
+      2px 0 0 var(--accent-2),
+      -2px 0 0 var(--accent-2),
+      0 2px 0 var(--accent-2),
+      0 -2px 0 var(--accent-2);
   }
 
   @media (max-width: 640px) {
     .project {
-      padding: 1rem;
+      padding: 0.9rem 1rem;
     }
     .project-header {
       flex-direction: column;
       align-items: flex-start;
+      gap: 0.4rem;
+    }
+    .project-name {
+      font-size: 1.1rem;
     }
   }
 
-  /* Linked vs Personal project visual distinction */
-  .project[data-type="linked"] {
-    border-left-color: var(--accent-3);
-  }
-
+  /* Type-specific accent colors on pixel border */
   .project[data-type="linked"]:hover {
-    border-left-color: var(--accent-3);
-    box-shadow: -4px 0 20px rgba(0, 212, 255, 0.2);
-  }
-
-  .project[data-type="personal"] {
-    border-left-color: var(--accent-2);
+    box-shadow:
+      6px 0 0 var(--accent-3),
+      -6px 0 0 var(--accent-3),
+      0 6px 0 var(--accent-3),
+      0 -6px 0 var(--accent-3);
   }
 
   .project[data-type="personal"]:hover {
-    border-left-color: var(--accent-2);
-    box-shadow: -4px 0 20px rgba(255, 0, 102, 0.2);
+    box-shadow:
+      6px 0 0 var(--accent-2),
+      -6px 0 0 var(--accent-2),
+      0 6px 0 var(--accent-2),
+      0 -6px 0 var(--accent-2);
+  }
+
+  .project[data-type="os"]:hover {
+    box-shadow:
+      6px 0 0 var(--accent-5),
+      -6px 0 0 var(--accent-5),
+      0 6px 0 var(--accent-5),
+      0 -6px 0 var(--accent-5);
   }
 </style>
