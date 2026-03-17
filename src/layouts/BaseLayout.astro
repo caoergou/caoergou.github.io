@@ -5,7 +5,7 @@ import Project from '../components/Project.astro';
 import Thought from '../components/Thought.astro';
 import TechCloud from '../components/TechCloud.astro';
 import GameEggs from '../components/GameEggs.astro';
-import { t, getClientTranslations, getI18nClientScript, type Lang } from '../i18n';
+import { t, getClientTranslations, getI18nClientScript, getTranslations, type Lang } from '../i18n';
 
 interface Props {
   profile: CollectionEntry<'profile'>;
@@ -22,6 +22,9 @@ const getTranslation = (lang: Lang, key: string) => t(lang, key);
 // Get translations for client-side injection
 const clientTranslations = getClientTranslations();
 const i18nClientScript = getI18nClientScript();
+
+// SSR default content (Chinese) for coming-soon section
+const zhComingSoonItems = getTranslations('zh').comingSoon.items;
 ---
 
 <!DOCTYPE html>
@@ -554,7 +557,9 @@ const i18nClientScript = getI18nClientScript();
       <section id="coming" class="section coming-soon" data-achievement="coming">
         <h2 class="section-title" data-i18n="comingSoon.title">{getTranslation('zh', 'comingSoon.title')}</h2>
         <div class="coming-list" id="coming-list">
-          {/* Items will be rendered by JavaScript for i18n support */}
+          {zhComingSoonItems.map((item) => (
+            <div class="coming-item">{item}</div>
+          ))}
         </div>
       </section>
 
@@ -576,10 +581,7 @@ const i18nClientScript = getI18nClientScript();
   <!-- 游戏彩蛋系统 -->
   <GameEggs />
 
-  <!-- i18n: Inject translations from server -->
-  <script is:inline>
-    window.__I18N_TRANSLATIONS__ = JSON.parse(document.currentScript.getAttribute('data-translations'));
-  </script>
+  <!-- i18n runtime: translations injected as data-translations attribute -->
   <script is:inline data-translations={clientTranslations} set:html={i18nClientScript} />
 </body>
 </html>

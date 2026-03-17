@@ -96,8 +96,9 @@ export function getClientTranslations(): string {
 // Get the client-side i18n runtime script (shared logic without translations)
 export function getI18nClientScript(): string {
   return `
-// i18n runtime - translations injected via set:html
-const translations = window.__I18N_TRANSLATIONS__;
+// i18n runtime - translations read from data-translations attribute on this script tag
+const _i18nScript = document.currentScript;
+const translations = JSON.parse(_i18nScript ? _i18nScript.getAttribute('data-translations') : '{}');
 
 // Helper to get nested value
 function getNestedValue(obj, path) {
