@@ -10,7 +10,7 @@ This is my personal website showcasing my profile, projects, and contact informa
 
 ## About
 
-A modern personal website with 3D animations, built with Astro and deployed via GitHub Actions.
+A pixel-art style personal website with Minecraft & Zelda game themes, built with Astro and deployed via GitHub Actions.
 
 ## Contact
 
