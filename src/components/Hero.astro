@@ -1,45 +1,84 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { t } from '../i18n';
 
 interface Props {
   profile: CollectionEntry<'profile'>;
 }
 
 const { profile } = Astro.props;
-const nameChars = profile.data.name.split('');
+
+// Calculate adventure days (from a start date, or estimate from work experience)
+const adventureStartDate = new Date('2020-01-01'); // Example start date
+const today = new Date();
+const adventureDays = Math.floor((today.getTime() - adventureStartDate.getTime()) / (1000 * 60 * 60 * 24));
+
+// Explorer stats
+const stats = {
+  regionsExplored: 5, // Number of projects
+  skillsUnlocked: 12, // Number of tech skills
+  adventureDays: adventureDays
+};
 ---
 
-<section class="hero">
+<section id="hero" class="hero">
   <!-- Top Controls: Language + Theme -->
   <div class="top-controls">
     <button id="langToggle" class="control-btn" aria-label="Switch language">
-      <span class="lang-text" data-zh="中" data-en="EN">中</span>
+      <span class="lang-text" data-i18n="hero.langToggle">{t('zh', 'hero.langToggle')}</span>
     </button>
-    <button id="themeToggle" class="control-btn" aria-label="Toggle theme">
-      <svg class="theme-icon dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <button id="themeToggle" class="control-btn theme-btn" aria-label="Toggle theme">
+      <svg class="theme-icon dark" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
         <circle cx="12" cy="12" r="4"/>
       </svg>
-      <svg class="theme-icon light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg class="theme-icon light" viewBox="0 0 24 24" fill="currentColor">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
   </div>
 
-  <div class="hero-name-wrapper">
-    <h1 class="hero-name" data-text={profile.data.name}>
-      {nameChars.map((char, i) => (
-        char === ' '
-          ? <span class="name-space"></span>
-          : <span class="name-char" style={`--i: ${i}`}>{char}</span>
-      ))}
-    </h1>
-    <div class="hero-identity">
-      <a href="https://github.com/caoergou" target="_blank" rel="noopener" class="hero-username">@caoergou</a>
+  <!-- Adventurer Profile Card -->
+  <div class="adventurer-card">
+    <div class="avatar-frame">
+      <div class="avatar-inner">
+        <span class="avatar-icon">⚔️</span>
+      </div>
+      <div class="level-badge">Lv.{Math.floor(adventureDays / 365 * 10)}</div>
+    </div>
+
+    <div class="adventurer-info">
+      <div class="name-row">
+        <h1 class="hero-name">{profile.data.name}</h1>
+        <a href="https://github.com/caoergou" target="_blank" rel="noopener" class="hero-username">@caoergou</a>
+      </div>
+      <div class="hero-title" data-i18n="hero.title">{t('zh', 'hero.title')}</div>
     </div>
   </div>
 
-  <blockquote class="hero-tagline serif" data-tagline-zh={profile.data.tagline_zh} data-tagline-en={profile.data.tagline_en}></blockquote>
+  <!-- Explorer Quote -->
+  <blockquote class="hero-tagline" data-tagline-zh={profile.data.tagline.zh} data-tagline-en={profile.data.tagline.en}></blockquote>
+
+  <!-- Adventure Stats -->
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-icon">🗺️</span>
+      <span class="stat-value">{stats.regionsExplored}</span>
+      <span class="stat-label" data-i18n="stats.regions">{t('zh', 'stats.regions')}</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">⚔️</span>
+      <span class="stat-value">{stats.skillsUnlocked}</span>
+      <span class="stat-label" data-i18n="stats.skills">{t('zh', 'stats.skills')}</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">🌟</span>
+      <span class="stat-value">{stats.adventureDays.toLocaleString()}+</span>
+      <span class="stat-label" data-i18n="stats.days">{t('zh', 'stats.days')}</span>
+    </div>
+  </div>
+
+  <!-- Social Links as Quick Actions -->
   <div class="hero-links">
     {profile.data.social_links.map((link) => (
       <a
@@ -48,28 +87,17 @@ const nameChars = profile.data.name.split('');
         target={link.url.startsWith('http') ? '_blank' : '_self'}
         rel={link.url.startsWith('http') ? 'noopener noreferrer' : ''}
       >
-        {link.icon === 'github' ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-          </svg>
-        ) : link.icon === 'jike' ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-        ) : link.icon === 'email' ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        ) : null}
-        {link.name}
+        <span class="link-icon">
+          {link.icon === 'github' ? '🐙' : link.icon === 'jike' ? '💬' : link.icon === 'email' ? '📨' : '🔗'}
+        </span>
+        <span class="link-text">{link.name}</span>
       </a>
     ))}
   </div>
 </section>
 
 <style>
-  /* Top Controls */
+  /* ===== Top Controls - Pixel Style ===== */
   .top-controls {
     position: fixed;
     top: 1.5rem;
@@ -80,27 +108,41 @@ const nameChars = profile.data.name.split('');
   }
 
   .control-btn {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(13, 13, 13, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
+    background: var(--surface);
+    border: none;
+    box-shadow:
+      3px 0 0 var(--border),
+      -3px 0 0 var(--border),
+      0 3px 0 var(--border),
+      0 -3px 0 var(--border);
+    color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    transition: all 0.15s step-end;
   }
 
   .control-btn:hover {
-    border-color: var(--accent);
     color: var(--accent);
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow:
+      3px 0 0 var(--accent),
+      -3px 0 0 var(--accent),
+      0 3px 0 var(--accent),
+      0 -3px 0 var(--accent);
+  }
+
+  .control-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow:
+      1px 0 0 var(--accent),
+      -1px 0 0 var(--accent),
+      0 1px 0 var(--accent),
+      0 -1px 0 var(--accent);
   }
 
   .lang-text {
@@ -108,147 +150,369 @@ const nameChars = profile.data.name.split('');
   }
 
   .theme-icon {
-    width: 18px;
-    height: 18px;
-    transition: all 0.3s ease;
+    width: 16px;
+    height: 16px;
   }
 
   .theme-icon.light {
     display: none;
   }
 
-  .light-mode .theme-icon.dark {
+  :global(.light-mode) .theme-icon.dark {
     display: none;
   }
 
-  .light-mode .theme-icon.light {
+  :global(.light-mode) .theme-icon.light {
     display: block;
   }
 
-  /* Light mode control buttons */
-  :global(.light-mode) .control-btn {
-    background: rgba(248, 249, 250, 0.9);
+  /* ===== Adventurer Card ===== */
+  .adventurer-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
   }
 
-  .hero-name-wrapper {
+  /* Pixel Avatar Frame */
+  .avatar-frame {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .avatar-inner {
+    width: 64px;
+    height: 64px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      4px 0 0 var(--border),
+      -4px 0 0 var(--border),
+      0 4px 0 var(--border),
+      0 -4px 0 var(--border);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.15s step-end;
+  }
+
+  .avatar-inner:hover {
+    box-shadow:
+      4px 0 0 var(--accent-3),
+      -4px 0 0 var(--accent-3),
+      0 4px 0 var(--accent-3),
+      0 -4px 0 var(--accent-3);
+  }
+
+  .avatar-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 4px,
+        rgba(255, 217, 61, 0.1) 4px,
+        rgba(255, 217, 61, 0.1) 8px
+      );
+  }
+
+  .avatar-icon {
+    font-size: 1.75rem;
+    filter: drop-shadow(2px 2px 0 var(--border));
+  }
+
+  .level-badge {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.4rem;
+    padding: 2px 6px;
+    box-shadow:
+      2px 0 0 rgba(0,0,0,0.3),
+      -2px 0 0 rgba(0,0,0,0.3),
+      0 2px 0 rgba(0,0,0,0.3),
+      0 -2px 0 rgba(0,0,0,0.3);
+    white-space: nowrap;
+  }
+
+  /* Name and Title */
+  .adventurer-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .name-row {
     display: flex;
     align-items: baseline;
-    gap: 1rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
+    margin-bottom: 0.25rem;
   }
 
   .hero-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(2rem, 8vw, 3.5rem);
-    font-weight: 900;
-    letter-spacing: -0.05em;
-    line-height: 1;
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+    line-height: 1.3;
     color: var(--text-primary);
-    text-transform: uppercase;
-    position: relative;
-    display: inline-flex;
-    cursor: default;
+    text-shadow:
+      3px 3px 0 var(--accent),
+      -1px -1px 0 var(--border);
+    animation: pixelFadeIn 0.8s steps(8) forwards;
   }
 
-  .name-char {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-3) 100%);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: charFloat 3s ease-in-out infinite, gradientShift 4s ease infinite;
-    animation-delay: calc(var(--i) * 0.1s), 0s;
-    transition: transform 0.3s ease, filter 0.3s ease;
-    will-change: transform;
+  .hero-name:hover {
+    animation: heroGlitch 0.5s steps(5) forwards;
   }
 
-  .name-char:hover {
-    animation: none;
-    transform: translateY(-8px) rotate(5deg) scale(1.2);
-    filter: drop-shadow(0 0 20px var(--accent));
+  @keyframes pixelFadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  .name-space {
-    width: 0.3em;
-  }
-
-  @keyframes charFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
-  }
-
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+  /* 塞尔达/像素故障艺术效果 */
+  @keyframes heroGlitch {
+    0%, 70%, 100% {
+      transform: translate(0);
+      text-shadow: 3px 3px 0 var(--accent), -1px -1px 0 var(--border);
+    }
+    15% {
+      transform: translate(-5px, 1px) skewX(-3deg);
+      text-shadow: 4px 4px 0 var(--accent-4), -2px -2px 0 var(--accent-3);
+    }
+    30% {
+      transform: translate(5px, -1px) skewX(3deg);
+      text-shadow: -3px -3px 0 var(--accent-3), 2px 2px 0 var(--accent-4);
+    }
+    50% {
+      transform: translate(-2px, 2px);
+      text-shadow: 2px 2px 0 var(--accent-5), -1px -1px 0 var(--border);
+    }
   }
 
   .hero-username {
-    font-family: 'Space Grotesk', monospace;
-    font-size: clamp(0.8rem, 2.5vw, 1rem);
-    font-weight: 500;
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
     color: var(--text-muted);
     text-decoration: none;
-    padding: 0.2rem 0.5rem;
-    background: transparent;
-    border: none;
-    transition: all 0.3s ease;
-    letter-spacing: 0.02em;
+    padding: 0.15rem 0.4rem;
+    background: var(--surface);
+    box-shadow:
+      2px 0 0 var(--border),
+      -2px 0 0 var(--border),
+      0 2px 0 var(--border),
+      0 -2px 0 var(--border);
+    transition: all 0.15s step-end;
   }
 
   .hero-username:hover {
     color: var(--accent);
-    text-shadow: 0 0 10px var(--accent-glow);
+    box-shadow:
+      2px 0 0 var(--accent),
+      -2px 0 0 var(--accent),
+      0 2px 0 var(--accent),
+      0 -2px 0 var(--accent);
   }
 
-  .hero-identity {
+  .hero-title {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    color: var(--accent-3);
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== Hero Tagline ===== */
+  .hero-tagline {
+    font-family: 'VT323', monospace;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    color: var(--accent-2);
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    max-width: 100%;
+    border-left: 4px solid var(--accent-2);
+    background: linear-gradient(90deg, rgba(107, 203, 119, 0.1) 0%, transparent 100%);
+  }
+
+  /* ===== Adventure Stats ===== */
+  .hero-stats {
     display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--surface);
+    box-shadow:
+      3px 0 0 var(--border),
+      -3px 0 0 var(--border),
+      0 3px 0 var(--border),
+      0 -3px 0 var(--border);
+    margin-bottom: 1.5rem;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.15rem;
+    flex: 1;
   }
 
-  .hero-identity::before {
-    content: '/';
+  .stat-icon {
+    font-size: 1.25rem;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.2));
+  }
+
+  .stat-value {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-shadow: 2px 2px 0 rgba(255, 217, 61, 0.2);
+  }
+
+  .stat-label {
+    font-family: 'VT323', monospace;
+    font-size: 0.85rem;
     color: var(--text-muted);
-    opacity: 0.4;
-    margin-right: 0.25rem;
+    text-align: center;
   }
 
+  /* ===== Hero Links ===== */
+  .hero-links {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0.6rem 0.9rem;
+    background: var(--surface);
+    box-shadow:
+      3px 0 0 var(--border),
+      -3px 0 0 var(--border),
+      0 3px 0 var(--border),
+      0 -3px 0 var(--border);
+    transition: all 0.15s step-end;
+  }
+
+  .hero-link:hover {
+    transform: translate(-2px, -2px);
+    box-shadow:
+      5px 0 0 var(--accent),
+      -5px 0 0 var(--accent),
+      0 5px 0 var(--accent),
+      0 -5px 0 var(--accent);
+  }
+
+  .hero-link:active {
+    transform: translate(2px, 2px);
+    box-shadow:
+      1px 0 0 var(--accent),
+      -1px 0 0 var(--accent),
+      0 1px 0 var(--accent),
+      0 -1px 0 var(--accent);
+  }
+
+  .link-icon {
+    font-size: 1rem;
+    filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.2));
+  }
+
+  .link-text {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* ===== Responsive ===== */
   @media (max-width: 640px) {
-    .hero-name-wrapper {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
     .top-controls {
       top: 1rem;
       right: 1rem;
+    }
+
+    .adventurer-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .name-row {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .hero-stats {
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .stat {
+      min-width: 80px;
+    }
+
+    .hero-links {
+      flex-direction: column;
+    }
+
+    .hero-link {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .avatar-inner {
+      width: 56px;
+      height: 56px;
+    }
+
+    .hero-name {
+      font-size: 1rem;
+    }
+
+    .stat-value {
+      font-size: 0.65rem;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
     }
   }
 </style>
 
 <script is:inline>
-  // Update hero text on language change
+  // Update hero text on language change (uses global __I18N__ from BaseLayout)
   function updateHeroText(lang) {
-    // Sync html[lang] for accessibility and SEO
-    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    // Wait for __I18N__ to be available
+    if (!window.__I18N__) return;
+
+    const { t } = window.__I18N__;
+
+    // Update tagline (from data attributes)
     const taglineEl = document.querySelector('[data-tagline-zh]');
     if (taglineEl) {
       taglineEl.textContent = taglineEl.getAttribute(`data-tagline-${lang}`) || '';
-      taglineEl.style.opacity = '1';
     }
 
-    const quoteEl = document.querySelector('[data-quote-zh]');
-    if (quoteEl) {
-      quoteEl.textContent = quoteEl.getAttribute(`data-quote-${lang}`) || '';
-      quoteEl.style.opacity = '1';
-    }
-
-    // Update lang toggle button text
-    const langText = document.querySelector('.lang-text');
-    if (langText) {
-      langText.textContent = langText.getAttribute(`data-${lang}`) || '中';
-    }
+    // Update elements with data-i18n
+    document.querySelectorAll('.hero [data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const text = t(lang, key);
+      if (text) el.textContent = text;
+    });
   }
 
   // Listen for global language change event
@@ -267,11 +531,11 @@ const nameChars = profile.data.name.split('');
   langToggle.addEventListener('click', () => {
     const currentLang = localStorage.getItem('lang') || 'zh';
     const newLang = currentLang === 'zh' ? 'en' : 'zh';
-    localStorage.setItem('lang', newLang);
-    updateHeroText(newLang);
 
-    // Dispatch global event
-    window.dispatchEvent(new CustomEvent('langChange', { detail: { lang: newLang } }));
+    // Use global updateAllText if available
+    if (window.__I18N__) {
+      window.__I18N__.updateAllText(newLang);
+    }
   });
 
   // Theme switching
@@ -288,232 +552,4 @@ const nameChars = profile.data.name.split('');
     const isLight = root.classList.contains('light-mode');
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
   });
-
-  // === Easter Eggs ===
-
-  // 1. Console Easter Egg
-  console.log('%c嘿，你也是开发者？👀', 'color: #00ff88; font-size: 16px; font-weight: bold;');
-  console.log('%c欢迎来到 Eric 的赛博花园', 'color: #00d4ff; font-size: 13px;');
-  console.log('%c源码在这里: https://github.com/caoergou/caoergou.github.io', 'color: #666; font-size: 12px;');
-  console.log('%c试试 Konami Code 🎮', 'color: #ff0066; font-size: 12px; font-style: italic;');
-
-  // 2. Konami Code: ↑↑↓↓←→←→BA
-  const konamiSequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-  let konamiIndex = 0;
-  document.addEventListener('keydown', (e) => {
-    if (e.key === konamiSequence[konamiIndex]) {
-      konamiIndex++;
-      if (konamiIndex === konamiSequence.length) {
-        konamiIndex = 0;
-        triggerKonami();
-      }
-    } else {
-      konamiIndex = 0;
-    }
-  });
-
-  function triggerKonami() {
-    const msg = document.createElement('div');
-    msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;background:#0d0d0d;border:2px solid #00ff88;padding:2rem 3rem;text-align:center;font-family:monospace;color:#00ff88;box-shadow:0 0 60px rgba(0,255,136,0.5);animation:fadeInUp 0.3s ease;pointer-events:none;';
-    msg.innerHTML = '<div style="font-size:2rem;margin-bottom:0.5rem">🎮 CHEAT CODE ACTIVATED</div><div style="color:#00d4ff;font-size:0.9rem">+30 年开发经验 已解锁</div>';
-    document.body.appendChild(msg);
-    setTimeout(() => msg.remove(), 2500);
-    // Burst effect on name chars
-    document.querySelectorAll('.name-char').forEach((el, i) => {
-      setTimeout(() => {
-        el.style.animation = 'none';
-        el.style.transform = `translateY(-${Math.random()*20+10}px) rotate(${Math.random()*30-15}deg)`;
-        el.style.filter = 'drop-shadow(0 0 15px #00ff88)';
-        setTimeout(() => { el.style.transform = ''; el.style.filter = ''; el.style.animation = ''; }, 600);
-      }, i * 50);
-    });
-  }
-
-  // 3. Click name 10 times
-  let nameClickCount = 0;
-  let nameClickTimer;
-  const heroName = document.querySelector('.hero-name');
-  if (heroName) {
-    heroName.style.cursor = 'pointer';
-    heroName.addEventListener('click', () => {
-      nameClickCount++;
-      clearTimeout(nameClickTimer);
-      nameClickTimer = setTimeout(() => { nameClickCount = 0; }, 2000);
-      if (nameClickCount >= 10) {
-        nameClickCount = 0;
-        const msg = document.createElement('div');
-        msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;background:#0d0d0d;border:2px solid #ff0066;padding:1.5rem 2.5rem;text-align:center;font-family:monospace;color:#ff0066;box-shadow:0 0 60px rgba(255,0,102,0.5);pointer-events:none;';
-        msg.innerHTML = '<div style="font-size:1.5rem">好奇心旺盛的家伙 🐶</div><div style="color:#a0a0a0;font-size:0.8rem;margin-top:0.5rem">连点十下也找到了</div>';
-        document.body.appendChild(msg);
-        setTimeout(() => msg.remove(), 2000);
-      }
-    });
-  }
-
-  // === Mobile Easter Eggs ===
-  const isMobile = 'ontouchstart' in window;
-
-  if (isMobile) {
-    // 4. DeviceOrientation → 网格视差
-    // 倾斜手机，背景网格跟随重力偏移，像赛博空间悬浮在掌心
-    window.addEventListener('deviceorientation', (e) => {
-      const x = (e.gamma || 0) / 45; // -1 ~ 1, 左右倾斜
-      const y = ((e.beta || 0) - 30) / 60; // -1 ~ 1, 前后倾斜
-      document.body.style.setProperty('--grid-offset-x', `${x * 12}px`);
-      document.body.style.setProperty('--grid-offset-y', `${y * 8}px`);
-    }, { passive: true });
-
-    // 5. 双指上划 → RGB 色差分离 Glitch
-    // 赛博风信号干扰，双指滑动是移动端独有操作
-    let twoFingerStartY = null;
-    document.addEventListener('touchstart', (e) => {
-      if (e.touches.length === 2) {
-        twoFingerStartY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-      }
-    }, { passive: true });
-    document.addEventListener('touchend', (e) => {
-      if (twoFingerStartY !== null && e.changedTouches.length >= 1) {
-        const endY = (e.changedTouches[0].clientY);
-        const dy = twoFingerStartY - endY;
-        if (dy > 60) { // 双指向上滑超过 60px
-          triggerGlitch();
-        }
-        twoFingerStartY = null;
-      }
-    }, { passive: true });
-
-    // 6. 摇一摇 → 系统告警终端
-    // 黑客电影里的经典场景，屏幕闪红 + 终端滚动告警
-    let lastShake = 0;
-    let lastX = 0, lastY = 0, lastZ = 0;
-    window.addEventListener('devicemotion', (e) => {
-      const acc = e.accelerationIncludingGravity;
-      if (!acc) return;
-      const dx = Math.abs((acc.x || 0) - lastX);
-      const dy = Math.abs((acc.y || 0) - lastY);
-      const dz = Math.abs((acc.z || 0) - lastZ);
-      lastX = acc.x || 0; lastY = acc.y || 0; lastZ = acc.z || 0;
-      if (dx + dy + dz > 30 && Date.now() - lastShake > 3000) {
-        lastShake = Date.now();
-        triggerSystemAlert();
-      }
-    }, { passive: true });
-  }
-
-  // 网格视差 CSS 支持
-  // 把 body::before 的 background-position 绑定到 CSS 变量
-  const style = document.createElement('style');
-  style.textContent = `
-    body { --grid-offset-x: 0px; --grid-offset-y: 0px; }
-    body::before { background-position: var(--grid-offset-x) var(--grid-offset-y) !important; transition: background-position 0.1s ease-out; }
-  `;
-  document.head.appendChild(style);
-
-  function triggerGlitch() {
-    const overlay = document.createElement('canvas');
-    overlay.width = window.innerWidth;
-    overlay.height = window.innerHeight;
-    overlay.style.cssText = 'position:fixed;top:0;left:0;z-index:9990;pointer-events:none;mix-blend-mode:screen;';
-    document.body.appendChild(overlay);
-    const ctx = overlay.getContext('2d');
-
-    // RGB split: draw page snapshot offset in R/G/B channels
-    const page = document.querySelector('.page');
-    let frame = 0;
-    const glitchInterval = setInterval(() => {
-      ctx.clearRect(0, 0, overlay.width, overlay.height);
-      const shift = Math.random() * 12 - 6;
-      const lineCount = Math.floor(Math.random() * 6) + 2;
-
-      // Horizontal noise bars
-      for (let i = 0; i < lineCount; i++) {
-        const y = Math.random() * overlay.height;
-        const h = Math.random() * 8 + 2;
-        const r = Math.random() > 0.5 ? '#ff006644' : '#00ff8844';
-        ctx.fillStyle = r;
-        ctx.fillRect(0, y, overlay.width, h);
-      }
-
-      // Vertical RGB shift lines
-      ctx.fillStyle = 'rgba(255,0,102,0.06)';
-      ctx.fillRect(shift * 2, 0, overlay.width, overlay.height);
-      ctx.fillStyle = 'rgba(0,212,255,0.06)';
-      ctx.fillRect(-shift * 1.5, 0, overlay.width, overlay.height);
-
-      frame++;
-      if (frame > 12) {
-        clearInterval(glitchInterval);
-        overlay.remove();
-      }
-    }, 50);
-
-    // Glitch the name chars
-    document.querySelectorAll('.name-char').forEach((el, i) => {
-      const orig = el.textContent;
-      const glitchChars = '!@#$%^&*<>/\\|{}[]';
-      let flips = 0;
-      const t = setInterval(() => {
-        el.textContent = glitchChars[Math.floor(Math.random() * glitchChars.length)];
-        flips++;
-        if (flips > 3) { clearInterval(t); el.textContent = orig; }
-      }, 60 + i * 20);
-    });
-
-    showToast('// SIGNAL_CORRUPT — 双指上划触发', '#00d4ff');
-  }
-
-  function triggerSystemAlert() {
-    const terminal = document.createElement('div');
-    terminal.style.cssText = `
-      position:fixed;bottom:0;left:0;right:0;z-index:9995;
-      background:#0d0d0d;border-top:2px solid #ff0066;
-      font-family:monospace;font-size:0.75rem;color:#ff0066;
-      padding:1rem;max-height:40vh;overflow:hidden;
-      pointer-events:none;
-    `;
-
-    const logs = [
-      '> INTRUSION_DETECTED: unknown_device connected',
-      '> SCANNING: 192.168.0.1 ... 192.168.0.255',
-      '> WARNING: anomalous_signal_strength +47dB',
-      '> FIREWALL: rule #404 triggered — motion sensor',
-      '> TRACING: shake_event_origin ...',
-      '> LOCATION: [REDACTED]',
-      '> STATUS: you found the shake easter egg :)',
-      '> SYSTEM: resuming normal operations ...',
-    ];
-
-    document.body.appendChild(terminal);
-
-    // Flash red border on body
-    document.body.style.boxShadow = 'inset 0 0 0 3px #ff0066';
-    setTimeout(() => { document.body.style.boxShadow = ''; }, 800);
-
-    let i = 0;
-    const typeLog = setInterval(() => {
-      if (i >= logs.length) {
-        clearInterval(typeLog);
-        setTimeout(() => {
-          terminal.style.opacity = '0';
-          terminal.style.transition = 'opacity 0.5s';
-          setTimeout(() => terminal.remove(), 500);
-        }, 1000);
-        return;
-      }
-      const line = document.createElement('div');
-      line.style.cssText = i === logs.length - 2 ? 'color:#00ff88' : '';
-      line.textContent = logs[i];
-      terminal.appendChild(line);
-      terminal.scrollTop = terminal.scrollHeight;
-      i++;
-    }, 220);
-  }
-
-  function showToast(text, color = '#00ff88') {
-    const msg = document.createElement('div');
-    msg.style.cssText = `position:fixed;top:5rem;left:50%;transform:translateX(-50%);z-index:9999;background:#0d0d0d;border:1px solid ${color};padding:0.5rem 1rem;font-family:monospace;color:${color};font-size:0.75rem;pointer-events:none;white-space:nowrap;`;
-    msg.textContent = text;
-    document.body.appendChild(msg);
-    setTimeout(() => msg.remove(), 1800);
-  }
 </script>

@@ -1,0 +1,764 @@
+---
+// GameEggs.astro — Zelda + MC 游戏彩蛋系统
+// 包含：Konami Code、成就通知、NPC对话、光标粒子、迷你地图、8-bit音效
+---
+
+<!-- ===== 成就通知容器 ===== -->
+<div id="achievement-container" class="achievement-container" aria-live="polite" aria-atomic="false"></div>
+
+<!-- ===== Konami Code → 三角神力彩蛋覆盖层 ===== -->
+<div id="triforce-overlay" class="triforce-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="You found the Triforce!">
+  <div class="triforce-content">
+    <div class="triforce-symbol" aria-hidden="true">△<br>△△</div>
+    <p class="triforce-title">YOU FOUND THE TRIFORCE!</p>
+    <p class="triforce-hint">↑↑↓↓←→←→BA — Sacred Power Awakened</p>
+    <button id="triforce-close" class="triforce-close">[ PRESS ENTER TO CONTINUE ]</button>
+  </div>
+</div>
+
+<!-- ===== NPC 对话框 ===== -->
+<div id="npc-dialogue" class="npc-dialogue" role="dialog" aria-modal="false" aria-hidden="true" aria-label="NPC Dialogue">
+  <div class="dialogue-portrait" aria-hidden="true">⚔️</div>
+  <div class="dialogue-body">
+    <div class="dialogue-name">Eric · The Developer</div>
+    <div class="dialogue-text" id="dialogue-text" aria-live="polite"></div>
+  </div>
+  <div class="dialogue-arrow" aria-hidden="true">▼</div>
+</div>
+
+<!-- ===== 塞尔达风格迷你地图 ===== -->
+<nav id="mini-map" class="mini-map" aria-label="Adventure Map Navigation">
+  <div class="map-header" aria-hidden="true">
+    <span class="map-icon">🗺</span>
+    <span class="map-title">MAP</span>
+  </div>
+  <ul class="map-list">
+    <li><button class="map-btn active" data-target="hero">◆ SPAWN POINT</button></li>
+    <li><button class="map-btn" data-target="skills">⚔ SKILLS CAVE</button></li>
+    <li><button class="map-btn" data-target="projects">🏛 PROJECT RUINS</button></li>
+    <li><button class="map-btn" data-target="thoughts">🔮 THOUGHT TOWER</button></li>
+    <li><button class="map-btn" data-target="coming">? DARK ZONE</button></li>
+  </ul>
+</nav>
+
+<!-- ===== 光标仙子粒子画布 ===== -->
+<canvas id="sparkle-canvas" class="sparkle-canvas" aria-hidden="true"></canvas>
+
+<style>
+  /* ===== 成就通知 ===== */
+  .achievement-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+    pointer-events: none;
+  }
+
+  .achievement {
+    background: var(--surface);
+    box-shadow:
+      4px 0 0 var(--accent),
+      -4px 0 0 var(--accent),
+      0 4px 0 var(--accent),
+      0 -4px 0 var(--accent);
+    padding: 0.65rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: achievementIn 0.25s steps(3) forwards;
+    max-width: 280px;
+  }
+
+  .achievement-icon {
+    font-size: 1.4rem;
+    filter: drop-shadow(0 0 6px var(--accent));
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .achievement-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .achievement-label {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.35rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .achievement-title {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+
+  @keyframes achievementIn {
+    from { opacity: 0; transform: translateX(24px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes achievementOut {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(24px); }
+  }
+
+  /* ===== 三角神力覆盖层 ===== */
+  .triforce-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.96);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s step-end;
+  }
+
+  .triforce-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .triforce-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    padding: 2rem;
+    animation: triforceAppear 0.5s steps(5) forwards;
+  }
+
+  @keyframes triforceAppear {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .triforce-symbol {
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(2.5rem, 10vw, 5rem);
+    color: var(--accent);
+    line-height: 0.85;
+    text-shadow:
+      0 0 20px var(--accent),
+      0 0 40px var(--accent),
+      0 0 80px rgba(255, 217, 61, 0.4);
+    animation: triforceGlow 2s ease-in-out infinite;
+  }
+
+  @keyframes triforceGlow {
+    0%, 100% {
+      text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+    }
+    50% {
+      text-shadow:
+        0 0 30px var(--accent),
+        0 0 60px var(--accent),
+        0 0 100px rgba(255, 217, 61, 0.7);
+    }
+  }
+
+  .triforce-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(0.6rem, 3vw, 1rem);
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    animation: glitchFlicker 4s steps(1) infinite;
+    margin: 0;
+  }
+
+  @keyframes glitchFlicker {
+    0%, 86%, 100% { transform: translate(0); opacity: 1; color: var(--accent); }
+    87% { transform: translate(-5px, 2px); opacity: 0.7; color: var(--accent-4); }
+    88% { transform: translate(5px, -2px); opacity: 0.9; color: var(--accent-3); }
+    89% { transform: translate(0); opacity: 1; color: var(--accent); }
+  }
+
+  .triforce-hint {
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    color: var(--accent-5);
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  .triforce-close {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.45rem;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    animation: pixelBlink 1s steps(2) infinite;
+    padding: 0.5rem 1rem;
+    transition: color 0.15s step-end;
+  }
+
+  .triforce-close:hover {
+    color: var(--accent);
+  }
+
+  /* ===== NPC 对话框 ===== */
+  .npc-dialogue {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    width: min(560px, 92vw);
+    background: var(--surface);
+    box-shadow:
+      4px 0 0 var(--accent-3),
+      -4px 0 0 var(--accent-3),
+      0 4px 0 var(--accent-3),
+      0 -4px 0 var(--accent-3);
+    padding: 1rem 1.25rem;
+    z-index: 300;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(12px);
+    transition: opacity 0.2s step-end, transform 0.2s step-end;
+    cursor: pointer;
+  }
+
+  .npc-dialogue.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .dialogue-portrait {
+    font-size: 1.75rem;
+    flex-shrink: 0;
+    filter: drop-shadow(2px 2px 0 var(--border));
+    line-height: 1;
+    padding-top: 0.15rem;
+  }
+
+  .dialogue-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .dialogue-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.45rem;
+    color: var(--accent-3);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+  }
+
+  .dialogue-text {
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 1.8rem;
+  }
+
+  .dialogue-arrow {
+    font-size: 0.9rem;
+    color: var(--accent);
+    align-self: flex-end;
+    animation: pixelBlink 0.8s steps(2) infinite;
+    flex-shrink: 0;
+    padding-bottom: 0.1rem;
+  }
+
+  /* ===== 迷你地图 ===== */
+  .mini-map {
+    position: fixed;
+    top: 50%;
+    right: 1.25rem;
+    transform: translateY(-50%);
+    z-index: 100;
+    background: var(--surface);
+    box-shadow:
+      3px 0 0 var(--border),
+      -3px 0 0 var(--border),
+      0 3px 0 var(--border),
+      0 -3px 0 var(--border);
+    padding: 0.65rem 0.8rem;
+    opacity: 0;
+    transition: opacity 0.3s step-end;
+    min-width: 128px;
+  }
+
+  .mini-map.visible {
+    opacity: 1;
+  }
+
+  .map-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .map-icon {
+    font-size: 0.8rem;
+  }
+
+  .map-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.4rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+  }
+
+  .map-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .map-btn {
+    font-family: 'VT323', monospace;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    text-align: left;
+    width: 100%;
+    transition: all 0.15s step-end;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .map-btn:hover {
+    color: var(--accent-2);
+  }
+
+  .map-btn.active {
+    color: var(--accent);
+    background: rgba(255, 217, 61, 0.1);
+    box-shadow:
+      2px 0 0 var(--accent),
+      -2px 0 0 var(--accent);
+  }
+
+  /* ===== 光标粒子画布 ===== */
+  .sparkle-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 900px) {
+    .mini-map {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .achievement-container {
+      right: 0.75rem;
+      bottom: 0.75rem;
+    }
+    .achievement {
+      max-width: 220px;
+    }
+  }
+
+  /* ===== 无障碍：减少动效 ===== */
+  @media (prefers-reduced-motion: reduce) {
+    .triforce-symbol,
+    .triforce-title,
+    .triforce-close,
+    .triforce-content,
+    .dialogue-arrow,
+    .achievement {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  // ============================================================
+  // 1. Konami Code → 三角神力彩蛋
+  // ============================================================
+  (function initKonami() {
+    const KONAMI = [
+      'ArrowUp','ArrowUp','ArrowDown','ArrowDown',
+      'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight',
+      'b','a',
+    ];
+    let idx = 0;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === KONAMI[idx]) {
+        idx++;
+        if (idx === KONAMI.length) {
+          activateTriforce();
+          idx = 0;
+        }
+      } else {
+        idx = (e.key === KONAMI[0]) ? 1 : 0;
+      }
+    });
+
+    function activateTriforce() {
+      const overlay = document.getElementById('triforce-overlay');
+      if (!overlay) return;
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden', 'false');
+      playZeldaFanfare();
+      showAchievement({
+        icon: '👑',
+        label: 'SECRET FOUND',
+        title: 'The Triforce Awakens!',
+      });
+    }
+
+    function closeTriforce() {
+      const overlay = document.getElementById('triforce-overlay');
+      if (!overlay) return;
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    document.getElementById('triforce-close')?.addEventListener('click', closeTriforce);
+    document.addEventListener('keydown', (e) => {
+      const overlay = document.getElementById('triforce-overlay');
+      if (overlay?.classList.contains('active') && (e.key === 'Enter' || e.key === 'Escape')) {
+        closeTriforce();
+      }
+    });
+  })();
+
+  // ============================================================
+  // 2. Web Audio API — 8-bit 音效
+  // ============================================================
+  function playZeldaFanfare() {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioCtx();
+      // 近似塞尔达「获得物品」音效: G5-C6-E6-G6
+      const notes = [
+        { f: 784,  d: 0.10 },
+        { f: 1047, d: 0.10 },
+        { f: 1319, d: 0.10 },
+        { f: 1568, d: 0.45 },
+      ];
+      let t = ctx.currentTime;
+      notes.forEach(({ f, d }) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'square';
+        osc.frequency.value = f;
+        gain.gain.setValueAtTime(0.08, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + d);
+        osc.start(t);
+        osc.stop(t + d);
+        t += d * 0.88;
+      });
+    } catch (_) { /* 静默失败 */ }
+  }
+
+  function playAchievementChime() {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioCtx();
+      const notes = [{ f: 523, d: 0.07 }, { f: 659, d: 0.07 }, { f: 784, d: 0.14 }];
+      let t = ctx.currentTime;
+      notes.forEach(({ f, d }) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'square';
+        osc.frequency.value = f;
+        gain.gain.setValueAtTime(0.06, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + d);
+        osc.start(t);
+        osc.stop(t + d);
+        t += d * 0.9;
+      });
+    } catch (_) { /* 静默失败 */ }
+  }
+
+  function playDialogueBeep() {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'square';
+      osc.frequency.value = 440;
+      gain.gain.setValueAtTime(0.04, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.05);
+    } catch (_) { /* 静默失败 */ }
+  }
+
+  // ============================================================
+  // 3. 成就通知系统
+  // ============================================================
+  const ACHIEVEMENTS: Record<string, { icon: string; label: string; title: string }> = {
+    skills:   { icon: '⚔️', label: 'AREA DISCOVERED',   title: 'Skills Cave Entered!' },
+    projects: { icon: '🏛️', label: 'DUNGEON UNLOCKED',  title: 'Project Ruins Found!' },
+    thoughts: { icon: '🔮', label: 'QUEST DISCOVERED',  title: 'Thought Tower Revealed!' },
+    coming:   { icon: '🗺️', label: 'DARK ZONE REACHED', title: 'Uncharted Territory...' },
+  };
+
+  const triggered = new Set<string>();
+
+  const achieveObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const id = (entry.target as HTMLElement).dataset.achievement;
+      if (!id || triggered.has(id)) return;
+      triggered.add(id);
+      const info = ACHIEVEMENTS[id];
+      if (info) {
+        showAchievement(info);
+        updateMiniMap(id);
+        playAchievementChime();
+      }
+    });
+  }, { threshold: 0.25 });
+
+  document.querySelectorAll('[data-achievement]').forEach((el) => achieveObserver.observe(el));
+
+  function showAchievement({ icon, label, title }: { icon: string; label: string; title: string }) {
+    const container = document.getElementById('achievement-container');
+    if (!container) return;
+    const el = document.createElement('div');
+    el.className = 'achievement';
+    el.setAttribute('role', 'status');
+    el.innerHTML = `
+      <span class="achievement-icon" aria-hidden="true">${icon}</span>
+      <div class="achievement-info">
+        <span class="achievement-label">${label}</span>
+        <span class="achievement-title">${title}</span>
+      </div>`;
+    container.appendChild(el);
+    setTimeout(() => {
+      el.style.animation = 'achievementOut 0.3s steps(3) forwards';
+      setTimeout(() => el.remove(), 300);
+    }, 3500);
+  }
+
+  // ============================================================
+  // 4. NPC 对话系统 — 点击头像触发
+  // ============================================================
+  const DIALOGUES = [
+    "Hey! Listen! You've found Eric's dev portfolio!",
+    "Rumor has it... there's a Konami Code hidden on this page...",
+    "Eric wields Python & TypeScript in battle. A dangerous combo.",
+    "He once tamed Apache Airflow and made it dance to his will.",
+    "Legend says his commit messages are so clean, linters weep.",
+    "\"Any sufficiently advanced automation is indistinguishable from magic.\"",
+    "[ Click anywhere to dismiss this dialogue ]",
+  ];
+  let dialogueIdx = 0;
+  let dialogueOpen = false;
+  let typeTimer: number | null = null;
+  let charIdx = 0;
+
+  document.querySelector('.avatar-inner')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!dialogueOpen) {
+      openDialogue();
+    } else {
+      // 如果还在打字，立即显示全文
+      if (typeTimer !== null) {
+        const el = document.getElementById('dialogue-text');
+        if (el) el.textContent = DIALOGUES[dialogueIdx];
+        clearInterval(typeTimer);
+        typeTimer = null;
+      } else {
+        advanceDialogue();
+      }
+    }
+  });
+
+  function openDialogue() {
+    dialogueOpen = true;
+    dialogueIdx = 0;
+    const box = document.getElementById('npc-dialogue');
+    box?.classList.add('active');
+    box?.setAttribute('aria-hidden', 'false');
+    typeText(DIALOGUES[0]);
+  }
+
+  function advanceDialogue() {
+    dialogueIdx++;
+    if (dialogueIdx >= DIALOGUES.length) {
+      closeDialogue();
+      return;
+    }
+    typeText(DIALOGUES[dialogueIdx]);
+  }
+
+  function closeDialogue() {
+    dialogueOpen = false;
+    if (typeTimer !== null) { clearInterval(typeTimer); typeTimer = null; }
+    const box = document.getElementById('npc-dialogue');
+    box?.classList.remove('active');
+    box?.setAttribute('aria-hidden', 'true');
+  }
+
+  // 点击对话框外关闭
+  document.addEventListener('click', (e) => {
+    if (!dialogueOpen) return;
+    const box = document.getElementById('npc-dialogue');
+    const avatar = document.querySelector('.avatar-inner');
+    if (box && !box.contains(e.target as Node) && !avatar?.contains(e.target as Node)) {
+      closeDialogue();
+    }
+  });
+
+  function typeText(text: string) {
+    const el = document.getElementById('dialogue-text');
+    if (!el) return;
+    if (typeTimer !== null) clearInterval(typeTimer);
+    el.textContent = '';
+    charIdx = 0;
+    typeTimer = setInterval(() => {
+      if (charIdx < text.length) {
+        el.textContent += text[charIdx];
+        charIdx++;
+        // 每隔几个字符发出音效（不要太频繁）
+        if (charIdx % 4 === 0) playDialogueBeep();
+      } else {
+        if (typeTimer !== null) clearInterval(typeTimer);
+        typeTimer = null;
+      }
+    }, 32) as unknown as number;
+  }
+
+  // ============================================================
+  // 5. 光标仙子像素粒子效果
+  // ============================================================
+  (function initSparkles() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // 移动端不显示（无鼠标）
+    if ('ontouchstart' in window) return;
+
+    const canvas = document.getElementById('sparkle-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const c2d = canvas.getContext('2d');
+    if (!c2d) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    interface Particle {
+      x: number; y: number;
+      vx: number; vy: number;
+      size: number; color: string;
+      life: number; decay: number;
+    }
+    const particles: Particle[] = [];
+    const COLORS = ['#ffd93d', '#6bcb77', '#4d96ff', '#c9b1ff', '#ff6b6b'];
+    let lastX = 0, lastY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      const dx = e.clientX - lastX, dy = e.clientY - lastY;
+      const speed = Math.sqrt(dx * dx + dy * dy);
+      if (speed > 4 && Math.random() > 0.55) {
+        particles.push({
+          x: e.clientX, y: e.clientY,
+          vx: (Math.random() - 0.5) * 2.5,
+          vy: (Math.random() - 0.5) * 2.5 - 0.8,
+          size: Math.random() * 3 + 1,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          life: 1,
+          decay: Math.random() * 0.035 + 0.015,
+        });
+      }
+      lastX = e.clientX;
+      lastY = e.clientY;
+    }, { passive: true });
+
+    (function tick() {
+      c2d.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.06; // 重力
+        p.life -= p.decay;
+        if (p.life <= 0) { particles.splice(i, 1); continue; }
+        c2d.globalAlpha = p.life;
+        c2d.fillStyle = p.color;
+        // 像素风格：方块而非圆形
+        c2d.fillRect(Math.floor(p.x), Math.floor(p.y), Math.ceil(p.size), Math.ceil(p.size));
+      }
+      c2d.globalAlpha = 1;
+      requestAnimationFrame(tick);
+    })();
+  })();
+
+  // ============================================================
+  // 6. 塞尔达迷你地图导航
+  // ============================================================
+  function updateMiniMap(sectionId: string) {
+    document.querySelectorAll('.map-btn').forEach((btn) => {
+      btn.classList.toggle('active', (btn as HTMLElement).dataset.target === sectionId);
+    });
+  }
+
+  // 地图按钮点击跳转
+  document.querySelectorAll('.map-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = (btn as HTMLElement).dataset.target;
+      if (!target) return;
+      const el = document.getElementById(target);
+      el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // 滚动时更新迷你地图
+  const miniMap = document.getElementById('mini-map');
+  const SECTION_KEYS = ['hero', 'skills', 'projects', 'thoughts', 'coming'];
+
+  window.addEventListener('scroll', () => {
+    if (!miniMap) return;
+    miniMap.classList.toggle('visible', window.scrollY > 200);
+
+    // 判断当前视口中央对应的区域
+    const mid = window.innerHeight / 2;
+    for (const key of SECTION_KEYS) {
+      const el = document.getElementById(key);
+      if (!el) continue;
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= mid && rect.bottom >= mid) {
+        updateMiniMap(key);
+        break;
+      }
+    }
+  }, { passive: true });
+</script>
