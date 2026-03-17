@@ -26,6 +26,21 @@
   <div class="dialogue-arrow" aria-hidden="true">▼</div>
 </div>
 
+<!-- ===== Secret Room 覆盖层 ===== -->
+<div id="secret-room" class="secret-room" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Secret Room">
+  <div class="secret-room-content">
+    <div class="secret-room-title">[ SECRET ROOM ]</div>
+    <div class="secret-room-body">
+      <p>You've found a hidden chamber...</p>
+      <p>Eric started coding at 16, debugging until sunrise.</p>
+      <p>He once spent 3 hours fixing a bug — it was a missing semicolon.</p>
+      <p>His spirit animal is a rubber duck. 🦆</p>
+      <p class="secret-room-quote">"The best code is no code at all."</p>
+    </div>
+    <div class="secret-room-hint">[ PRESS ESC TO LEAVE ]</div>
+  </div>
+</div>
+
 <!-- ===== 塞尔达风格迷你地图 ===== -->
 <nav id="mini-map" class="mini-map" aria-label="Adventure Map Navigation">
   <div class="map-header" aria-hidden="true">
@@ -352,6 +367,137 @@
     box-shadow:
       2px 0 0 var(--accent),
       -2px 0 0 var(--accent);
+  }
+
+  /* ===== Pixel Click Spark ===== */
+  .click-spark {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9990;
+    transform: translate(-50%, -50%);
+    font-size: 1rem;
+    color: var(--accent);
+    animation: sparkBurst 0.35s steps(4) forwards;
+  }
+
+  @keyframes sparkBurst {
+    0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+    50%  { opacity: 0.8; transform: translate(-50%, -50%) scale(1.4); }
+    75%  { opacity: 0.3; transform: translate(-50%, -50%) scale(1.8); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(2); }
+  }
+
+  /* ===== Secret Room ===== */
+  .secret-room {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.96);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s step-end;
+  }
+
+  .secret-room.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .secret-room-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2.5rem;
+    max-width: min(480px, 90vw);
+    background: var(--surface);
+    box-shadow:
+      6px 0 0 var(--accent-5),
+      -6px 0 0 var(--accent-5),
+      0 6px 0 var(--accent-5),
+      0 -6px 0 var(--accent-5);
+    animation: secretAppear 0.4s steps(4) forwards;
+  }
+
+  @keyframes secretAppear {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .secret-room-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(0.55rem, 2.5vw, 0.8rem);
+    color: var(--accent-5);
+    letter-spacing: 0.12em;
+    text-shadow:
+      0 0 12px var(--accent-5),
+      0 0 24px rgba(201, 177, 255, 0.4);
+  }
+
+  .secret-room-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .secret-room-body p {
+    font-family: 'VT323', monospace;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .secret-room-quote {
+    color: var(--accent) !important;
+    font-style: italic;
+  }
+
+  .secret-room-hint {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.4rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    animation: pixelBlink 1s steps(2) infinite;
+  }
+
+  /* ===== 宝箱开启 ===== */
+  @keyframes chestFlash {
+    0%   { box-shadow: 4px 0 0 var(--border), -4px 0 0 var(--border), 0 4px 0 var(--border), 0 -4px 0 var(--border); }
+    25%  { box-shadow: 6px 0 0 var(--accent), -6px 0 0 var(--accent), 0 6px 0 var(--accent), 0 -6px 0 var(--accent); }
+    50%  { box-shadow: 8px 0 0 var(--accent-2), -8px 0 0 var(--accent-2), 0 8px 0 var(--accent-2), 0 -8px 0 var(--accent-2); }
+    75%  { box-shadow: 6px 0 0 var(--accent), -6px 0 0 var(--accent), 0 6px 0 var(--accent), 0 -6px 0 var(--accent); }
+    100% { box-shadow: 4px 0 0 var(--border), -4px 0 0 var(--border), 0 4px 0 var(--border), 0 -4px 0 var(--border); }
+  }
+
+  .item-get-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.55rem;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 0.4rem 0.8rem;
+    z-index: 10;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow:
+      3px 0 0 var(--accent-2),
+      -3px 0 0 var(--accent-2),
+      0 3px 0 var(--accent-2),
+      0 -3px 0 var(--accent-2);
+    animation: badgeIn 0.2s steps(2) forwards;
+  }
+
+  @keyframes badgeIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   }
 
   /* ===== 响应式 ===== */
@@ -708,6 +854,98 @@
       el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+
+  // ============================================================
+  // 6. Pixel Click Spark — 点击位置像素火花
+  // ============================================================
+  (function initClickSpark() {
+    const SYMBOLS = ['✦', '★', '◆', '✸'];
+    let symIdx = 0;
+
+    document.addEventListener('click', (e) => {
+      const spark = document.createElement('div');
+      spark.className = 'click-spark';
+      spark.textContent = SYMBOLS[symIdx % SYMBOLS.length];
+      symIdx++;
+      spark.style.left = e.clientX + 'px';
+      spark.style.top = e.clientY + 'px';
+      document.body.appendChild(spark);
+      spark.addEventListener('animationend', () => spark.remove(), { once: true });
+    });
+  })();
+
+  // ============================================================
+  // 7. Secret Room — Footer 三连击
+  // ============================================================
+  (function initSecretRoom() {
+    let clickCount = 0;
+    let resetTimer: number | null = null;
+
+    const footerSecret = document.querySelector('.footer-secret') as HTMLElement | null;
+    const room = document.getElementById('secret-room');
+    if (!footerSecret || !room) return;
+
+    footerSecret.addEventListener('click', () => {
+      clickCount++;
+      if (resetTimer !== null) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => { clickCount = 0; }, 1500) as unknown as number;
+
+      if (clickCount >= 3) {
+        clickCount = 0;
+        if (resetTimer !== null) { clearTimeout(resetTimer); resetTimer = null; }
+        room.classList.add('active');
+        room.setAttribute('aria-hidden', 'false');
+        playZeldaFanfare();
+        showAchievement({ icon: '🔑', label: 'SECRET FOUND', title: 'Hidden Room Unlocked!' });
+      }
+    });
+
+    function closeRoom() {
+      room.classList.remove('active');
+      room.setAttribute('aria-hidden', 'true');
+    }
+
+    room.addEventListener('click', closeRoom);
+    document.addEventListener('keydown', (e) => {
+      if (room.classList.contains('active') && e.key === 'Escape') closeRoom();
+    });
+  })();
+
+  // ============================================================
+  // 8. 宝箱开启 — Project 卡片双击
+  // ============================================================
+  (function initChestOpen() {
+    document.querySelectorAll('.project').forEach((card) => {
+      card.addEventListener('dblclick', () => {
+        if (card.classList.contains('chest-open')) return;
+
+        // 获取项目标题
+        const titleEl = card.querySelector('h3, .project-title, [class*="title"]') as HTMLElement | null;
+        const projectName = titleEl?.textContent?.trim() || 'Unknown Item';
+
+        // 触发动画
+        (card as HTMLElement).style.animation = 'chestFlash 0.4s steps(4) forwards';
+        (card as HTMLElement).style.position = 'relative';
+        card.classList.add('chest-open');
+
+        // 注入 ITEM GET badge
+        const badge = document.createElement('div');
+        badge.className = 'item-get-badge';
+        badge.textContent = '★ ITEM GET!';
+        card.appendChild(badge);
+
+        playZeldaFanfare();
+        showAchievement({ icon: '📦', label: 'ITEM OBTAINED', title: projectName });
+
+        // 1.5s 后清理
+        setTimeout(() => {
+          badge.remove();
+          (card as HTMLElement).style.animation = '';
+          card.classList.remove('chest-open');
+        }, 1500);
+      });
+    });
+  })();
 
   // 滚动时更新迷你地图
   const miniMap = document.getElementById('mini-map');
