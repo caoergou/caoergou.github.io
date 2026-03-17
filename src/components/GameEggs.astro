@@ -567,17 +567,42 @@
   }
 
   // ============================================================
-  // 4. NPC 对话系统 — 点击头像触发
+  // 4. NPC 对话系统 — 点击头像触发（双语）
   // ============================================================
-  const DIALOGUES = [
-    "Hey! Listen! You've found Eric's dev portfolio!",
-    "Rumor has it... there's a Konami Code hidden on this page...",
-    "Eric wields Python & TypeScript in battle. A dangerous combo.",
-    "He once tamed Apache Airflow and made it dance to his will.",
-    "Legend says his commit messages are so clean, linters weep.",
-    "\"Any sufficiently advanced automation is indistinguishable from magic.\"",
-    "[ Click anywhere to dismiss this dialogue ]",
-  ];
+  const DIALOGUES: Record<string, string[]> = {
+    zh: [
+      "嘿！听着！你找到了 Eric 的开发者主页！",
+      "听说这个页面藏着一个 Konami Code... 也许你可以试试？",
+      "Eric 手握 Python 与 TypeScript 两件神器，相当危险的组合。",
+      "据说他曾驯服了 Apache Airflow，让它随心起舞。",
+      "传说他的提交信息如此整洁，连 linter 都感动落泪。",
+      "「任何足够先进的自动化，都与魔法无异。」",
+      "[ 点击任意处关闭对话 ]",
+    ],
+    en: [
+      "Hey! Listen! You've found Eric's dev portfolio!",
+      "Rumor has it... there's a Konami Code hidden on this page...",
+      "Eric wields Python & TypeScript in battle. A dangerous combo.",
+      "He once tamed Apache Airflow and made it dance to his will.",
+      "Legend says his commit messages are so clean, linters weep.",
+      "\"Any sufficiently advanced automation is indistinguishable from magic.\"",
+      "[ Click anywhere to dismiss this dialogue ]",
+    ],
+  };
+
+  const DIALOGUE_NAMES: Record<string, string> = {
+    zh: 'Eric · 开发者',
+    en: 'Eric · The Developer',
+  };
+
+  function getCurrentLang(): string {
+    return localStorage.getItem('lang') || 'zh';
+  }
+
+  function getCurrentDialogues(): string[] {
+    return DIALOGUES[getCurrentLang()] || DIALOGUES.en;
+  }
+
   let dialogueIdx = 0;
   let dialogueOpen = false;
   let typeTimer: number | null = null;
@@ -591,7 +616,7 @@
       // 如果还在打字，立即显示全文
       if (typeTimer !== null) {
         const el = document.getElementById('dialogue-text');
-        if (el) el.textContent = DIALOGUES[dialogueIdx];
+        if (el) el.textContent = getCurrentDialogues()[dialogueIdx];
         clearInterval(typeTimer);
         typeTimer = null;
       } else {
@@ -603,19 +628,23 @@
   function openDialogue() {
     dialogueOpen = true;
     dialogueIdx = 0;
+    const lang = getCurrentLang();
     const box = document.getElementById('npc-dialogue');
+    const nameEl = box?.querySelector('.dialogue-name') as HTMLElement | null;
+    if (nameEl) nameEl.textContent = DIALOGUE_NAMES[lang] || DIALOGUE_NAMES.en;
     box?.classList.add('active');
     box?.setAttribute('aria-hidden', 'false');
-    typeText(DIALOGUES[0]);
+    typeText(getCurrentDialogues()[0]);
   }
 
   function advanceDialogue() {
     dialogueIdx++;
-    if (dialogueIdx >= DIALOGUES.length) {
+    const lines = getCurrentDialogues();
+    if (dialogueIdx >= lines.length) {
       closeDialogue();
       return;
     }
-    typeText(DIALOGUES[dialogueIdx]);
+    typeText(lines[dialogueIdx]);
   }
 
   function closeDialogue() {
@@ -625,6 +654,22 @@
     box?.classList.remove('active');
     box?.setAttribute('aria-hidden', 'true');
   }
+
+  // 语言切换时同步更新对话框（如果当前正在展示）
+  window.addEventListener('langChange', (e: Event) => {
+    if (!dialogueOpen) return;
+    const lang = (e as CustomEvent<{ lang: string }>).detail?.lang || 'zh';
+    const box = document.getElementById('npc-dialogue');
+    const nameEl = box?.querySelector('.dialogue-name') as HTMLElement | null;
+    if (nameEl) nameEl.textContent = DIALOGUE_NAMES[lang] || DIALOGUE_NAMES.en;
+    // 如果当前不在打字中，重新渲染当前行为新语言
+    if (typeTimer === null) {
+      const el = document.getElementById('dialogue-text');
+      const newLines = DIALOGUES[lang] || DIALOGUES.en;
+      const safeIdx = Math.min(dialogueIdx, newLines.length - 1);
+      if (el) el.textContent = newLines[safeIdx];
+    }
+  });
 
   // 点击对话框外关闭
   document.addEventListener('click', (e) => {
