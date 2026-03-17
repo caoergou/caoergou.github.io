@@ -152,66 +152,59 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
     animation: pixelBlink 1.5s steps(2) infinite;
   }
 
+  /* ===== Zelda Pixel Tags ===== */
+  .tech-cloud {
+    /* No transition here — sort flash is handled by JS opacity toggle */
+  }
+
   .tech-tag {
     display: inline-block;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
+    font-family: 'VT323', monospace;
+    font-weight: 400;
     color: var(--color);
-    padding: 0.35rem 0.75rem;
-    border: 1px solid var(--border);
+    padding: 0.3rem 0.7rem;
+    box-shadow:
+      2px 0 0 var(--border),
+      -2px 0 0 var(--border),
+      0 2px 0 var(--border),
+      0 -2px 0 var(--border);
     background: transparent;
     cursor: default;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: tagFadeIn 0.6s ease forwards, tagFloat 4s ease-in-out infinite;
-    animation-delay: var(--delay), calc(var(--delay) + 0.6s);
+    transition: all 0.15s step-end;
+    animation: tagAppear 0.45s steps(5) forwards;
+    animation-delay: var(--delay);
     opacity: 0;
     white-space: nowrap;
     position: relative;
-    will-change: transform;
   }
 
-  .tech-tag[data-weight="5"] { font-size: 1rem; }
-  .tech-tag[data-weight="4"] { font-size: 0.85rem; }
-  .tech-tag[data-weight="3"] { font-size: 0.75rem; }
+  .tech-tag[data-weight="5"] { font-size: 1.15rem; }
+  .tech-tag[data-weight="4"] { font-size: 1rem; }
+  .tech-tag[data-weight="3"] { font-size: 0.85rem; }
 
   .tech-tag:hover {
     background: var(--color);
     color: var(--bg);
-    border-color: var(--color);
-    transform: scale(1.1) translateY(-2px);
-    box-shadow: 0 0 20px var(--accent-glow);
-    z-index: 10;
-    animation-play-state: paused;
+    box-shadow:
+      2px 0 0 var(--color),
+      -2px 0 0 var(--color),
+      0 2px 0 var(--color),
+      0 -2px 0 var(--color);
+    transform: translate(-2px, -2px);
   }
 
-  @keyframes tagFadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(15px) rotate(5deg);
-    }
-    60% {
-      opacity: 0.8;
-      transform: translateY(-5px) rotate(-2deg);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) rotate(0);
-    }
-  }
-
-  @keyframes tagFloat {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-3px);
-    }
+  /* CRT 像素点亮效果 */
+  @keyframes tagAppear {
+    0%, 20%  { opacity: 0;   transform: translateY(4px); }
+    40%      { opacity: 0.7; transform: translateY(-2px); }
+    60%      { opacity: 0.3; transform: translateY(1px); }
+    80%, 100%{ opacity: 1;   transform: translateY(0); }
   }
 
   @media (max-width: 640px) {
-    .tech-tag[data-weight="5"] { font-size: 0.85rem; }
-    .tech-tag[data-weight="4"] { font-size: 0.75rem; }
-    .tech-tag[data-weight="3"] { font-size: 0.7rem; }
+    .tech-tag[data-weight="5"] { font-size: 1rem; }
+    .tech-tag[data-weight="4"] { font-size: 0.9rem; }
+    .tech-tag[data-weight="3"] { font-size: 0.8rem; }
   }
 </style>
 
@@ -236,18 +229,14 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
     shuffleBtn.addEventListener('click', () => {
       const tags = Array.from(cloud.querySelectorAll('.tech-tag')) as HTMLElement[];
 
-      // Animate all tags out (pixel-step style)
-      tags.forEach((tag) => {
-        tag.style.transition = 'all 0.15s step-end';
-        tag.style.transform = 'translateY(-16px)';
-        tag.style.opacity = '0';
-      });
+      // Pixel flash: cloud blinks off instantly
+      cloud.style.opacity = '0';
+      cloud.style.pointerEvents = 'none';
 
-      // Button press feedback
+      // Button press feedback (pixel push-down)
       (shuffleBtn as HTMLElement).style.transform = 'translate(2px, 2px)';
-      setTimeout(() => {
-        (shuffleBtn as HTMLElement).style.transform = '';
-      }, 150);
+      (shuffleBtn as HTMLElement).style.boxShadow =
+        '1px 0 0 var(--accent),-1px 0 0 var(--accent),0 1px 0 var(--accent),0 -1px 0 var(--accent)';
 
       setTimeout(() => {
         // Advance sort mode
@@ -281,17 +270,22 @@ const colors = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
         // Update mode label
         if (sortModeEl) sortModeEl.textContent = sortModeNames[sortMode];
 
-        // Re-append in new order
-        sorted.forEach(tag => cloud.appendChild(tag));
-
-        // Animate back in with pixel stagger
-        sorted.forEach((tag, i) => {
-          setTimeout(() => {
-            tag.style.transform = 'translateY(0)';
-            tag.style.opacity = '1';
-          }, i * 20);
+        // Re-append in new order — clear any leftover inline styles from previous sorts
+        sorted.forEach(tag => {
+          tag.style.transform = '';
+          tag.style.opacity = '';
+          tag.style.transition = '';
+          cloud.appendChild(tag);
         });
-      }, 150);
+
+        // Pixel flash: cloud blinks back on
+        cloud.style.opacity = '1';
+        cloud.style.pointerEvents = '';
+
+        // Restore button
+        (shuffleBtn as HTMLElement).style.transform = '';
+        (shuffleBtn as HTMLElement).style.boxShadow = '';
+      }, 110);
     });
   }
 </script>

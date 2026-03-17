@@ -41,8 +41,6 @@
   </ul>
 </nav>
 
-<!-- ===== 光标仙子粒子画布 ===== -->
-<canvas id="sparkle-canvas" class="sparkle-canvas" aria-hidden="true"></canvas>
 
 <style>
   /* ===== 成就通知 ===== */
@@ -354,14 +352,6 @@
     box-shadow:
       2px 0 0 var(--accent),
       -2px 0 0 var(--accent);
-  }
-
-  /* ===== 光标粒子画布 ===== */
-  .sparkle-canvas {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9998;
   }
 
   /* ===== 响应式 ===== */
@@ -701,74 +691,7 @@
   }
 
   // ============================================================
-  // 5. 光标仙子像素粒子效果
-  // ============================================================
-  (function initSparkles() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    // 移动端不显示（无鼠标）
-    if ('ontouchstart' in window) return;
-
-    const canvas = document.getElementById('sparkle-canvas') as HTMLCanvasElement | null;
-    if (!canvas) return;
-    const c2d = canvas.getContext('2d');
-    if (!c2d) return;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
-
-    interface Particle {
-      x: number; y: number;
-      vx: number; vy: number;
-      size: number; color: string;
-      life: number; decay: number;
-    }
-    const particles: Particle[] = [];
-    const COLORS = ['#ffd93d', '#6bcb77', '#4d96ff', '#c9b1ff', '#ff6b6b'];
-    let lastX = 0, lastY = 0;
-
-    window.addEventListener('mousemove', (e) => {
-      const dx = e.clientX - lastX, dy = e.clientY - lastY;
-      const speed = Math.sqrt(dx * dx + dy * dy);
-      if (speed > 4 && Math.random() > 0.55) {
-        particles.push({
-          x: e.clientX, y: e.clientY,
-          vx: (Math.random() - 0.5) * 2.5,
-          vy: (Math.random() - 0.5) * 2.5 - 0.8,
-          size: Math.random() * 3 + 1,
-          color: COLORS[Math.floor(Math.random() * COLORS.length)],
-          life: 1,
-          decay: Math.random() * 0.035 + 0.015,
-        });
-      }
-      lastX = e.clientX;
-      lastY = e.clientY;
-    }, { passive: true });
-
-    (function tick() {
-      c2d.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.06; // 重力
-        p.life -= p.decay;
-        if (p.life <= 0) { particles.splice(i, 1); continue; }
-        c2d.globalAlpha = p.life;
-        c2d.fillStyle = p.color;
-        // 像素风格：方块而非圆形
-        c2d.fillRect(Math.floor(p.x), Math.floor(p.y), Math.ceil(p.size), Math.ceil(p.size));
-      }
-      c2d.globalAlpha = 1;
-      requestAnimationFrame(tick);
-    })();
-  })();
-
-  // ============================================================
-  // 6. 塞尔达迷你地图导航
+  // 5. 塞尔达迷你地图导航
   // ============================================================
   function updateMiniMap(sectionId: string) {
     document.querySelectorAll('.map-btn').forEach((btn) => {
