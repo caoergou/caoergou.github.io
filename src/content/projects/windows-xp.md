@@ -2,9 +2,11 @@
 title: "Windows XP"
 type: "linked"
 url: "https://github.com/caoergou/windows-xp"
+github: "https://github.com/caoergou/windows-xp"
 demo_url: "https://eric.run.place/windows-xp/"
 stars: 98
 tags: ["react", "retro", "ui", "typescript"]
+technologies: ["React", "TypeScript", "CSS", "Canvas"]
 featured: true
 description:
   zh: "用 React 重现 Windows XP 桌面体验——可拖拽窗口、开始菜单、经典蓝底白云。献给 2000 年代互联网的怀旧之作。"

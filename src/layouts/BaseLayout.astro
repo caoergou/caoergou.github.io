@@ -1,10 +1,5 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import Hero from '../components/Hero.astro';
-import Project from '../components/Project.astro';
-import Thought from '../components/Thought.astro';
-import TechCloud from '../components/TechCloud.astro';
-import GameEggs from '../components/GameEggs.astro';
 import { t, getClientTranslations, getI18nClientScript, getTranslations, type Lang } from '../i18n';
 
 interface Props {
@@ -25,6 +20,21 @@ const i18nClientScript = getI18nClientScript();
 
 // SSR default content (Chinese) for coming-soon section
 const zhComingSoonItems = getTranslations('zh').comingSoon.items;
+
+// Navigation items
+const navItems = [
+  { id: 'about', label: '关于', labelEn: 'About' },
+  { id: 'experience', label: '经历', labelEn: 'Experience' },
+  { id: 'projects', label: '项目', labelEn: 'Projects' },
+  { id: 'thoughts', label: '思考', labelEn: 'Thoughts' },
+];
+
+// Social links
+const socialLinks = [
+  { name: 'GitHub', url: 'https://github.com/caoergou', icon: 'github' },
+  { name: '即刻', url: 'https://jike.city/ergou', icon: 'jike' },
+  { name: 'Email', url: 'mailto:itsericsmail@gmail.com', icon: 'email' },
+];
 ---
 
 <!DOCTYPE html>
@@ -94,70 +104,72 @@ const zhComingSoonItems = getTranslations('zh').comingSoon.items;
       "alternateName": "zh-CN"
     }
   })} />
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "首页",
-        "item": siteUrl
-      }
-    ]
-  })} />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Pixel fonts for game style -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style is:global>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    /* ===== Simplified Minimal Theme ===== */
+    /* ===== CSS Variables - Brittany Chiang Style ===== */
     :root {
-      /* Core Colors - Simplified to 3 main colors */
-      --bg: #1a1f2e;           /* Deep blue-gray */
-      --bg-secondary: #252b3d; /* Slightly lighter */
-      --surface: #2d3548;      /* Card backgrounds */
-      --surface-alt: #363f55;  /* Hover states */
-      --border: #4a5568;       /* Subtle borders */
-      --border-light: #5a6a7a; /* Light borders */
-      --text-primary: #f0f0e8; /* Main text */
-      --text-secondary: #a0aec0; /* Secondary text */
-      --text-muted: #6b7280;   /* Muted text */
+      /* Colors */
+      --navy: #0a192f;
+      --light-navy: #112240;
+      --lightest-navy: #233554;
+      --navy-shadow: rgba(2, 12, 27, 0.7);
+      --dark-slate: #495670;
+      --slate: #8892b0;
+      --light-slate: #a8b2d1;
+      --lightest-slate: #ccd6f6;
+      --white: #e6f1ff;
+      --green: #64ffda;
+      --green-tint: rgba(100, 255, 218, 0.1);
+      --pink: #f57dff;
+      --blue: #57cbff;
 
-      /* Single accent system */
-      --accent: #fbbf24;       /* Amber gold - primary emphasis */
-      --accent-secondary: #10b981; /* Emerald green - secondary emphasis */
+      /* Fonts */
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
 
-      /* Simplified shadows */
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+      /* Font sizes */
+      --fz-xs: 0.75rem;
+      --fz-sm: 0.875rem;
+      --fz-md: 1rem;
+      --fz-lg: 1.125rem;
+      --fz-xl: 1.25rem;
+      --fz-2xl: 1.5rem;
+      --fz-3xl: 2rem;
+      --fz-4xl: 2.5rem;
+      --fz-5xl: 3rem;
 
-      /* Smooth transitions */
-      --transition-fast: 0.15s ease;
-      --transition-normal: 0.25s ease;
+      /* Spacing */
+      --spacing-xs: 0.25rem;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --spacing-2xl: 3rem;
+      --spacing-3xl: 4rem;
+      --spacing-4xl: 5rem;
+
+      /* Transitions */
+      --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+      --easing: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+      /* Border radius */
+      --border-radius: 4px;
+
+      /* Nav height */
+      --nav-height: 100px;
+      --nav-scroll-height: 70px;
     }
 
-    /* Light Theme - Clean and minimal */
-    .light-mode {
-      --bg: #fafafa;
-      --bg-secondary: #f3f4f6;
-      --surface: #ffffff;
-      --surface-alt: #f9fafb;
-      --border: #e5e7eb;
-      --border-light: #d1d5db;
-      --text-primary: #1f2937;
-      --text-secondary: #4b5563;
-      --text-muted: #9ca3af;
-
-      --accent: #d97706;       /* Darker amber for light mode */
-      --accent-secondary: #059669; /* Darker green */
-
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    /* ===== Base Styles ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     html {
@@ -166,211 +178,265 @@ const zhComingSoonItems = getTranslations('zh').comingSoon.items;
     }
 
     body {
-      font-family: 'VT323', monospace;
-      background: var(--bg);
-      color: var(--text-primary);
+      font-family: var(--font-sans);
+      background-color: var(--navy);
+      color: var(--slate);
       line-height: 1.6;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Pixel fonts utility - kept for personality */
-    .pixel-font { font-family: 'Press Start 2P', cursive; }
-    .pixel-body { font-family: 'VT323', monospace; }
-    .serif { font-family: 'Noto Serif SC', serif; }
+    /* ===== Typography ===== */
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--lightest-slate);
+      font-weight: 600;
+      line-height: 1.1;
+    }
 
-    .page {
+    a {
+      color: var(--green);
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-block;
       position: relative;
+    }
+
+    a:hover {
+      color: var(--green);
+    }
+
+    a::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 1px;
+      background: var(--green);
+      transition: width 0.3s var(--easing);
+    }
+
+    a:hover::after {
+      width: 100%;
+    }
+
+    /* Special links without underline animation */
+    .no-underline::after,
+    nav a::after,
+    .social-links a::after {
+      display: none;
+    }
+
+    /* ===== Layout ===== */
+    .layout {
+      display: flex;
+      flex-direction: column;
       min-height: 100vh;
     }
 
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
+    @media (min-width: 1024px) {
+      .layout {
+        flex-direction: row;
+      }
     }
 
-    /* ===== Clean Background - No stars/CRT ===== */
-    body::before, body::after {
-      display: none;
+    /* Left Side - Sticky Header */
+    .header {
+      padding: var(--spacing-xl);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: var(--navy);
     }
 
-    /* ===== Sections - Clean and simple ===== */
-    .section {
-      padding: 3rem 0 2rem;
-      position: relative;
+    @media (min-width: 1024px) {
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 45%;
+        height: 100vh;
+        max-width: 480px;
+        padding: var(--spacing-4xl) var(--spacing-2xl);
+      }
     }
 
-    /* Simple single-color divider line */
-    .section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--border);
+    @media (min-width: 1280px) {
+      .header {
+        padding: var(--spacing-4xl) var(--spacing-3xl);
+      }
+    }
+
+    /* Right Side - Scrollable Content */
+    .main {
+      padding: var(--spacing-xl);
+    }
+
+    @media (min-width: 1024px) {
+      .main {
+        margin-left: 45%;
+        width: 55%;
+        padding: var(--spacing-4xl) var(--spacing-2xl);
+        max-width: 900px;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .main {
+        padding: var(--spacing-4xl) var(--spacing-3xl);
+      }
+    }
+
+    /* ===== Section Styles ===== */
+    section {
+      margin-bottom: var(--spacing-4xl);
     }
 
     .section-title {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 0.6rem;
-      letter-spacing: 0.08em;
-      color: var(--text-primary);
-      margin-bottom: 1.5rem;
-      position: relative;
-      display: inline-block;
-      padding-bottom: 0.5rem;
-      text-transform: uppercase;
-    }
-
-    /* Simple underline instead of colorful gradient */
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 2rem;
-      height: 2px;
-      background: var(--accent);
-    }
-
-    /* ===== Project List ===== */
-    .projects-list {
       display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    /* ===== Thoughts List ===== */
-    .thoughts-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    /* ===== Coming Soon Section - Simplified ===== */
-    .coming-soon {
-      background: var(--surface);
-      padding: 1.5rem;
-      border-radius: 4px;
-      border-left: 3px solid var(--accent-secondary);
-    }
-
-    .coming-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .coming-item {
-      font-family: 'VT323', monospace;
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      padding-left: 1.25rem;
-      position: relative;
-      line-height: 1.5;
-    }
-
-    .coming-item::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-    }
-
-    .coming-item:hover {
-      color: var(--text-primary);
-    }
-
-    /* ===== Footer - Clean ===== */
-    .footer {
-      padding: 2rem 0;
-      border-top: 1px solid var(--border);
-      margin-top: 2rem;
-    }
-
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-2xl);
+      font-size: var(--fz-2xl);
+      color: var(--lightest-slate);
     }
 
-    .footer-copy {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 0.45rem;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
+    .section-number {
+      font-family: var(--font-mono);
+      font-size: var(--fz-lg);
+      color: var(--green);
+      font-weight: 400;
     }
 
-    .footer-links {
-      display: flex;
-      gap: 0.75rem;
+    .section-divider {
+      flex: 1;
+      height: 1px;
+      background: var(--lightest-navy);
+      max-width: 300px;
     }
 
-    .footer-link {
-      font-family: 'VT323', monospace;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      cursor: pointer;
-      padding: 0.4rem 0.75rem;
-      background: var(--surface);
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      transition: all var(--transition-fast);
-    }
-
-    .footer-link:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-      background: var(--surface-alt);
-    }
-
-    /* Hidden Konami Code hint - simplified */
-    .footer-secret {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 0.3rem;
-      color: var(--text-muted);
-      margin-top: 1rem;
-      text-align: center;
-      opacity: 0.25;
-      letter-spacing: 0.1em;
-      transition: opacity 0.2s ease;
-      cursor: default;
-    }
-
-    .footer-secret:hover {
-      opacity: 0.6;
-      color: var(--accent-secondary);
-    }
-
-    /* ===== Tech Section ===== */
-    .tech-section {
-      padding: 1.5rem 0;
-    }
-
-    .tech-section::before {
+    /* ===== Navigation ===== */
+    nav {
       display: none;
     }
 
-    /* ===== Responsive Design ===== */
-    @media (max-width: 768px) {
-      .container { padding: 0 1rem; }
-
-      .section { padding: 2rem 0 1.5rem; }
-      .section-title { font-size: 0.55rem; }
-
-      .footer-content {
-        flex-direction: column;
-        align-items: flex-start;
+    @media (min-width: 1024px) {
+      nav {
+        display: block;
+        margin: var(--spacing-2xl) 0;
       }
 
-      .footer-copy { font-size: 0.4rem; }
-      .footer-link { font-size: 0.85rem; }
+      nav ul {
+        list-style: none;
+      }
+
+      nav li {
+        margin-bottom: var(--spacing-md);
+      }
+
+      nav a {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        color: var(--slate);
+        font-family: var(--font-mono);
+        font-size: var(--fz-sm);
+        padding: var(--spacing-sm) 0;
+        transition: var(--transition);
+      }
+
+      nav a::before {
+        content: '';
+        display: block;
+        width: 2rem;
+        height: 1px;
+        background: var(--lightest-navy);
+        transition: var(--transition);
+      }
+
+      nav a:hover,
+      nav a.active {
+        color: var(--green);
+      }
+
+      nav a:hover::before,
+      nav a.active::before {
+        width: 3rem;
+        background: var(--green);
+      }
+
+      nav a span {
+        color: var(--green);
+        font-size: var(--fz-xs);
+        margin-right: var(--spacing-xs);
+      }
+    }
+
+    /* ===== Social Links ===== */
+    .social-links {
+      display: flex;
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-xl);
+    }
+
+    @media (min-width: 1024px) {
+      .social-links {
+        margin-top: 0;
+      }
+    }
+
+    .social-links a {
+      color: var(--light-slate);
+      transition: var(--transition);
+    }
+
+    .social-links a:hover {
+      color: var(--green);
+      transform: translateY(-2px);
+    }
+
+    .social-links svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      padding: var(--spacing-xl) 0;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: var(--fz-xs);
+      color: var(--light-slate);
+    }
+
+    @media (min-width: 1024px) {
+      footer {
+        text-align: left;
+        padding: var(--spacing-2xl) 0;
+      }
+    }
+
+    /* ===== Selection ===== */
+    ::selection {
+      background: var(--lightest-navy);
+      color: var(--green);
+    }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--navy);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--lightest-navy);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--slate);
     }
 
     /* ===== Reduced Motion ===== */
@@ -382,86 +448,320 @@ const zhComingSoonItems = getTranslations('zh').comingSoon.items;
       }
     }
 
-    /* ===== Selection Styling ===== */
-    ::selection {
-      background: var(--accent);
-      color: var(--bg);
+    /* ===== Mobile Navigation ===== */
+    .mobile-nav {
+      display: flex;
+      gap: var(--spacing-md);
+      overflow-x: auto;
+      padding-bottom: var(--spacing-sm);
+      margin: var(--spacing-lg) 0;
+      scrollbar-width: none;
     }
 
-    /* ===== Scrollbar Styling - Simplified ===== */
-    ::-webkit-scrollbar {
-      width: 8px;
+    .mobile-nav::-webkit-scrollbar {
+      display: none;
     }
 
-    ::-webkit-scrollbar-track {
-      background: var(--bg-secondary);
+    .mobile-nav a {
+      font-family: var(--font-mono);
+      font-size: var(--fz-sm);
+      color: var(--slate);
+      white-space: nowrap;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--border-radius);
     }
 
-    ::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 4px;
+    .mobile-nav a:hover,
+    .mobile-nav a.active {
+      color: var(--green);
+      background: var(--green-tint);
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent);
+    @media (min-width: 1024px) {
+      .mobile-nav {
+        display: none;
+      }
+    }
+
+    /* ===== Language Toggle ===== */
+    .lang-toggle {
+      position: fixed;
+      top: var(--spacing-lg);
+      right: var(--spacing-lg);
+      z-index: 100;
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: var(--fz-xs);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .lang-toggle:hover {
+      background: var(--green-tint);
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="container">
-      <Hero profile={profile} />
+  <button class="lang-toggle" id="langToggle" aria-label="切换语言">
+    <span class="lang-text">EN</span>
+  </button>
 
-      <section id="skills" class="section tech-section" data-achievement="skills">
-        <TechCloud />
-      </section>
+  <div class="layout">
+    <!-- Left Side - Fixed Header -->
+    <header class="header">
+      <div>
+        <h1 style="font-size: var(--fz-4xl); color: var(--lightest-slate); margin-bottom: var(--spacing-sm); font-weight: 700;">
+          Eric Cao
+        </h1>
+        <h2 style="font-size: var(--fz-xl); color: var(--light-slate); margin-bottom: var(--spacing-lg); font-weight: 500;">
+          Python Developer & AI Engineer
+        </h2>
+        <p style="font-size: var(--fz-lg); color: var(--slate); max-width: 400px; line-height: 1.6;">
+          在确定性与混沌之间构建秩序。专注于构建可扩展的数据管道、AI Agent 系统和自动化工具。
+        </p>
 
-      <section id="projects" class="section" data-achievement="projects">
-        <h2 class="section-title" data-i18n="sections.projects">{getTranslation('zh', 'sections.projects')}</h2>
-        <div class="projects-list">
-          {projects.map((project) => (
-            <Project key={project.id} project={project} />
-          ))}
+        <!-- Desktop Navigation -->
+        <nav>
+          <ul>
+            {navItems.map((item, index) => (
+              <li>
+                <a href={`#${item.id}`} class="nav-link">
+                  <span>0{index + 1}.</span>
+                  <span data-i18n={`nav.${item.id}`}>{item.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Mobile Navigation -->
+      <div class="mobile-nav">
+        {navItems.map((item) => (
+          <a href={`#${item.id}`} class="nav-link-mobile" data-i18n={`nav.${item.id}`}>
+            {item.label}
+          </a>
+        ))}
+      </div>
+
+      <!-- Social Links -->
+      <div class="social-links">
+        <a href="https://github.com/caoergou" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+          </svg>
+        </a>
+        <a href="https://jike.city/ergou" target="_blank" rel="noopener noreferrer" aria-label="即刻">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+        </a>
+        <a href="mailto:itsericsmail@gmail.com" aria-label="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- Right Side - Main Content -->
+    <main class="main">
+      <!-- About Section -->
+      <section id="about">
+        <div class="section-title">
+          <span class="section-number">01.</span>
+          <span data-i18n="sections.about">关于</span>
+          <span class="section-divider"></span>
+        </div>
+        <div style="font-size: var(--fz-lg); line-height: 1.8; color: var(--slate);">
+          <p style="margin-bottom: var(--spacing-lg);" data-i18n="about.p1">
+            我是一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。专注于 Python 生态和 AI Agent 系统开发，热衷于构建能够真正解决问题的工具。
+          </p>
+          <p style="margin-bottom: var(--spacing-lg);" data-i18n="about.p2">
+            目前，我在探索如何将大语言模型与传统软件工程结合，打造更智能的自动化工作流。我相信好的工程不是炫技，不追逐热点，只打磨真正有用的东西。
+          </p>
+          <p data-i18n="about.p3">
+            工作之余，你可能会发现我在即刻分享技术思考，或者在 GitHub 上捣鼓一些开源小工具。
+          </p>
         </div>
       </section>
 
-      <section id="thoughts" class="section" data-achievement="thoughts">
-        <h2 class="section-title" data-i18n="sections.explorations">{getTranslation('zh', 'sections.explorations')}</h2>
-        <div class="thoughts-list">
-          {thoughts.map((thought) => (
-            <Thought key={thought.id} thought={thought} />
-          ))}
+      <!-- Experience Section -->
+      <section id="experience">
+        <div class="section-title">
+          <span class="section-number">02.</span>
+          <span data-i18n="sections.experience">经历</span>
+          <span class="section-divider"></span>
         </div>
-      </section>
 
-      <section id="coming" class="section coming-soon" data-achievement="coming">
-        <h2 class="section-title" data-i18n="comingSoon.title">{getTranslation('zh', 'comingSoon.title')}</h2>
-        <div class="coming-list" id="coming-list">
-          {zhComingSoonItems.map((item) => (
-            <div class="coming-item">{item}</div>
-          ))}
-        </div>
-      </section>
-
-
-      <footer class="footer">
-        <div class="footer-content">
-          <span class="footer-copy">© {new Date().getFullYear()} Eric Cao</span>
-          <div class="footer-links">
-            <a href="https://github.com/caoergou" class="footer-link" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://jike.city/ergou" class="footer-link" target="_blank" rel="noopener">即刻</a>
-            <a href="mailto:itsericsmail@gmail.com" class="footer-link">Email</a>
+        <div class="experience-list">
+          <div class="experience-item" style="margin-bottom: var(--spacing-2xl);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--spacing-sm); flex-wrap: wrap; gap: var(--spacing-sm);">
+              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);">Python Developer</h3>
+              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);">2020 — Present</span>
+            </div>
+            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);">独立开发者 & 开源贡献者</p>
+            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);">
+              构建并维护多个开源项目，包括 Airflow 扩展插件、MermZen 等工具。专注于数据工程、自动化流程和 AI Agent 系统开发。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
+              {['Python', 'TypeScript', 'Airflow', 'Dify', 'LLM'].map((tech) => (
+                <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--slate); background: var(--green-tint); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius);">
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-        <div class="footer-secret" aria-hidden="true" title="↑↑↓↓←→←→BA">🎮 There are secrets here...</div>
+      </section>
+
+      <!-- Projects Section -->
+      <section id="projects">
+        <div class="section-title">
+          <span class="section-number">03.</span>
+          <span data-i18n="sections.projects">项目</span>
+          <span class="section-divider"></span>
+        </div>
+
+        <div class="projects-list">
+          {projects.map((project, index) => (
+            <div class="project-item" style="margin-bottom: var(--spacing-2xl);">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--spacing-sm); flex-wrap: wrap; gap: var(--spacing-sm);">
+                <a href={project.data.url} target="_blank" rel="noopener noreferrer" style="font-size: var(--fz-xl); color: var(--lightest-slate); font-weight: 600;">
+                  {project.data.title}
+                </a>
+                <div style="display: flex; gap: var(--spacing-md);">
+                  {project.data.github && (
+                    <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="no-underline" aria-label="GitHub">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px;">
+                        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+              <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md); color: var(--slate);"
+                 data-desc-zh={project.data.description?.zh}
+                 data-desc-en={project.data.description?.en}>
+                {project.data.description?.zh}
+              </p>
+              <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
+                {project.data.technologies?.map((tech: string) => (
+                  <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--slate);">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Thoughts Section -->
+      <section id="thoughts">
+        <div class="section-title">
+          <span class="section-number">04.</span>
+          <span data-i18n="sections.thoughts">思考</span>
+          <span class="section-divider"></span>
+        </div>
+
+        <div class="thoughts-list">
+          {thoughts.map((thought) => (
+            <div class="thought-item" style="margin-bottom: var(--spacing-xl);">
+              <a href={`/blog/${thought.id}`} style="font-size: var(--fz-lg); color: var(--lightest-slate); font-weight: 500; margin-bottom: var(--spacing-xs); display: block;"
+                 data-title-zh={thought.data.title?.zh}
+                 data-title-en={thought.data.title?.en}>
+                {thought.data.title?.zh}
+              </a>
+              <p style="font-size: var(--fz-sm); color: var(--slate); line-height: 1.6; margin-bottom: var(--spacing-sm);"
+                 data-desc-zh={thought.data.description?.zh || thought.data.excerpt?.zh}
+                 data-desc-en={thought.data.description?.en || thought.data.excerpt?.en}>
+                {thought.data.description?.zh || thought.data.excerpt?.zh}
+              </p>
+              <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--dark-slate);">
+                {new Date(thought.data.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short' })}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <footer>
+        <p style="margin-bottom: var(--spacing-sm);">
+          Built with Astro & inspired by <a href="https://brittanychiang.com" target="_blank" rel="noopener noreferrer">Brittany Chiang</a>
+        </p>
+        <p>© {new Date().getFullYear()} Eric Cao. All rights reserved.</p>
       </footer>
-    </div>
+    </main>
   </div>
 
-  <!-- 游戏彩蛋系统 -->
-  <GameEggs />
-
-  <!-- i18n runtime: translations injected as data-translations attribute -->
+  <!-- i18n runtime -->
   <script is:inline data-translations={clientTranslations} set:html={i18nClientScript} />
+
+  <script is:inline>
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Active nav link highlighting
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link, .nav-link-mobile');
+
+    function highlightNav() {
+      const scrollPos = window.scrollY + 200;
+
+      sections.forEach((section, index) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+
+        if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+          navLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelectorAll('.nav-link')[index];
+          const activeLinkMobile = document.querySelectorAll('.nav-link-mobile')[index];
+          if (activeLink) activeLink.classList.add('active');
+          if (activeLinkMobile) activeLinkMobile.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', highlightNav);
+    highlightNav();
+
+    // Language toggle
+    const langToggle = document.getElementById('langToggle');
+    const langText = langToggle.querySelector('.lang-text');
+
+    langToggle.addEventListener('click', () => {
+      const currentLang = localStorage.getItem('lang') || 'zh';
+      const newLang = currentLang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('lang', newLang);
+
+      // Update button text
+      langText.textContent = newLang === 'zh' ? 'EN' : '中';
+
+      // Update all i18n elements
+      if (window.__I18N__) {
+        window.__I18N__.updateAllText(newLang);
+      }
+    });
+
+    // Initialize language button
+    const savedLang = localStorage.getItem('lang') || 'zh';
+    langText.textContent = savedLang === 'zh' ? 'EN' : '中';
+  </script>
 </body>
 </html>
