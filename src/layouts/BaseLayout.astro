@@ -57,13 +57,17 @@ const zhComingSoonItems = getTranslations('zh').comingSoon.items;
   <meta property="og:locale" content="zh_CN" data-og-locale="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
   <meta property="og:image" content={`${siteUrl}/og-image.png`}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Eric Cao 的个人网站 - Python 开发者与开源贡献者，专注于 AI Agent、大数据、Web 开发">
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@caoergou">
   <meta name="twitter:url" content={siteUrl}>
   <meta name="twitter:title" content={getTranslation('zh', 'site.title')} data-i18n-content="site.title">
   <meta name="twitter:description" content={getTranslation('zh', 'site.description')} data-i18n-content="site.description">
+  <meta name="twitter:image" content={`${siteUrl}/og-image.png`}>
 
   <!-- Canonical URL -->
   <link rel="canonical" href={siteUrl}>

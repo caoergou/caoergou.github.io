@@ -3,8 +3,10 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemaps - 主站和子项目
 Sitemap: https://eric.run.place/sitemap-index.xml
+Sitemap: https://eric.run.place/MermZen/sitemap.xml
+Sitemap: https://eric.run.place/windows-xp/sitemap.xml
 
 # Crawl-delay (optional, be polite)
 Crawl-delay: 1
