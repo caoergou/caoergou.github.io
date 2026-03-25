@@ -41,28 +41,15 @@
   </div>
 </div>
 
-<!-- ===== 塞尔达风格迷你地图 ===== -->
-<nav id="mini-map" class="mini-map" aria-label="Adventure Map Navigation">
-  <div class="map-header" aria-hidden="true">
-    <span class="map-icon">🗺</span>
-    <span class="map-title">MAP</span>
-  </div>
-  <ul class="map-list">
-    <li><button class="map-btn active" data-target="hero">◆ SPAWN POINT</button></li>
-    <li><button class="map-btn" data-target="skills">⚔ SKILLS CAVE</button></li>
-    <li><button class="map-btn" data-target="projects">🏛 PROJECT RUINS</button></li>
-    <li><button class="map-btn" data-target="thoughts">🔮 THOUGHT TOWER</button></li>
-    <li><button class="map-btn" data-target="coming">? DARK ZONE</button></li>
-  </ul>
-</nav>
+
 
 
 <style>
-  /* ===== 成就通知 ===== */
+  /* ===== 成就通知 - Simplified ===== */
   .achievement-container {
     position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
+    bottom: 1.25rem;
+    right: 1.25rem;
     z-index: 500;
     display: flex;
     flex-direction: column;
@@ -73,22 +60,18 @@
 
   .achievement {
     background: var(--surface);
-    box-shadow:
-      4px 0 0 var(--accent),
-      -4px 0 0 var(--accent),
-      0 4px 0 var(--accent),
-      0 -4px 0 var(--accent);
-    padding: 0.65rem 1rem;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 0.6rem 0.875rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    animation: achievementIn 0.25s steps(3) forwards;
-    max-width: 280px;
+    gap: 0.625rem;
+    animation: achievementIn 0.3s ease forwards;
+    max-width: 260px;
   }
 
   .achievement-icon {
-    font-size: 1.4rem;
-    filter: drop-shadow(0 0 6px var(--accent));
+    font-size: 1.25rem;
     flex-shrink: 0;
     line-height: 1;
   }
@@ -96,45 +79,45 @@
   .achievement-info {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
+    gap: 0.1rem;
   }
 
   .achievement-label {
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.35rem;
+    font-size: 0.3rem;
     color: var(--accent);
-    letter-spacing: 0.12em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
   .achievement-title {
     font-family: 'VT323', monospace;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--text-primary);
     line-height: 1.3;
   }
 
   @keyframes achievementIn {
-    from { opacity: 0; transform: translateX(24px); }
+    from { opacity: 0; transform: translateX(16px); }
     to   { opacity: 1; transform: translateX(0); }
   }
   @keyframes achievementOut {
     from { opacity: 1; transform: translateX(0); }
-    to   { opacity: 0; transform: translateX(24px); }
+    to   { opacity: 0; transform: translateX(16px); }
   }
 
-  /* ===== 三角神力覆盖层 ===== */
+  /* ===== 三角神力覆盖层 - Simplified ===== */
   .triforce-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.96);
+    background: rgba(0, 0, 0, 0.95);
     z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s step-end;
+    transition: opacity 0.3s ease;
   }
 
   .triforce-overlay.active {
@@ -147,102 +130,74 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.75rem;
+    gap: 1.5rem;
     padding: 2rem;
-    animation: triforceAppear 0.5s steps(5) forwards;
+    animation: fadeIn 0.4s ease forwards;
   }
 
-  @keyframes triforceAppear {
-    from { opacity: 0; transform: scale(0.8); }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
     to   { opacity: 1; transform: scale(1); }
   }
 
   .triforce-symbol {
     font-family: 'Press Start 2P', cursive;
-    font-size: clamp(2.5rem, 10vw, 5rem);
+    font-size: clamp(2.5rem, 10vw, 4.5rem);
     color: var(--accent);
     line-height: 0.85;
-    text-shadow:
-      0 0 20px var(--accent),
-      0 0 40px var(--accent),
-      0 0 80px rgba(255, 217, 61, 0.4);
-    animation: triforceGlow 2s ease-in-out infinite;
-  }
-
-  @keyframes triforceGlow {
-    0%, 100% {
-      text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
-    }
-    50% {
-      text-shadow:
-        0 0 30px var(--accent),
-        0 0 60px var(--accent),
-        0 0 100px rgba(255, 217, 61, 0.7);
-    }
+    text-shadow: 0 0 30px var(--accent);
   }
 
   .triforce-title {
     font-family: 'Press Start 2P', cursive;
-    font-size: clamp(0.6rem, 3vw, 1rem);
+    font-size: clamp(0.55rem, 3vw, 0.9rem);
     color: var(--accent);
-    letter-spacing: 0.08em;
-    animation: glitchFlicker 4s steps(1) infinite;
+    letter-spacing: 0.06em;
     margin: 0;
-  }
-
-  @keyframes glitchFlicker {
-    0%, 86%, 100% { transform: translate(0); opacity: 1; color: var(--accent); }
-    87% { transform: translate(-5px, 2px); opacity: 0.7; color: var(--accent-4); }
-    88% { transform: translate(5px, -2px); opacity: 0.9; color: var(--accent-3); }
-    89% { transform: translate(0); opacity: 1; color: var(--accent); }
   }
 
   .triforce-hint {
     font-family: 'VT323', monospace;
-    font-size: 1.2rem;
-    color: var(--accent-5);
-    letter-spacing: 0.05em;
+    font-size: 1.1rem;
+    color: var(--accent-secondary);
+    letter-spacing: 0.02em;
     margin: 0;
   }
 
   .triforce-close {
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.45rem;
+    font-size: 0.4rem;
     color: var(--text-muted);
     background: none;
     border: none;
     cursor: pointer;
-    letter-spacing: 0.08em;
-    animation: pixelBlink 1s steps(2) infinite;
+    letter-spacing: 0.06em;
     padding: 0.5rem 1rem;
-    transition: color 0.15s step-end;
+    transition: color 0.2s ease;
   }
 
   .triforce-close:hover {
     color: var(--accent);
   }
 
-  /* ===== NPC 对话框 ===== */
+  /* ===== NPC 对话框 - Simplified ===== */
   .npc-dialogue {
     position: fixed;
-    bottom: 1.5rem;
+    bottom: 1.25rem;
     left: 50%;
-    width: min(560px, 92vw);
+    width: min(520px, 92vw);
     background: var(--surface);
-    box-shadow:
-      4px 0 0 var(--accent-3),
-      -4px 0 0 var(--accent-3),
-      0 4px 0 var(--accent-3),
-      0 -4px 0 var(--accent-3);
-    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.875rem 1rem;
     z-index: 300;
     display: flex;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: 0.625rem;
     opacity: 0;
     pointer-events: none;
     transform: translateX(-50%) translateY(12px);
-    transition: opacity 0.2s step-end, transform 0.2s step-end;
+    transition: opacity 0.2s ease, transform 0.2s ease;
     cursor: pointer;
   }
 
@@ -253,11 +208,10 @@
   }
 
   .dialogue-portrait {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     flex-shrink: 0;
-    filter: drop-shadow(2px 2px 0 var(--border));
     line-height: 1;
-    padding-top: 0.15rem;
+    padding-top: 0.1rem;
   }
 
   .dialogue-body {
@@ -267,138 +221,40 @@
 
   .dialogue-name {
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.45rem;
-    color: var(--accent-3);
-    letter-spacing: 0.08em;
-    margin-bottom: 0.4rem;
+    font-size: 0.4rem;
+    color: var(--accent-secondary);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.3rem;
   }
 
   .dialogue-text {
     font-family: 'VT323', monospace;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     color: var(--text-primary);
     line-height: 1.5;
-    min-height: 1.8rem;
+    min-height: 1.7rem;
   }
 
   .dialogue-arrow {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--accent);
     align-self: flex-end;
-    animation: pixelBlink 0.8s steps(2) infinite;
     flex-shrink: 0;
     padding-bottom: 0.1rem;
   }
 
-  /* ===== 迷你地图 ===== */
-  .mini-map {
-    position: fixed;
-    top: 50%;
-    right: 1.25rem;
-    transform: translateY(-50%);
-    z-index: 100;
-    background: var(--surface);
-    box-shadow:
-      3px 0 0 var(--border),
-      -3px 0 0 var(--border),
-      0 3px 0 var(--border),
-      0 -3px 0 var(--border);
-    padding: 0.65rem 0.8rem;
-    opacity: 0;
-    transition: opacity 0.3s step-end;
-    min-width: 128px;
-  }
-
-  .mini-map.visible {
-    opacity: 1;
-  }
-
-  .map-header {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-bottom: 0.5rem;
-    padding-bottom: 0.4rem;
-    border-bottom: 2px solid var(--border);
-  }
-
-  .map-icon {
-    font-size: 0.8rem;
-  }
-
-  .map-title {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.4rem;
-    color: var(--accent);
-    letter-spacing: 0.12em;
-  }
-
-  .map-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-  }
-
-  .map-btn {
-    font-family: 'VT323', monospace;
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.2rem 0.4rem;
-    text-align: left;
-    width: 100%;
-    transition: all 0.15s step-end;
-    line-height: 1.4;
-    white-space: nowrap;
-  }
-
-  .map-btn:hover {
-    color: var(--accent-2);
-  }
-
-  .map-btn.active {
-    color: var(--accent);
-    background: rgba(255, 217, 61, 0.1);
-    box-shadow:
-      2px 0 0 var(--accent),
-      -2px 0 0 var(--accent);
-  }
-
-  /* ===== Pixel Click Spark ===== */
-  .click-spark {
-    position: fixed;
-    pointer-events: none;
-    z-index: 9990;
-    transform: translate(-50%, -50%);
-    font-size: 1rem;
-    color: var(--accent);
-    animation: sparkBurst 0.35s steps(4) forwards;
-  }
-
-  @keyframes sparkBurst {
-    0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
-    50%  { opacity: 0.8; transform: translate(-50%, -50%) scale(1.4); }
-    75%  { opacity: 0.3; transform: translate(-50%, -50%) scale(1.8); }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(2); }
-  }
-
-  /* ===== Secret Room ===== */
+  /* ===== Secret Room - Simplified ===== */
   .secret-room {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.96);
+    background: rgba(0, 0, 0, 0.95);
     z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s step-end;
+    transition: opacity 0.3s ease;
   }
 
   .secret-room.active {
@@ -411,42 +267,31 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
-    padding: 2.5rem;
-    max-width: min(480px, 90vw);
+    gap: 1.25rem;
+    padding: 2rem;
+    max-width: min(440px, 90vw);
     background: var(--surface);
-    box-shadow:
-      6px 0 0 var(--accent-5),
-      -6px 0 0 var(--accent-5),
-      0 6px 0 var(--accent-5),
-      0 -6px 0 var(--accent-5);
-    animation: secretAppear 0.4s steps(4) forwards;
-  }
-
-  @keyframes secretAppear {
-    from { opacity: 0; transform: scale(0.85); }
-    to   { opacity: 1; transform: scale(1); }
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    animation: fadeIn 0.3s ease forwards;
   }
 
   .secret-room-title {
     font-family: 'Press Start 2P', cursive;
-    font-size: clamp(0.55rem, 2.5vw, 0.8rem);
-    color: var(--accent-5);
-    letter-spacing: 0.12em;
-    text-shadow:
-      0 0 12px var(--accent-5),
-      0 0 24px rgba(201, 177, 255, 0.4);
+    font-size: clamp(0.5rem, 2.5vw, 0.75rem);
+    color: var(--accent-secondary);
+    letter-spacing: 0.08em;
   }
 
   .secret-room-body {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.625rem;
   }
 
   .secret-room-body p {
     font-family: 'VT323', monospace;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     color: var(--text-primary);
     line-height: 1.5;
     margin: 0;
@@ -459,61 +304,20 @@
 
   .secret-room-hint {
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.4rem;
+    font-size: 0.35rem;
     color: var(--text-muted);
-    letter-spacing: 0.08em;
-    animation: pixelBlink 1s steps(2) infinite;
-  }
-
-  /* ===== 宝箱开启 ===== */
-  @keyframes chestFlash {
-    0%   { box-shadow: 4px 0 0 var(--border), -4px 0 0 var(--border), 0 4px 0 var(--border), 0 -4px 0 var(--border); }
-    25%  { box-shadow: 6px 0 0 var(--accent), -6px 0 0 var(--accent), 0 6px 0 var(--accent), 0 -6px 0 var(--accent); }
-    50%  { box-shadow: 8px 0 0 var(--accent-2), -8px 0 0 var(--accent-2), 0 8px 0 var(--accent-2), 0 -8px 0 var(--accent-2); }
-    75%  { box-shadow: 6px 0 0 var(--accent), -6px 0 0 var(--accent), 0 6px 0 var(--accent), 0 -6px 0 var(--accent); }
-    100% { box-shadow: 4px 0 0 var(--border), -4px 0 0 var(--border), 0 4px 0 var(--border), 0 -4px 0 var(--border); }
-  }
-
-  .item-get-badge {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.55rem;
-    color: var(--bg);
-    background: var(--accent);
-    padding: 0.4rem 0.8rem;
-    z-index: 10;
-    pointer-events: none;
-    white-space: nowrap;
-    box-shadow:
-      3px 0 0 var(--accent-2),
-      -3px 0 0 var(--accent-2),
-      0 3px 0 var(--accent-2),
-      0 -3px 0 var(--accent-2);
-    animation: badgeIn 0.2s steps(2) forwards;
-  }
-
-  @keyframes badgeIn {
-    from { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
-    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    letter-spacing: 0.06em;
   }
 
   /* ===== 响应式 ===== */
-  @media (max-width: 900px) {
-    .mini-map {
-      display: none;
-    }
-  }
-
   @media (max-width: 640px) {
     .achievement-container {
       right: 0.75rem;
       bottom: 0.75rem;
     }
     .achievement {
-      max-width: 220px;
+      max-width: 200px;
+      padding: 0.5rem 0.75rem;
     }
   }
 
@@ -675,7 +479,6 @@
       const info = ACHIEVEMENTS[id];
       if (info) {
         showAchievement(info);
-        updateMiniMap(id);
         playAchievementChime();
       }
     });
@@ -837,45 +640,7 @@
   }
 
   // ============================================================
-  // 5. 塞尔达迷你地图导航
-  // ============================================================
-  function updateMiniMap(sectionId: string) {
-    document.querySelectorAll('.map-btn').forEach((btn) => {
-      btn.classList.toggle('active', (btn as HTMLElement).dataset.target === sectionId);
-    });
-  }
-
-  // 地图按钮点击跳转
-  document.querySelectorAll('.map-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const target = (btn as HTMLElement).dataset.target;
-      if (!target) return;
-      const el = document.getElementById(target);
-      el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-
-  // ============================================================
-  // 6. Pixel Click Spark — 点击位置像素火花
-  // ============================================================
-  (function initClickSpark() {
-    const SYMBOLS = ['✦', '★', '◆', '✸'];
-    let symIdx = 0;
-
-    document.addEventListener('click', (e) => {
-      const spark = document.createElement('div');
-      spark.className = 'click-spark';
-      spark.textContent = SYMBOLS[symIdx % SYMBOLS.length];
-      symIdx++;
-      spark.style.left = e.clientX + 'px';
-      spark.style.top = e.clientY + 'px';
-      document.body.appendChild(spark);
-      spark.addEventListener('animationend', () => spark.remove(), { once: true });
-    });
-  })();
-
-  // ============================================================
-  // 7. Secret Room — Footer 三连击
+  // 5. Secret Room — Footer 三连击
   // ============================================================
   (function initSecretRoom() {
     let clickCount = 0;
@@ -911,60 +676,4 @@
     });
   })();
 
-  // ============================================================
-  // 8. 宝箱开启 — Project 卡片双击
-  // ============================================================
-  (function initChestOpen() {
-    document.querySelectorAll('.project').forEach((card) => {
-      card.addEventListener('dblclick', () => {
-        if (card.classList.contains('chest-open')) return;
-
-        // 获取项目标题
-        const titleEl = card.querySelector('h3, .project-title, [class*="title"]') as HTMLElement | null;
-        const projectName = titleEl?.textContent?.trim() || 'Unknown Item';
-
-        // 触发动画
-        (card as HTMLElement).style.animation = 'chestFlash 0.4s steps(4) forwards';
-        (card as HTMLElement).style.position = 'relative';
-        card.classList.add('chest-open');
-
-        // 注入 ITEM GET badge
-        const badge = document.createElement('div');
-        badge.className = 'item-get-badge';
-        badge.textContent = '★ ITEM GET!';
-        card.appendChild(badge);
-
-        playZeldaFanfare();
-        showAchievement({ icon: '📦', label: 'ITEM OBTAINED', title: projectName });
-
-        // 1.5s 后清理
-        setTimeout(() => {
-          badge.remove();
-          (card as HTMLElement).style.animation = '';
-          card.classList.remove('chest-open');
-        }, 1500);
-      });
-    });
-  })();
-
-  // 滚动时更新迷你地图
-  const miniMap = document.getElementById('mini-map');
-  const SECTION_KEYS = ['hero', 'skills', 'projects', 'thoughts', 'coming'];
-
-  window.addEventListener('scroll', () => {
-    if (!miniMap) return;
-    miniMap.classList.toggle('visible', window.scrollY > 200);
-
-    // 判断当前视口中央对应的区域
-    const mid = window.innerHeight / 2;
-    for (const key of SECTION_KEYS) {
-      const el = document.getElementById(key);
-      if (!el) continue;
-      const rect = el.getBoundingClientRect();
-      if (rect.top <= mid && rect.bottom >= mid) {
-        updateMiniMap(key);
-        break;
-      }
-    }
-  }, { passive: true });
 </script>

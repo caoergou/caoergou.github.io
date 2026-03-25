@@ -32,57 +32,39 @@ const statusIcon = statusIcons[slugHash % statusIcons.length];
 <style>
   .thought {
     padding: 1rem 1.25rem;
-    margin-bottom: 0.5rem;
     background: var(--surface);
-    box-shadow:
-      4px 0 0 var(--accent-5),
-      -4px 0 0 var(--accent-5),
-      0 4px 0 var(--accent-5),
-      0 -4px 0 var(--accent-5);
+    border: 1px solid var(--border);
+    border-radius: 4px;
     position: relative;
     cursor: pointer;
-    transition: all 0.15s step-end;
+    transition: all var(--transition-fast);
   }
 
   .thought:hover {
-    transform: translate(-2px, -2px);
-    box-shadow:
-      6px 0 0 var(--accent-5),
-      -6px 0 0 var(--accent-5),
-      0 6px 0 var(--accent-5),
-      0 -6px 0 var(--accent-5);
+    background: var(--surface-alt);
+    border-color: var(--accent-secondary);
   }
 
-  .thought:active {
-    transform: translate(2px, 2px);
-    box-shadow:
-      2px 0 0 var(--accent-5),
-      -2px 0 0 var(--accent-5),
-      0 2px 0 var(--accent-5),
-      0 -2px 0 var(--accent-5);
-  }
-
-  /* Header */
+  /* Header - Simplified */
   .thought-header {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     margin-bottom: 0.5rem;
   }
 
   .status-icon {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     line-height: 1;
-    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
   }
 
   .thought-title {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.55rem;
-    color: var(--accent-5);
+    font-family: 'VT323', monospace;
+    font-size: 1.15rem;
+    color: var(--text-primary);
     margin: 0;
-    letter-spacing: 0.02em;
-    line-height: 1.4;
+    letter-spacing: 0.01em;
+    line-height: 1.3;
   }
 
   /* Text */
@@ -91,9 +73,7 @@ const statusIcon = statusIcons[slugHash % statusIcons.length];
     font-size: 1.05rem;
     color: var(--text-secondary);
     line-height: 1.5;
-    margin: 0 0 0.75rem 0;
-    padding-left: 0.25rem;
-    border-left: 3px solid var(--border);
+    margin: 0 0 0.5rem 0;
   }
 
   /* Status */
@@ -105,24 +85,20 @@ const statusIcon = statusIcons[slugHash % statusIcons.length];
   .status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.3rem;
     font-family: 'VT323', monospace;
     font-size: 0.85rem;
-    color: var(--accent-2);
-    padding: 0.15rem 0.5rem;
-    background: rgba(107, 203, 119, 0.1);
+    color: var(--accent-secondary);
+    padding: 0.1rem 0.4rem;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 4px;
   }
 
   .status-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--accent-2);
-    animation: pulse 1.5s steps(2) infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+    width: 5px;
+    height: 5px;
+    background: var(--accent-secondary);
+    border-radius: 50%;
   }
 
   /* Responsive */
@@ -132,7 +108,7 @@ const statusIcon = statusIcons[slugHash % statusIcons.length];
     }
 
     .thought-title {
-      font-size: 0.5rem;
+      font-size: 1.1rem;
     }
 
     .thought-text {
@@ -142,9 +118,9 @@ const statusIcon = statusIcons[slugHash % statusIcons.length];
 
   @media (max-width: 480px) {
     .thought-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.35rem;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.4rem;
     }
   }
 </style>
