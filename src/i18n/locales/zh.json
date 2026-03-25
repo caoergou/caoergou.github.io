@@ -17,13 +17,19 @@
   },
   "hero": {
     "title": "Python Developer & AI Engineer",
-    "subtitle": "在确定性与混沌之间构建秩序",
+    "subtitle": "在确定性与混沌之间构建秩序。专注于构建可扩展的数据管道、AI Agent 系统和自动化工具。",
     "langToggle": "中"
   },
   "about": {
     "p1": "我是一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。专注于 Python 生态和 AI Agent 系统开发，热衷于构建能够真正解决问题的工具。",
     "p2": "目前，我在探索如何将大语言模型与传统软件工程结合，打造更智能的自动化工作流。我相信好的工程不是炫技，不追逐热点，只打磨真正有用的东西。",
     "p3": "工作之余，你可能会发现我在即刻分享技术思考，或者在 GitHub 上捣鼓一些开源小工具。"
+  },
+  "experience": {
+    "title": "Python Developer",
+    "company": "独立开发者 & 开源贡献者",
+    "period": "2020 — Present",
+    "description": "构建并维护多个开源项目，包括 Airflow 扩展插件、MermZen 等工具。专注于数据工程、自动化流程和 AI Agent 系统开发。"
   },
   "sections": {
     "about": "关于",

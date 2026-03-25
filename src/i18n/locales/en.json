@@ -17,13 +17,19 @@
   },
   "hero": {
     "title": "Python Developer & AI Engineer",
-    "subtitle": "Building order between certainty and chaos",
+    "subtitle": "Building order between certainty and chaos. Focused on building scalable data pipelines, AI Agent systems, and automation tools.",
     "langToggle": "EN"
   },
   "about": {
     "p1": "I'm a developer who loves tinkering, swimming hard in the sweeping tides of AI. Focused on the Python ecosystem and AI Agent system development, passionate about building tools that truly solve problems.",
     "p2": "Currently, I'm exploring how to combine large language models with traditional software engineering to create smarter automation workflows. I believe good engineering isn't about showing off—it's about polishing things that actually work.",
     "p3": "Outside of work, you might find me sharing technical thoughts on Jike or tinkering with open-source tools on GitHub."
+  },
+  "experience": {
+    "title": "Python Developer",
+    "company": "Independent Developer & Open Source Contributor",
+    "period": "2020 — Present",
+    "description": "Building and maintaining multiple open source projects, including Airflow extended API plugin, MermZen, and more. Focused on data engineering, automation workflows, and AI Agent system development."
   },
   "sections": {
     "about": "About",
