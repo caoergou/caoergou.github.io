@@ -10,13 +10,8 @@ export default defineConfig({
     react(),
     mdx(),
     sitemap({
-      filter: (page) => true,
-      customPages: [
-        'https://eric.run.place/',
-        'https://eric.run.place/blog/',
-        'https://eric.run.place/MermZen/',
-        'https://eric.run.place/windows-xp/',
-      ],
+      // 子项目 (MermZen, windows-xp) 有自己的 sitemap，不需要在主站 sitemap 中重复声明
+      // 详见: robots.txt 中引用了所有 sitemap
       changefreq: 'weekly',
       priority: 0.7,
     }),

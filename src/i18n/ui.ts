@@ -5,8 +5,8 @@ export type Lang = 'zh' | 'en';
 const translations = {
   zh: {
     site: {
-      title: "Eric Cao — 在AI席卷的浪潮中努力扑腾",
-      description: "一个喜欢折腾的开发者，在AI席卷的浪潮中努力扑腾。",
+      title: "Eric Cao — 在AI席卷的浪潮中努力狗刨",
+      description: "一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。",
     },
     nav: {
       home: "首页",
