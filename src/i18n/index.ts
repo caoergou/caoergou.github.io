@@ -53,8 +53,8 @@ function interpolate(str: string, params?: Record<string, string | number>): str
 }
 
 // Get all translations for a language
-export function getTranslations(lang: Lang): typeof zh {
-  return translations[lang];
+export function getTranslations(lang: Lang): Record<string, unknown> {
+  return translations[lang] as unknown as Record<string, unknown>;
 }
 
 // Check if a language is valid

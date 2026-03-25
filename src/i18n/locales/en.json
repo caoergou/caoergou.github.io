@@ -1,7 +1,7 @@
 {
   "site": {
-    "title": "Eric Cao — Swimming hard in the sweeping tides of AI",
-    "description": "A developer who loves tinkering, swimming hard in the sweeping tides of AI. Focused on Python, AI Agent, Big Data, and open-source tools.",
+    "title": "Eric Cao — Python Developer & AI Engineer",
+    "description": "Building order between certainty and chaos. Focused on building scalable data pipelines, AI Agent systems, and automation tools.",
     "author": "Eric Cao",
     "keywords": "Eric Cao, Python, AI Agent, Dify, Airflow, Big Data, Open Source, TypeScript, React, Full-Stack Developer",
     "locale": "en_US",
@@ -9,31 +9,38 @@
   },
   "nav": {
     "home": "Home",
-    "blog": "Blog"
+    "blog": "Blog",
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
+    "thoughts": "Thoughts"
   },
   "hero": {
-    "title": "Full-Stack Adventurer",
+    "title": "Python Developer & AI Engineer",
+    "subtitle": "Building order between certainty and chaos",
     "langToggle": "EN"
   },
-  "stats": {
-    "regions": "Regions Conquered",
-    "skills": "Skills Mastered",
-    "days": "Adventure Days"
+  "about": {
+    "p1": "I'm a developer who loves tinkering, swimming hard in the sweeping tides of AI. Focused on the Python ecosystem and AI Agent system development, passionate about building tools that truly solve problems.",
+    "p2": "Currently, I'm exploring how to combine large language models with traditional software engineering to create smarter automation workflows. I believe good engineering isn't about showing off—it's about polishing things that actually work.",
+    "p3": "Outside of work, you might find me sharing technical thoughts on Jike or tinkering with open-source tools on GitHub."
   },
   "sections": {
-    "projects": "Quests",
-    "explorations": "Explorations"
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
+    "thoughts": "Thoughts"
   },
   "project": {
-    "enterRegion": "Teleport to Region",
-    "requiredSkills": "Skills Required:",
-    "explorers": "explorers"
+    "demo": "Demo",
+    "github": "Source",
+    "technologies": "Technologies"
   },
   "thought": {
-    "exploring": "Decrypting"
+    "readMore": "Read more"
   },
   "comingSoon": {
-    "title": "Unlocking Soon",
+    "title": "Coming Soon",
     "items": [
       "Complete guide to building personal/team AI Agent workflows from scratch",
       "Enterprise Agent automation implementation case studies",
@@ -42,42 +49,13 @@
     ]
   },
   "blog": {
-    "title": "📜 Blog",
+    "title": "Blog",
     "description": "Python · Distributed Systems · Web Development · AI Applications",
-    "emptyTitle": "New map is being drawn...",
-    "emptyDesc": "Adventure logs coming soon."
+    "emptyTitle": "Articles coming...",
+    "emptyDesc": "New content coming soon."
   },
   "footer": {
-    "copyright": "© {year} Eric Cao"
-  },
-  "xpbar": {
-    "level": "Level",
-    "levelShort": "Lv.",
-    "levelUp": "Level Up!"
-  },
-  "hotbar": {
-    "profile": "Character",
-    "skills": "Skills",
-    "projects": "Quests",
-    "thoughts": "Journal",
-    "coming": "Unlocking Soon"
-  },
-  "monster": {
-    "creeper": "Creeper",
-    "creeperSound": "Ssssss...",
-    "enderman": "Enderman",
-    "skeleton": "Skeleton",
-    "spider": "Spider",
-    "zombie": "Zombie",
-    "appeared": "A wild {name} appeared!"
-  },
-  "inventory": {
-    "title": "Inventory",
-    "legendary": "LEGENDARY",
-    "epic": "EPIC",
-    "rare": "RARE",
-    "common": "COMMON",
-    "attack": "Attack",
-    "defense": "Defense"
+    "copyright": "© {year} Eric Cao",
+    "builtWith": "Built with Astro & inspired by Brittany Chiang"
   }
 }

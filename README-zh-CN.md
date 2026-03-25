@@ -8,7 +8,7 @@
 
 ## 关于
 
-一个像素艺术风格的个人网站，融合我的世界 & 塞尔达游戏主题，使用 Astro 构建，通过 GitHub Actions 自动部署。
+一个极简深色主题个人网站，设计灵感来自 [Brittany Chiang](https://brittanychiang.com)，使用 Astro 构建，通过 GitHub Actions 自动部署。采用左右分栏布局，支持平滑滚动导航和双语切换。
 
 ## 联系方式
 

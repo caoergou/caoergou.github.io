@@ -1,7 +1,7 @@
 {
   "site": {
-    "title": "Eric Cao — 在AI席卷的浪潮中努力狗刨",
-    "description": "一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。",
+    "title": "Eric Cao — Python Developer & AI Engineer",
+    "description": "在确定性与混沌之间构建秩序。专注于构建可扩展的数据管道、AI Agent 系统和自动化工具。",
     "author": "Eric Cao",
     "keywords": "Eric Cao, Python, AI Agent, Dify, Airflow, 大数据, 开源, TypeScript, React, 全栈开发",
     "locale": "zh_CN",
@@ -9,31 +9,38 @@
   },
   "nav": {
     "home": "首页",
-    "blog": "博客"
+    "blog": "博客",
+    "about": "关于",
+    "experience": "经历",
+    "projects": "项目",
+    "thoughts": "思考"
   },
   "hero": {
-    "title": "全栈冒险家",
+    "title": "Python Developer & AI Engineer",
+    "subtitle": "在确定性与混沌之间构建秩序",
     "langToggle": "中"
   },
-  "stats": {
-    "regions": "征服区域",
-    "skills": "已掌握技能",
-    "days": "冒险历程"
+  "about": {
+    "p1": "我是一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。专注于 Python 生态和 AI Agent 系统开发，热衷于构建能够真正解决问题的工具。",
+    "p2": "目前，我在探索如何将大语言模型与传统软件工程结合，打造更智能的自动化工作流。我相信好的工程不是炫技，不追逐热点，只打磨真正有用的东西。",
+    "p3": "工作之余，你可能会发现我在即刻分享技术思考，或者在 GitHub 上捣鼓一些开源小工具。"
   },
   "sections": {
-    "projects": "探险区域",
-    "explorations": "探索方向"
+    "about": "关于",
+    "experience": "经历",
+    "projects": "项目",
+    "thoughts": "思考"
   },
   "project": {
-    "enterRegion": "传送至该区域",
-    "requiredSkills": "所需技能：",
-    "explorers": "位探险者"
+    "demo": "演示",
+    "github": "源码",
+    "technologies": "技术栈"
   },
   "thought": {
-    "exploring": "解析中"
+    "readMore": "阅读更多"
   },
   "comingSoon": {
-    "title": "即将解锁",
+    "title": "即将发布",
     "items": [
       "个人/团队专属 AI Agent 工作流的从零搭建全流程",
       "企业级场景下 Agent 自动化流程的落地实战记录",
@@ -42,42 +49,13 @@
     ]
   },
   "blog": {
-    "title": "📜 博客",
+    "title": "博客",
     "description": "Python · 分布式系统 · Web 开发 · AI 应用",
-    "emptyTitle": "新地图正在绘制中...",
-    "emptyDesc": "探险日志即将解锁，敬请期待。"
+    "emptyTitle": "文章准备中...",
+    "emptyDesc": "新内容即将上线，敬请期待。"
   },
   "footer": {
-    "copyright": "© {year} Eric Cao"
-  },
-  "xpbar": {
-    "level": "等级",
-    "levelShort": "Lv.",
-    "levelUp": "升级了！"
-  },
-  "hotbar": {
-    "profile": "角色档案",
-    "skills": "技能背包",
-    "projects": "探险区域",
-    "thoughts": "冒险日志",
-    "coming": "即将解锁"
-  },
-  "monster": {
-    "creeper": "爬行者",
-    "creeperSound": "Ssssss...",
-    "enderman": "末影人",
-    "skeleton": "骷髅",
-    "spider": "蜘蛛",
-    "zombie": "僵尸",
-    "appeared": "一只野生的{name}出现了！"
-  },
-  "inventory": {
-    "title": "背包物品",
-    "legendary": "传说级",
-    "epic": "史诗级",
-    "rare": "稀有级",
-    "common": "普通级",
-    "attack": "攻击力",
-    "defense": "防御力"
+    "copyright": "© {year} Eric Cao",
+    "builtWith": "Built with Astro & inspired by Brittany Chiang"
   }
 }

@@ -10,7 +10,7 @@ This is my personal website showcasing my profile, projects, and contact informa
 
 ## About
 
-A pixel-art style personal website with Minecraft & Zelda game themes, built with Astro and deployed via GitHub Actions.
+A minimalist dark-themed personal website inspired by [Brittany Chiang](https://brittanychiang.com), built with Astro and deployed via GitHub Actions. Features a clean two-column layout with smooth scrolling navigation and bilingual support.
 
 ## Contact
 
