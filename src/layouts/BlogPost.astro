@@ -24,13 +24,47 @@ const articleSchema = {
   "author": {
     "@type": "Person",
     "name": "Eric Cao",
-    "url": siteUrl
+    "url": siteUrl,
+    "sameAs": [
+      "https://github.com/caoergou",
+      "https://jike.city/ergou"
+    ]
   },
   "publisher": {
     "@type": "Person",
     "name": "Eric Cao",
     "url": siteUrl
-  }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonicalUrl
+  },
+  "inLanguage": "zh-CN"
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": siteUrl
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "博客",
+      "item": `${siteUrl}/blog/`
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": title,
+      "item": canonicalUrl
+    }
+  ]
 };
 ---
 
@@ -42,6 +76,7 @@ const articleSchema = {
   <title>{title} - Eric Cao</title>
   <meta name="description" content={metaDescription}>
   <meta name="author" content="Eric Cao">
+  <meta name="robots" content="index, follow, max-image-preview:large">
 
   <!-- Canonical URL -->
   <link rel="canonical" href={canonicalUrl}>
@@ -70,6 +105,7 @@ const articleSchema = {
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

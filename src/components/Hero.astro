@@ -97,52 +97,40 @@ const stats = {
 </section>
 
 <style>
-  /* ===== Top Controls - Pixel Style ===== */
+  /* ===== Top Controls - Clean Style ===== */
   .top-controls {
     position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
+    top: 1.25rem;
+    right: 1.25rem;
     z-index: 100;
     display: flex;
     gap: 0.5rem;
   }
 
   .control-btn {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--surface);
-    border: none;
-    box-shadow:
-      3px 0 0 var(--border),
-      -3px 0 0 var(--border),
-      0 3px 0 var(--border),
-      0 -3px 0 var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
     color: var(--text-secondary);
     cursor: pointer;
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.5rem;
-    transition: all 0.15s step-end;
+    font-size: 0.45rem;
+    transition: all var(--transition-fast);
   }
 
   .control-btn:hover {
     color: var(--accent);
-    box-shadow:
-      3px 0 0 var(--accent),
-      -3px 0 0 var(--accent),
-      0 3px 0 var(--accent),
-      0 -3px 0 var(--accent);
+    border-color: var(--accent);
+    background: var(--surface-alt);
   }
 
   .control-btn:active {
-    transform: translate(2px, 2px);
-    box-shadow:
-      1px 0 0 var(--accent),
-      -1px 0 0 var(--accent),
-      0 1px 0 var(--accent),
-      0 -1px 0 var(--accent);
+    transform: scale(0.95);
   }
 
   .lang-text {
@@ -166,84 +154,59 @@ const stats = {
     display: block;
   }
 
-  /* ===== Adventurer Card ===== */
+  /* ===== Adventurer Card - Simplified ===== */
   .adventurer-card {
     display: flex;
-    align-items: flex-start;
-    gap: 1.25rem;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 1.25rem;
   }
 
-  /* Pixel Avatar Frame */
+  /* Clean Avatar Frame */
   .avatar-frame {
     position: relative;
     flex-shrink: 0;
   }
 
   .avatar-inner {
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     background: var(--surface);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow:
-      4px 0 0 var(--border),
-      -4px 0 0 var(--border),
-      0 4px 0 var(--border),
-      0 -4px 0 var(--border);
+    border: 2px solid var(--border);
+    border-radius: 4px;
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    transition: box-shadow 0.15s step-end;
+    transition: all var(--transition-fast);
   }
 
   .avatar-inner:hover {
-    box-shadow:
-      4px 0 0 var(--accent-3),
-      -4px 0 0 var(--accent-3),
-      0 4px 0 var(--accent-3),
-      0 -4px 0 var(--accent-3);
-  }
-
-  .avatar-inner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      repeating-linear-gradient(
-        0deg,
-        transparent 0px,
-        transparent 4px,
-        rgba(255, 217, 61, 0.1) 4px,
-        rgba(255, 217, 61, 0.1) 8px
-      );
+    border-color: var(--accent);
+    background: var(--surface-alt);
   }
 
   .avatar-icon {
-    font-size: 1.75rem;
-    filter: drop-shadow(2px 2px 0 var(--border));
+    font-size: 1.5rem;
   }
 
   .level-badge {
     position: absolute;
-    bottom: -8px;
+    bottom: -6px;
     left: 50%;
     transform: translateX(-50%);
     background: var(--accent);
     color: var(--bg);
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.4rem;
+    font-size: 0.35rem;
     padding: 2px 6px;
-    box-shadow:
-      2px 0 0 rgba(0,0,0,0.3),
-      -2px 0 0 rgba(0,0,0,0.3),
-      0 2px 0 rgba(0,0,0,0.3),
-      0 -2px 0 rgba(0,0,0,0.3);
+    border-radius: 2px;
     white-space: nowrap;
   }
 
-  /* Name and Title */
+  /* Name and Title - Simplified */
   .adventurer-info {
     flex: 1;
     min-width: 0;
@@ -259,42 +222,9 @@ const stats = {
 
   .hero-name {
     font-family: 'Press Start 2P', cursive;
-    font-size: clamp(1.25rem, 5vw, 1.75rem);
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
     line-height: 1.3;
     color: var(--text-primary);
-    text-shadow:
-      3px 3px 0 var(--accent),
-      -1px -1px 0 var(--border);
-    animation: pixelFadeIn 0.8s steps(8) forwards;
-  }
-
-  .hero-name:hover {
-    animation: heroGlitch 0.5s steps(5) forwards;
-  }
-
-  @keyframes pixelFadeIn {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* 塞尔达/像素故障艺术效果 */
-  @keyframes heroGlitch {
-    0%, 70%, 100% {
-      transform: translate(0);
-      text-shadow: 3px 3px 0 var(--accent), -1px -1px 0 var(--border);
-    }
-    15% {
-      transform: translate(-5px, 1px) skewX(-3deg);
-      text-shadow: 4px 4px 0 var(--accent-4), -2px -2px 0 var(--accent-3);
-    }
-    30% {
-      transform: translate(5px, -1px) skewX(3deg);
-      text-shadow: -3px -3px 0 var(--accent-3), 2px 2px 0 var(--accent-4);
-    }
-    50% {
-      transform: translate(-2px, 2px);
-      text-shadow: 2px 2px 0 var(--accent-5), -1px -1px 0 var(--border);
-    }
   }
 
   .hero-username {
@@ -304,76 +234,64 @@ const stats = {
     text-decoration: none;
     padding: 0.15rem 0.4rem;
     background: var(--surface);
-    box-shadow:
-      2px 0 0 var(--border),
-      -2px 0 0 var(--border),
-      0 2px 0 var(--border),
-      0 -2px 0 var(--border);
-    transition: all 0.15s step-end;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all var(--transition-fast);
   }
 
   .hero-username:hover {
     color: var(--accent);
-    box-shadow:
-      2px 0 0 var(--accent),
-      -2px 0 0 var(--accent),
-      0 2px 0 var(--accent),
-      0 -2px 0 var(--accent);
+    border-color: var(--accent);
+    background: var(--surface-alt);
   }
 
   .hero-title {
     font-family: 'VT323', monospace;
     font-size: 1.1rem;
-    color: var(--accent-3);
-    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
   }
 
-  /* ===== Hero Tagline ===== */
+  /* ===== Hero Tagline - Simplified ===== */
   .hero-tagline {
     font-family: 'VT323', monospace;
-    font-size: clamp(1.1rem, 3vw, 1.3rem);
-    color: var(--accent-2);
+    font-size: clamp(1.1rem, 3vw, 1.25rem);
+    color: var(--accent-secondary);
     padding-left: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     line-height: 1.5;
     max-width: 100%;
-    border-left: 4px solid var(--accent-2);
-    background: linear-gradient(90deg, rgba(107, 203, 119, 0.1) 0%, transparent 100%);
+    border-left: 2px solid var(--accent-secondary);
   }
 
-  /* ===== Adventure Stats ===== */
+  /* ===== Adventure Stats - Simplified ===== */
   .hero-stats {
     display: flex;
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-    padding: 1rem;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    padding: 0.875rem 1rem;
     background: var(--surface);
-    box-shadow:
-      3px 0 0 var(--border),
-      -3px 0 0 var(--border),
-      0 3px 0 var(--border),
-      0 -3px 0 var(--border);
-    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 1.25rem;
   }
 
   .stat {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.15rem;
+    gap: 0.2rem;
     flex: 1;
   }
 
   .stat-icon {
-    font-size: 1.25rem;
-    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.2));
+    font-size: 1.1rem;
   }
 
   .stat-value {
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: var(--accent);
-    text-shadow: 2px 2px 0 rgba(255, 217, 61, 0.2);
   }
 
   .stat-label {
@@ -383,7 +301,7 @@ const stats = {
     text-align: center;
   }
 
-  /* ===== Hero Links ===== */
+  /* ===== Hero Links - Simplified ===== */
   .hero-links {
     display: flex;
     gap: 0.5rem;
@@ -397,42 +315,25 @@ const stats = {
     color: var(--text-primary);
     text-decoration: none;
     cursor: pointer;
-    padding: 0.6rem 0.9rem;
+    padding: 0.5rem 0.75rem;
     background: var(--surface);
-    box-shadow:
-      3px 0 0 var(--border),
-      -3px 0 0 var(--border),
-      0 3px 0 var(--border),
-      0 -3px 0 var(--border);
-    transition: all 0.15s step-end;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all var(--transition-fast);
   }
 
   .hero-link:hover {
-    transform: translate(-2px, -2px);
-    box-shadow:
-      5px 0 0 var(--accent),
-      -5px 0 0 var(--accent),
-      0 5px 0 var(--accent),
-      0 -5px 0 var(--accent);
-  }
-
-  .hero-link:active {
-    transform: translate(2px, 2px);
-    box-shadow:
-      1px 0 0 var(--accent),
-      -1px 0 0 var(--accent),
-      0 1px 0 var(--accent),
-      0 -1px 0 var(--accent);
+    border-color: var(--accent);
+    background: var(--surface-alt);
   }
 
   .link-icon {
-    font-size: 1rem;
-    filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.2));
+    font-size: 0.9rem;
   }
 
   .link-text {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.5rem;
+    font-family: 'VT323', monospace;
+    font-size: 0.9rem;
     letter-spacing: 0.02em;
   }
 
@@ -444,47 +345,46 @@ const stats = {
     }
 
     .adventurer-card {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.875rem;
+    }
+
+    .avatar-inner {
+      width: 48px;
+      height: 48px;
+    }
+
+    .avatar-icon {
+      font-size: 1.25rem;
     }
 
     .name-row {
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.2rem;
     }
 
     .hero-stats {
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.75rem;
     }
 
     .stat {
-      min-width: 80px;
+      min-width: 70px;
     }
 
     .hero-links {
-      flex-direction: column;
-    }
-
-    .hero-link {
-      width: 100%;
-      justify-content: center;
+      flex-wrap: wrap;
     }
   }
 
   @media (max-width: 480px) {
-    .avatar-inner {
-      width: 56px;
-      height: 56px;
-    }
-
     .hero-name {
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
 
     .stat-value {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
     }
 
     .stat-label {

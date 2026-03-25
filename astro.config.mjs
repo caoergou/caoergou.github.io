@@ -14,6 +14,40 @@ export default defineConfig({
       // 详见: robots.txt 中引用了所有 sitemap
       changefreq: 'weekly',
       priority: 0.7,
+      // 自定义每个页面的 sitemap 条目
+      serialize: (item) => {
+        // 根据路径自定义优先级和更新频率
+        if (item.url === 'https://eric.run.place/' || item.url.endsWith('/index.html')) {
+          return {
+            ...item,
+            changefreq: 'weekly',
+            priority: 1.0,
+            lastmod: new Date().toISOString(),
+          };
+        }
+        // 博客文章
+        if (item.url.includes('/blog/')) {
+          return {
+            ...item,
+            changefreq: 'monthly',
+            priority: 0.8,
+          };
+        }
+        // 项目页面
+        if (item.url.includes('/projects/')) {
+          return {
+            ...item,
+            changefreq: 'monthly',
+            priority: 0.6,
+          };
+        }
+        // 其他页面
+        return {
+          ...item,
+          changefreq: 'monthly',
+          priority: 0.5,
+        };
+      },
     }),
   ],
   markdown: {
