@@ -1,0 +1,141 @@
+name: Create Post from Issue
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  create-post:
+    # Only run when the 'thought' or 'post' label is added
+    if: github.event.label.name == 'thought' || github.event.label.name == 'post'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - name: Create markdown file via GitHub API
+        id: create-post
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+
+            // Parse a section from GitHub issue form output
+            // Sections look like: "### Heading\n\nContent\n"
+            function extractSection(text, heading) {
+              const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              const re = new RegExp(
+                `### ${escaped}\\s*\\n+([\\s\\S]*?)(?=\\n### |$)`
+              );
+              const m = text.match(re);
+              if (!m) return '';
+              // GitHub renders empty optional fields as "_No response_"
+              return m[1].replace(/_No response_/g, '').trim();
+            }
+
+            const titleZh = extractSection(body, '标题（中文）') || issue.title;
+            const titleEn = extractSection(body, 'Title (English)') || issue.title;
+            const descZh  = extractSection(body, '描述（中文）');
+            const descEn  = extractSection(body, 'Description (English)');
+            const content = extractSection(body, '正文内容（可选）');
+
+            if (!titleZh || !titleEn || !descZh || !descEn) {
+              core.setFailed(
+                'Missing required fields. Please fill in all required fields in the issue form.'
+              );
+              return;
+            }
+
+            // Generate slug from English title
+            const date = new Date().toISOString().split('T')[0];
+            const slug = titleEn
+              .toLowerCase()
+              .replace(/[^a-z0-9\s-]/g, '')
+              .replace(/\s+/g, '-')
+              .replace(/-{2,}/g, '-')
+              .replace(/^-|-$/g, '')
+              .substring(0, 50);
+
+            const filepath = `src/content/thoughts/${slug}.md`;
+
+            // Escape double quotes for YAML
+            const esc = s => s.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+
+            let md = [
+              '---',
+              'title:',
+              `  zh: "${esc(titleZh)}"`,
+              `  en: "${esc(titleEn)}"`,
+              'description:',
+              `  zh: "${esc(descZh)}"`,
+              `  en: "${esc(descEn)}"`,
+              'author: "Eric Cao"',
+              `date: "${date}"`,
+              '---',
+              '',
+            ].join('\n');
+
+            if (content) {
+              md += content + '\n';
+            }
+
+            const encoded = Buffer.from(md).toString('base64');
+
+            // Check if file already exists (need sha to update)
+            let sha;
+            try {
+              const existing = await github.rest.repos.getContent({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: filepath,
+              });
+              sha = existing.data.sha;
+            } catch (_) {
+              // File doesn't exist yet — that's fine
+            }
+
+            await github.rest.repos.createOrUpdateFileContents({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path: filepath,
+              message: `feat: add thought from issue #${issue.number}\n\nSource: ${issue.html_url}`,
+              content: encoded,
+              sha,
+              branch: 'main',
+            });
+
+            console.log(`✅ Created: ${filepath}`);
+            core.setOutput('filepath', filepath);
+            core.setOutput('slug', slug);
+
+      - name: Comment on issue
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const slug = '${{ steps.create-post.outputs.slug }}';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: [
+                '✅ **文章已创建，正在部署...**',
+                '',
+                `文件路径：\`src/content/thoughts/${slug}.md\``,
+                '',
+                '站点将在几分钟内更新，部署进度可在 [Actions](../actions) 中查看。',
+              ].join('\n'),
+            });
+
+            // Close the issue after post is created
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              state: 'closed',
+            });

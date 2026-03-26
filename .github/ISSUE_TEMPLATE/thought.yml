@@ -1,0 +1,53 @@
+name: 📝 New Thought / Post
+description: 通过 Issue 创建新的 Thought 文章
+labels: ["thought"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        填写以下字段，提交后将自动创建文章并部署到博客。
+        支持双语（中文/英文），正文支持 Markdown 格式。
+
+  - type: input
+    id: title-zh
+    attributes:
+      label: 标题（中文）
+      placeholder: 例如：工具的本质
+    validations:
+      required: true
+
+  - type: input
+    id: title-en
+    attributes:
+      label: Title (English)
+      placeholder: e.g. Philosophy of Tools
+    validations:
+      required: true
+
+  - type: textarea
+    id: desc-zh
+    attributes:
+      label: 描述（中文）
+      placeholder: 一段简短的中文摘要，将显示在文章列表...
+    validations:
+      required: true
+
+  - type: textarea
+    id: desc-en
+    attributes:
+      label: Description (English)
+      placeholder: A brief English summary, shown in the post list...
+    validations:
+      required: true
+
+  - type: textarea
+    id: content
+    attributes:
+      label: 正文内容（可选）
+      description: 支持 Markdown 格式，留空则仅展示描述
+      placeholder: |
+        ## 详细内容
+
+        支持 **Markdown** 格式...
+    validations:
+      required: false
