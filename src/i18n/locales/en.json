@@ -1,9 +1,9 @@
 {
   "site": {
-    "title": "Eric Cao — Python Developer & AI Engineer",
-    "description": "Building order between certainty and chaos. Focused on building scalable data pipelines, AI Agent systems, and automation tools.",
+    "title": "Eric Cao — Big Data & Full-Stack Engineer, focused on practical AI",
+    "description": "Started as a big data engineer, worked across Java and Python full-stack and LLM apps; now focused on how AI actually lands in the enterprise and which workflows Agents should reshape.",
     "author": "Eric Cao",
-    "keywords": "Eric Cao, Python, AI Agent, Dify, Airflow, Big Data, Open Source, TypeScript, React, Full-Stack Developer",
+    "keywords": "Eric Cao, AI Agent, Agent Workflow, Claude Code, Big Data, Data Engineering, LLM, Python, Full-Stack, Enterprise AI",
     "locale": "en_US",
     "lang": "en-US"
   },
@@ -16,20 +16,34 @@
     "thoughts": "Thoughts"
   },
   "hero": {
-    "title": "Python Developer & AI Engineer",
-    "subtitle": "Building order between certainty and chaos. Focused on building scalable data pipelines, AI Agent systems, and automation tools.",
+    "title": "Big data & full-stack background, now focused on making AI actually land",
+    "subtitle": "Started out as a big data engineer, worked across Java and Python full-stack, and dove deep into LLM apps. Now I'm seriously working out how enterprises can put AI to good use, and which workflows Agents should truly reshape.",
     "langToggle": "EN"
   },
   "about": {
-    "p1": "I'm a developer who loves tinkering, swimming hard in the sweeping tides of AI. Focused on the Python ecosystem and AI Agent system development, passionate about building tools that truly solve problems.",
-    "p2": "Currently, I'm exploring how to combine large language models with traditional software engineering to create smarter automation workflows. I believe good engineering isn't about showing off—it's about polishing things that actually work.",
-    "p3": "Outside of work, you might find me sharing technical thoughts on Jike or tinkering with open-source tools on GitHub."
+    "p1": "My engineering roots are in big data — from 2021 to 2023 I worked as a big data engineer at Jike, deep in Java and massive data pipelines. That's where I learned what good engineering really means.",
+    "p2": "Then I moved into Python and full-stack development, and dove headfirst into LLM apps. From backend to product, from tuning models to wiring up workflows, I grew convinced that the way we build software is being redefined by AI. (Off the clock, I'm also a vibe coder having a great time.)",
+    "p3": "Since 2026, I've focused on how AI actually lands in the enterprise — rethinking which workflows Agents should reshape, and sharing what I figure out along the way. Good engineering was never about showing off; it's about getting genuinely useful things into more hands."
   },
   "experience": {
-    "title": "Python Developer",
-    "company": "Independent Developer & Open Source Contributor",
-    "period": "2020 — Present",
-    "description": "Building and maintaining multiple open source projects, including Airflow extended API plugin, MermZen, and more. Focused on data engineering, automation workflows, and AI Agent system development."
+    "recent": {
+      "period": "2026 — Present",
+      "title": "Focused on Practical AI",
+      "company": "Enterprise AI adoption · workflow change",
+      "description": "Working out how AI actually lands in the enterprise, assessing which workflows Agents should reshape, and sharing the practices I find with teams and the community."
+    },
+    "fullstack": {
+      "period": "2023 — 2025",
+      "title": "Python & Full-Stack Developer",
+      "company": "Full-stack development · LLM apps",
+      "description": "Moved from backend to full-stack, dove deep into LLM application development, and built and maintained several open source projects."
+    },
+    "bigdata": {
+      "period": "2021 — 2023",
+      "title": "Big Data Engineer",
+      "company": "Jike (即刻)",
+      "description": "Owned big data platforms and large-scale data processing, working mainly with Big Data tooling and Java — building the judgment for complex systems and good engineering."
+    }
   },
   "sections": {
     "about": "About",

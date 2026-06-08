@@ -568,10 +568,10 @@ const socialLinks = [
           Eric Cao
         </h1>
         <h2 style="font-size: var(--fz-xl); color: var(--light-slate); margin-bottom: var(--spacing-lg); font-weight: 500;" data-i18n="hero.title">
-          Python Developer & AI Engineer
+          大数据与全栈出身，现在专注 AI 怎么落地
         </h2>
         <p style="font-size: var(--fz-lg); color: var(--slate); max-width: 400px; line-height: 1.6;" data-i18n="hero.subtitle">
-          在确定性与混沌之间构建秩序。专注于构建可扩展的数据管道、AI Agent 系统和自动化工具。
+          大数据工程师出身，做过 Java 与 Python 全栈，也一头扎进过 LLM 应用。如今在认真琢磨：企业怎么用好 AI，哪些工作流真正该被 Agent 改变。
         </p>
 
         <!-- Desktop Navigation -->
@@ -629,13 +629,13 @@ const socialLinks = [
         </div>
         <div style="font-size: var(--fz-lg); line-height: 1.8; color: var(--slate);">
           <p style="margin-bottom: var(--spacing-lg);" data-i18n="about.p1">
-            我是一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。专注于 Python 生态和 AI Agent 系统开发，热衷于构建能够真正解决问题的工具。
+            我的工程底子是从大数据攒起来的——2021 到 2023 年在即刻做大数据工程师，和 Java、海量数据打交道，那段经历教会我什么是好工程。
           </p>
           <p style="margin-bottom: var(--spacing-lg);" data-i18n="about.p2">
-            目前，我在探索如何将大语言模型与传统软件工程结合，打造更智能的自动化工作流。我相信好的工程不是炫技，不追逐热点，只打磨真正有用的东西。
+            之后我转向 Python 与全栈开发，也一头扎进 LLM 应用。从后端到产品、从调模型到拼工作流，我越来越确信：开发方式正在被 AI 重新定义。（私下里，我也是个乐在其中的 vibe coder。）
           </p>
           <p data-i18n="about.p3">
-            工作之余，你可能会发现我在即刻分享技术思考，或者在 GitHub 上捣鼓一些开源小工具。
+            2026 年起，我把重心放在 AI 怎么在企业真正落地——重新考量哪些工作流该被 Agent 改变，也乐于把摸索出来的实践分享给更多人。好的工程从来不是炫技，而是让真正有用的东西被更多人用起来。
           </p>
         </div>
       </section>
@@ -651,15 +651,49 @@ const socialLinks = [
         <div class="experience-list">
           <div class="experience-item" style="margin-bottom: var(--spacing-2xl);">
             <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--spacing-sm); flex-wrap: wrap; gap: var(--spacing-sm);">
-              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);" data-i18n="experience.title">Python Developer</h3>
-              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);" data-i18n="experience.period">2020 — Present</span>
+              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);" data-i18n="experience.recent.title">专注 AI 工程化落地</h3>
+              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);" data-i18n="experience.recent.period">2026 — 至今</span>
             </div>
-            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);" data-i18n="experience.company">独立开发者 & 开源贡献者</p>
-            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);" data-i18n="experience.description">
-              构建并维护多个开源项目，包括 Airflow 扩展插件、MermZen 等工具。专注于数据工程、自动化流程和 AI Agent 系统开发。
+            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);" data-i18n="experience.recent.company">企业 AI 落地 · 工作流改造</p>
+            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);" data-i18n="experience.recent.description">
+              琢磨 AI 怎么在企业真正落地，评估哪些工作流该被 Agent 改变，并把摸索出的实践分享给团队与社区。
             </p>
             <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
-              {['Python', 'TypeScript', 'Airflow', 'Dify', 'LLM'].map((tech) => (
+              {['AI Agent', 'Claude Code', 'Workflow'].map((tech) => (
+                <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--slate); background: var(--green-tint); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius);">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div class="experience-item" style="margin-bottom: var(--spacing-2xl);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--spacing-sm); flex-wrap: wrap; gap: var(--spacing-sm);">
+              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);" data-i18n="experience.fullstack.title">Python & 全栈开发者</h3>
+              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);" data-i18n="experience.fullstack.period">2023 — 2025</span>
+            </div>
+            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);" data-i18n="experience.fullstack.company">全栈开发 · LLM 应用</p>
+            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);" data-i18n="experience.fullstack.description">
+              从后端走向全栈，深入 LLM 应用开发，并构建、维护多个开源项目。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
+              {['Python', 'TypeScript', 'LLM', 'React'].map((tech) => (
+                <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--slate); background: var(--green-tint); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius);">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div class="experience-item" style="margin-bottom: var(--spacing-2xl);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--spacing-sm); flex-wrap: wrap; gap: var(--spacing-sm);">
+              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);" data-i18n="experience.bigdata.title">大数据工程师</h3>
+              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);" data-i18n="experience.bigdata.period">2021 — 2023</span>
+            </div>
+            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);" data-i18n="experience.bigdata.company">即刻 Jike</p>
+            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);" data-i18n="experience.bigdata.description">
+              负责大数据平台与海量数据处理，技术栈以 Big Data 与 Java 为主，打下了对复杂系统与好工程的判断力。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
+              {['Big Data', 'Java', 'Data Pipeline'].map((tech) => (
                 <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--slate); background: var(--green-tint); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius);">
                   {tech}
                 </span>

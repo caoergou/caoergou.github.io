@@ -16,8 +16,8 @@ This file provides metadata about the structure and content of this website to h
 - **Name**: Eric Cao
 - **GitHub**: @caoergou
 - **Location**: Shanghai, China
-- **Role**: Python Developer & Open Source Contributor
-- **Focus Areas**: Python, AI Applications, Distributed Systems, Web Development
+- **Role**: Big Data & Full-Stack Engineer · Open Source Contributor
+- **Focus Areas**: Practical AI adoption, AI Agent workflows, LLM apps, Big Data, Python, Open Source
 
 ## Featured Projects
 

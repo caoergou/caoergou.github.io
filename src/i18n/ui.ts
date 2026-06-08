@@ -5,8 +5,8 @@ export type Lang = 'zh' | 'en';
 const translations = {
   zh: {
     site: {
-      title: "Eric Cao — 在AI席卷的浪潮中努力狗刨",
-      description: "一个喜欢折腾的开发者，在AI席卷的浪潮中努力狗刨。",
+      title: "Eric Cao — 大数据与全栈工程师，专注 AI 落地",
+      description: "从大数据工程师起步，如今专注 AI 怎么在企业真正落地。",
     },
     nav: {
       home: "首页",
@@ -51,8 +51,8 @@ const translations = {
   },
   en: {
     site: {
-      title: "Eric Cao — Swimming hard in the sweeping tides of AI",
-      description: "A developer who loves tinkering, swimming hard in the sweeping tides of AI.",
+      title: "Eric Cao — Big Data & Full-Stack Engineer, focused on practical AI",
+      description: "From big data engineer to focusing on how AI actually lands in the enterprise.",
     },
     nav: {
       home: "Home",
