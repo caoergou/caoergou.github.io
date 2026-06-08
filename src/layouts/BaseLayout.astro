@@ -108,7 +108,7 @@ const socialLinks = [
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Newsreader:opsz,ital,wght@6..72,0,400..600;6..72,1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style is:global>
     /* ===== CSS Variables - Brittany Chiang Style ===== */
@@ -128,9 +128,11 @@ const socialLinks = [
       --pink: #f57dff;
       --blue: #57cbff;
 
-      /* Fonts */
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+      /* Fonts — serif editorial style */
+      --font-display: 'Fraunces', Georgia, 'Songti SC', 'STSong', 'Noto Serif SC', SimSun, serif;
+      --font-serif: 'Newsreader', Georgia, 'Times New Roman', 'Songti SC', 'STSong', 'Noto Serif SC', SimSun, serif;
+      --font-sans: var(--font-serif);
+      --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Roboto Mono', monospace;
 
       /* Font sizes */
       --fz-xs: 0.75rem;
@@ -172,26 +174,69 @@ const socialLinks = [
       padding: 0;
     }
 
+    /* ===== Cursor Spotlight ===== */
+    .spotlight {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      pointer-events: none;
+      /* Default centered until first mousemove */
+      --spot-x: 50%;
+      --spot-y: 0%;
+      background: radial-gradient(
+        600px circle at var(--spot-x) var(--spot-y),
+        rgba(100, 255, 218, 0.07),
+        transparent 70%
+      );
+      will-change: background;
+    }
+
+    /* Subtle full-page ambient glow behind everything */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(70% 50% at 15% 0%, rgba(100, 255, 218, 0.05), transparent 60%),
+        radial-gradient(60% 50% at 100% 100%, rgba(87, 203, 255, 0.04), transparent 60%);
+    }
+
+    @media (hover: none), (prefers-reduced-motion: reduce) {
+      .spotlight { display: none; }
+    }
+
     html {
       scroll-behavior: smooth;
       font-size: 16px;
     }
 
     body {
-      font-family: var(--font-sans);
+      font-family: var(--font-serif);
       background-color: var(--navy);
       color: var(--slate);
-      line-height: 1.6;
+      line-height: 1.65;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      font-optical-sizing: auto;
     }
 
     /* ===== Typography ===== */
     h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
       color: var(--lightest-slate);
       font-weight: 600;
       line-height: 1.1;
+      font-optical-sizing: auto;
+      letter-spacing: -0.01em;
+    }
+
+    /* Ligatures for monospace (code-like elements) */
+    code, pre, .font-mono,
+    .section-number, nav a, .mobile-nav a {
+      font-feature-settings: 'liga' 1, 'calt' 1;
     }
 
     a {
@@ -245,7 +290,7 @@ const socialLinks = [
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      background-color: var(--navy);
+      background-color: transparent;
     }
 
     @media (min-width: 1024px) {
@@ -506,6 +551,9 @@ const socialLinks = [
   </style>
 </head>
 <body>
+  <!-- Cursor spotlight (Brittany Chiang style) -->
+  <div id="spotlight" class="spotlight" aria-hidden="true"></div>
+
   <button class="lang-toggle" id="langToggle" aria-label="切换语言">
     <span class="lang-text">EN</span>
   </button>
@@ -762,6 +810,39 @@ const socialLinks = [
     // Initialize language button
     const savedLang = localStorage.getItem('lang') || 'zh';
     langText.textContent = savedLang === 'zh' ? 'EN' : '中';
+
+    // Cursor spotlight — smooth lerp follow
+    (function () {
+      const spot = document.getElementById('spotlight');
+      if (!spot) return;
+      const noHover = window.matchMedia('(hover: none)').matches;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (noHover || reduced) return;
+
+      let targetX = window.innerWidth / 2;
+      let targetY = 0;
+      let curX = targetX;
+      let curY = targetY;
+      let raf = null;
+
+      function tick() {
+        curX += (targetX - curX) * 0.14;
+        curY += (targetY - curY) * 0.14;
+        spot.style.setProperty('--spot-x', curX + 'px');
+        spot.style.setProperty('--spot-y', curY + 'px');
+        if (Math.abs(targetX - curX) > 0.5 || Math.abs(targetY - curY) > 0.5) {
+          raf = requestAnimationFrame(tick);
+        } else {
+          raf = null;
+        }
+      }
+
+      window.addEventListener('mousemove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+        if (raf === null) raf = requestAnimationFrame(tick);
+      }, { passive: true });
+    })();
   </script>
 </body>
 </html>
