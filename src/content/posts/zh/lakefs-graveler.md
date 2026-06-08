@@ -99,9 +99,9 @@ lakeFS 把元数据编码成一种格式，叫 **Graveler**——一套专为对
 
 ```
 ValueRecord {
-  key:      文件路径（如 "data/2025/01/part-000.parquet"）   ← 书名
-  identity: 文件内容的指纹（如 sha256）                       ← 内容摘要码
-  value:    文件在对象存储上的真实地址 + 元数据                ← 书架位置
+  key:      文件路径，如 "data/2025/01/part-000.parquet"（书名）
+  identity: 文件内容的指纹，如 sha256（内容摘要码）
+  value:    文件在对象存储上的真实地址 + 元数据（书架位置）
 }
 ```
 

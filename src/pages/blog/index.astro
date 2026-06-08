@@ -1,5 +1,4 @@
 ---
-import ThreeBackground from '../../components/ThreeBackground';
 import { getCollection } from 'astro:content';
 
 const allPosts = await getCollection('posts');
@@ -44,34 +43,58 @@ const posts = allPosts
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+SC:wght@400&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+SC:wght@400&display=swap" rel="stylesheet"></noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
   <style>
     *, *::before, *::after {
       margin: 0; padding: 0; box-sizing: border-box;
     }
 
     :root {
-      --bg: #080c14;
-      --surface: rgba(255, 255, 255, 0.04);
-      --surface-hover: rgba(255, 255, 255, 0.07);
-      --border: rgba(255, 255, 255, 0.08);
-      --text-primary: rgba(255, 255, 255, 0.92);
-      --text-secondary: rgba(255, 255, 255, 0.5);
-      --text-muted: rgba(255, 255, 255, 0.3);
-      --accent: #63b3ed;
-      --accent-dim: rgba(99, 179, 237, 0.12);
+      --navy: #0a192f;
+      --light-navy: #112240;
+      --lightest-navy: #233554;
+      --dark-slate: #495670;
+      --slate: #8892b0;
+      --light-slate: #a8b2d1;
+      --lightest-slate: #ccd6f6;
+      --green: #64ffda;
+      --green-tint: rgba(100, 255, 218, 0.1);
+
+      --bg: var(--navy);
+      --surface: var(--light-navy);
+      --surface-hover: var(--lightest-navy);
+      --border: rgba(100, 255, 218, 0.1);
+      --text-primary: var(--lightest-slate);
+      --text-secondary: var(--slate);
+      --text-muted: var(--dark-slate);
+      --accent: var(--green);
+
+      --font-display: 'Fraunces', Georgia, 'Songti SC', 'STSong', 'Noto Serif SC', SimSun, serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
-      background: var(--bg);
+      font-family: var(--font-body);
+      background: var(--navy);
       color: var(--text-primary);
       line-height: 1.6;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(70% 50% at 15% 0%, rgba(100, 255, 218, 0.05), transparent 60%),
+        radial-gradient(60% 50% at 100% 100%, rgba(87, 203, 255, 0.04), transparent 60%);
     }
 
     .page {
@@ -123,10 +146,11 @@ const posts = allPosts
     }
 
     .page-title {
-      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 2.6rem);
       font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      color: var(--lightest-slate);
       margin-bottom: 0.5rem;
     }
 
@@ -165,6 +189,7 @@ const posts = allPosts
     }
 
     .post-date {
+      font-family: var(--font-mono);
       font-size: 0.8rem;
       color: var(--text-muted);
       white-space: nowrap;
@@ -209,8 +234,6 @@ const posts = allPosts
   </style>
 </head>
 <body>
-  <ThreeBackground client:idle />
-
   <div class="page">
     <div class="container">
       <nav class="nav">
