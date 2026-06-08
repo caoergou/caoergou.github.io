@@ -3,7 +3,7 @@ title: "cnpip"
 type: "linked"
 url: "https://github.com/caoergou/cnpip"
 github: "https://github.com/caoergou/cnpip"
-stars: 43
+stars: 61
 tags: ["python", "pip", "mirror", "cli"]
 technologies: ["Python", "CLI", "Networking"]
 featured: true

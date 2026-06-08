@@ -4,25 +4,18 @@
 
 > A developer who loves tinkering, swimming hard in the sweeping tides of AI.
 
-This is my personal website showcasing my profile, projects, and contact information.
-
 **Live Site**: [eric.run.place](https://eric.run.place)
 
 ## About
 
-A minimalist dark-themed personal website inspired by [Brittany Chiang](https://brittanychiang.com), built with Astro and deployed via GitHub Actions. Features a clean two-column layout with smooth scrolling navigation and bilingual support.
+A minimalist dark-themed personal portfolio and blog, inspired by [Brittany Chiang](https://brittanychiang.com). Built with Astro 5 + TypeScript, deployed via GitHub Actions to GitHub Pages. Features bilingual support (Chinese / English) with AI-powered auto-translation via [Lingo.dev](https://lingo.dev).
 
 ## Contact
 
 - **Email**: itsericsmail@gmail.com
 - **GitHub**: [@caoergou](https://github.com/caoergou)
-- **Website**: [eric.run.place](https://eric.run.place)
 - **Jike**: [Personal Page](https://jike.city/ergou)
-
-## For Developers
-
-If you're interested in the technical details, architecture, or want to contribute, please see [AGENTS.md](AGENTS.md).
 
 ## License
 
-This project is open source and available under the MIT License.
+MIT

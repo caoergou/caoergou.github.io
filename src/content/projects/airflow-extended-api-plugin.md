@@ -3,7 +3,7 @@ title: "airflow-extended-api-plugin"
 type: "linked"
 url: "https://github.com/caoergou/airflow-extended-api-plugin"
 github: "https://github.com/caoergou/airflow-extended-api-plugin"
-stars: 78
+stars: 77
 tags: ["airflow", "python", "plugin", "api"]
 technologies: ["Python", "Airflow", "REST API", "CLI"]
 featured: true

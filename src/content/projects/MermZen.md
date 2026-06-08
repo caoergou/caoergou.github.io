@@ -4,7 +4,7 @@ type: "linked"
 url: "https://github.com/caoergou/mermzen"
 github: "https://github.com/caoergou/mermzen"
 demo_url: "https://eric.run.place/MermZen/"
-stars: 25
+stars: 13
 tags: ["mermaid", "diagram", "editor", "typescript"]
 technologies: ["TypeScript", "React", "Mermaid", "Canvas"]
 featured: true
