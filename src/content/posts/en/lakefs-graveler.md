@@ -99,19 +99,19 @@ With that question in mind, let's return to the data lake.
 
 ## Part 4: Graveler's Data Unit: ValueRecord
 
-Before diving into the individual components, let's get the big picture first so we don't lose the thread. Graveler's core idea can be stated in one sentence: **split the entire data lake's file manifest into small chunks, compute a content hash fingerprint for each chunk, and on commit, only rewrite the chunks whose content has changed — all other chunks are referenced by their existing fingerprint and reused as-is.** This way, even if a repository has a billion files and only 1% changes in a given commit, only that 1% ever needs to be written to object storage. The ValueRecord, Range, and Meta Range concepts below are all components designed to make good on that one sentence.
+Before diving into the individual components, let's get a clear picture of the whole system — otherwise it's easy to get lost. Graveler's core idea can be summed up in one sentence: **split the entire data lake's file inventory into small batches, compute a hash fingerprint for each batch based on its contents; at commit time, only rewrite the batches whose contents have changed — the rest are simply referenced by their old fingerprints and reused as-is.** This means that even if a repository contains a billion files and only 1% change in a given commit, only that 1% actually needs to be written to object storage. The ValueRecord, Range, and Meta Range concepts described below are all building blocks designed to deliver on that one sentence.
 
-lakeFS encodes metadata in a format called **Graveler** — a content-addressed key-value store designed specifically for object storage. The most basic unit is a `ValueRecord`. Think of it as a library card catalog entry, with three separate fields:
+lakeFS encodes metadata in a format called **Graveler** — a content-addressable key-value store purpose-built for object storage. The most fundamental unit is the `ValueRecord`, which you can think of as a library catalog card with three distinct fields:
 
 ```
 ValueRecord {
-  key:      file path (e.g. "data/2025/01/part-000.parquet")   ← title
-  identity: fingerprint of the file's content (e.g. sha256)    ← content digest
-  value:    actual address in object storage + metadata         ← shelf location
+  key:      file path, e.g. "data/2025/01/part-000.parquet"  (the title)
+  identity: fingerprint of the file's contents, e.g. sha256  (the content digest)
+  value:    actual address in object storage + metadata        (the shelf location)
 }
 ```
 
-The elegant part is that the "content digest" (`identity`) and the "shelf location" (`value`) are kept separate. When Graveler determines whether two records are "the same," it only looks at the title and digest — **not the shelf location**. It's like comparing two catalog cards by their digest codes alone to know whether they refer to the same book, without ever having to walk to the shelves and pull it down. This makes comparison extremely cheap: no data bytes need to be fetched — just compare fingerprints.
+The elegance lies in the separation of the "content digest" (`identity`) from the "shelf location" (`value`). When Graveler determines whether two records are "the same", it only looks at the title and the digest — **not the shelf location**. It's like comparing two catalog cards purely by their digest codes to know whether they refer to the same book, without ever walking to the shelf and pulling it down. This makes comparison operations extremely cheap: no data bytes need to be fetched — just compare the fingerprints.
 
 The ID of a Graveler file (a **Range** file) is computed as follows:
 
@@ -120,7 +120,7 @@ valueRecordID = h( h(key) || h(identity) )
 fileID        = h( valueRecordID_1 || valueRecordID_2 || ... || valueRecordID_N )
 ```
 
-(`||` denotes byte-sequence concatenation in order; the original lakeFS formula uses `+` to mean the same thing.) Notice the structure — **a Range file's ID is determined jointly by every record it contains**. Change any single record, and the entire file's ID changes. This is the same "content determines identity" logic as a blockchain Merkle Root — except that what gets hashed together here isn't transactions, but file metadata.
+(`||` denotes byte-sequence concatenation in order; the original lakeFS formula uses `+` for the outer layer, with the same meaning.) Notice the structure clearly — **a Range file's ID is jointly determined by every record it contains**. Change any single record and the entire file's ID changes. This follows the same "content determines identity" logic as a blockchain's Merkle Root — except that what is being aggregated here is not transactions, but file metadata.
 
 ---
 
