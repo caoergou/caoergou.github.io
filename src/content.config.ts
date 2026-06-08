@@ -1,13 +1,13 @@
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
-// i18n text schema - nested object for multi-language support
 const i18nText = z.object({
   zh: z.string(),
   en: z.string(),
 });
 
 const projects = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
     type: z.enum(['linked', 'personal']),
@@ -23,7 +23,7 @@ const projects = defineCollection({
 });
 
 const thoughts = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/thoughts' }),
   schema: z.object({
     title: i18nText,
     description: i18nText,
@@ -32,8 +32,18 @@ const thoughts = defineCollection({
   }),
 });
 
+const posts = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    author: z.string(),
+    date: z.union([z.string(), z.date().transform(d => d.toISOString().split('T')[0])]),
+  }),
+});
+
 const profile = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/profile' }),
   schema: z.object({
     name: z.string(),
     title: i18nText,
@@ -54,5 +64,6 @@ const profile = defineCollection({
 export const collections = {
   projects,
   thoughts,
+  posts,
   profile,
 };

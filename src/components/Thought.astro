@@ -11,7 +11,7 @@ const { thought } = Astro.props;
 // Status icons for different exploration states
 const statusIcons = ['🗼', '🔮', '🌟', '📚', '⚗️'];
 // 用 slug 确定性选择图标，避免 SSR 水合不匹配
-const slugHash = thought.slug.split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
+const slugHash = thought.id.split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
 const statusIcon = statusIcons[slugHash % statusIcons.length];
 ---
 

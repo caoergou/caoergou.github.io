@@ -1,5 +1,11 @@
 ---
 import ThreeBackground from '../../components/ThreeBackground';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts');
+const posts = allPosts
+  .filter(post => post.id.startsWith('zh/'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 ---
 
 <!DOCTYPE html>
@@ -224,10 +230,19 @@ import ThreeBackground from '../../components/ThreeBackground';
       </header>
 
       <main class="post-list">
-        <div class="empty">
-          <p class="empty-title">文章正在路上</p>
-          <p class="empty-desc">持续更新中，敬请期待。</p>
-        </div>
+        {posts.length === 0 ? (
+          <div class="empty">
+            <p class="empty-title">文章正在路上</p>
+            <p class="empty-desc">持续更新中，敬请期待。</p>
+          </div>
+        ) : (
+          posts.map(post => (
+            <a href={`/blog/${post.id.replace('zh/', '')}`} class="post-item">
+              <span class="post-title">{post.data.title}</span>
+              <span class="post-date">{post.data.date}</span>
+            </a>
+          ))
+        )}
       </main>
 
       <footer class="footer">
