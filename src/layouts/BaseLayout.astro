@@ -6,9 +6,10 @@ interface Props {
   profile: CollectionEntry<'profile'>;
   projects: CollectionEntry<'projects'>[];
   thoughts: CollectionEntry<'thoughts'>[];
+  posts: { slug: string; date: string; title: { zh: string; en: string }; description: { zh: string; en: string } }[];
 }
 
-const { profile, projects, thoughts } = Astro.props;
+const { profile, projects, thoughts, posts } = Astro.props;
 const siteUrl = 'https://eric.run.place';
 
 // i18n helper for server-side rendering
@@ -733,6 +734,35 @@ const socialLinks = [
               </p>
               <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--dark-slate);">
                 {new Date(thought.data.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short' })}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Blog Section -->
+      <section id="blog">
+        <div class="section-title">
+          <span class="section-number">05.</span>
+          <span data-i18n="nav.blog">博客</span>
+          <span class="section-divider"></span>
+        </div>
+
+        <div class="thoughts-list">
+          {posts.map((post) => (
+            <div class="thought-item" style="margin-bottom: var(--spacing-xl);">
+              <a href={`/blog/${post.slug}`} style="font-size: var(--fz-lg); color: var(--lightest-slate); font-weight: 500; margin-bottom: var(--spacing-xs); display: block;"
+                 data-title-zh={post.title.zh}
+                 data-title-en={post.title.en}>
+                {post.title.zh}
+              </a>
+              <p style="font-size: var(--fz-sm); color: var(--slate); line-height: 1.6; margin-bottom: var(--spacing-sm);"
+                 data-desc-zh={post.description.zh}
+                 data-desc-en={post.description.en}>
+                {post.description.zh}
+              </p>
+              <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--dark-slate);">
+                {post.date}
               </span>
             </div>
           ))}
