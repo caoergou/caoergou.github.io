@@ -1,0 +1,47 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogPost from '../../../layouts/BlogPost.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+
+  const slugMap = new Map<string, Map<string, typeof posts[0]>>();
+  for (const post of posts) {
+    const [lang, ...rest] = post.id.split('/');
+    const slug = rest.join('/');
+    if (!slugMap.has(slug)) slugMap.set(slug, new Map());
+    slugMap.get(slug)!.set(lang, post);
+  }
+
+  const paths = [];
+  for (const [slug, langPosts] of slugMap) {
+    for (const [lang, post] of langPosts) {
+      const alternateLang = lang === 'zh' ? 'en' : 'zh';
+      paths.push({
+        params: { lang, slug },
+        props: {
+          post,
+          lang: lang as 'zh' | 'en',
+          slug,
+          hasAlternate: langPosts.has(alternateLang),
+        },
+      });
+    }
+  }
+  return paths;
+}
+
+const { post, lang, slug, hasAlternate } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BlogPost
+  title={post.data.title}
+  date={post.data.date}
+  description={post.data.description}
+  slug={slug}
+  lang={lang}
+  hasAlternate={hasAlternate}
+>
+  <Content />
+</BlogPost>

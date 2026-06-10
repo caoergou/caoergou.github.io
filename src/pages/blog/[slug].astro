@@ -1,26 +1,14 @@
 ---
-import { getCollection, render } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
   const zhPosts = posts.filter(post => post.id.startsWith('zh/'));
   return zhPosts.map(post => ({
     params: { slug: post.id.replace('zh/', '') },
-    props: { post },
   }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
-const slug = post.id.replace('zh/', '');
+const { slug } = Astro.params;
+return Astro.redirect(`/blog/zh/${slug}/`, 301);
 ---
-
-<BlogPost
-  title={post.data.title}
-  date={post.data.date}
-  description={post.data.description}
-  slug={slug}
->
-  <Content />
-</BlogPost>

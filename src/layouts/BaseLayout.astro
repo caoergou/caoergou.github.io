@@ -785,7 +785,7 @@ const socialLinks = [
         <div class="thoughts-list">
           {posts.map((post) => (
             <div class="thought-item" style="margin-bottom: var(--spacing-xl);">
-              <a href={`/blog/${post.slug}`} style="font-size: var(--fz-lg); color: var(--lightest-slate); font-weight: 500; margin-bottom: var(--spacing-xs); display: block;"
+              <a href={`/blog/zh/${post.slug}`} data-blog-link data-slug={post.slug} style="font-size: var(--fz-lg); color: var(--lightest-slate); font-weight: 500; margin-bottom: var(--spacing-xs); display: block;"
                  data-title-zh={post.title.zh}
                  data-title-en={post.title.en}>
                 {post.title.zh}
@@ -875,6 +875,16 @@ const socialLinks = [
     // Initialize language button
     const savedLang = localStorage.getItem('lang') || 'zh';
     langText.textContent = savedLang === 'zh' ? 'EN' : '中';
+
+    // Update blog post links based on language
+    function updateBlogLinks(lang) {
+      document.querySelectorAll('[data-blog-link]').forEach(el => {
+        const slug = el.getAttribute('data-slug');
+        if (slug) el.setAttribute('href', `/blog/${lang}/${slug}`);
+      });
+    }
+    updateBlogLinks(savedLang);
+    window.addEventListener('langChange', (e) => updateBlogLinks(e.detail.lang));
 
     // Cursor spotlight — smooth lerp follow
     (function () {

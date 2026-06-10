@@ -1,10 +1,25 @@
 ---
 import { getCollection } from 'astro:content';
+import { getClientTranslations, getI18nClientScript } from '../../i18n';
 
 const allPosts = await getCollection('posts');
+const enPosts = allPosts.filter(p => p.id.startsWith('en/'));
 const posts = allPosts
-  .filter(post => post.id.startsWith('zh/'))
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+  .filter(p => p.id.startsWith('zh/'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .map(zh => {
+    const slug = zh.id.replace('zh/', '');
+    const en = enPosts.find(e => e.id === `en/${slug}`);
+    return {
+      slug,
+      date: zh.data.date,
+      title: { zh: zh.data.title, en: en?.data.title ?? zh.data.title },
+      description: { zh: zh.data.description, en: en?.data.description ?? zh.data.description },
+    };
+  });
+
+const clientTranslations = getClientTranslations();
+const i18nClientScript = getI18nClientScript();
 ---
 
 <!DOCTYPE html>
@@ -12,19 +27,20 @@ const posts = allPosts
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>博客 - Eric Cao</title>
-  <meta name="description" content="Eric Cao 的技术博客，分享 Python、AI Agent、大数据工程、系统性能优化等方向的实战经验与思考。">
+  <title data-i18n-title="blog">博客 - Eric Cao</title>
+  <meta name="description" content="Eric Cao 的技术博客，分享 Python、AI Agent、大数据工程、系统性能优化等方向的实战经验与思考。" data-i18n-content="site.description">
   <meta name="keywords" content="Eric Cao, 博客, Python, AI Agent, Dify, Airflow, 大数据, 分布式系统, Web 开发, 技术博客">
   <meta name="author" content="Eric Cao">
   <meta name="robots" content="index, follow">
+  <meta name="google-site-verification" content="XuYZmP0E0M5Day61XIADItGmZMHKZ4kIHaHpnbEHtf8">
 
-  <!-- Canonical URL -->
   <link rel="canonical" href="https://eric.run.place/blog/">
-
-  <!-- Sitemap -->
+  <link rel="alternate" hreflang="zh-CN" href="https://eric.run.place/blog/">
+  <link rel="alternate" hreflang="en-US" href="https://eric.run.place/blog/">
+  <link rel="alternate" hreflang="x-default" href="https://eric.run.place/blog/">
+  <link rel="alternate" type="application/rss+xml" title="Eric Cao Blog RSS" href="/rss.xml">
   <link rel="sitemap" type="application/xml" href="/sitemap-index.xml">
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://eric.run.place/blog/">
   <meta property="og:title" content="博客 - Eric Cao">
@@ -35,7 +51,6 @@ const posts = allPosts
   <meta property="og:site_name" content="Eric Cao">
   <meta property="og:locale" content="zh_CN">
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="博客 - Eric Cao">
   <meta name="twitter:description" content="Eric Cao 的技术博客，分享 Python、AI Agent、大数据工程、系统性能优化等方向的实战经验与思考。">
@@ -139,6 +154,33 @@ const posts = allPosts
       color: var(--text-secondary);
     }
 
+    /* ── Language toggle ── */
+    .lang-toggle {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: rgba(10, 25, 47, 0.85);
+      backdrop-filter: blur(8px);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-toggle:hover {
+      background: var(--green-tint);
+      border-color: var(--accent);
+    }
+
     /* ── Header ── */
     .page-header {
       padding: 3rem 0 3.5rem;
@@ -230,39 +272,48 @@ const posts = allPosts
     @media (max-width: 640px) {
       .container { padding: 0 1.25rem; }
       .post-item { flex-direction: column; gap: 0.2rem; }
+      .lang-toggle { top: 1rem; right: 1rem; }
     }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="container">
+      <button class="lang-toggle" id="langToggle" aria-label="切换语言">
+        <span class="lang-text">EN</span>
+      </button>
+
       <nav class="nav">
         <a href="/" class="nav-back">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 18 9 12 15 6"/>
           </svg>
-          首页
+          <span data-i18n="nav.home">首页</span>
         </a>
         <span class="nav-sep">/</span>
-        <span class="nav-current">博客</span>
+        <span class="nav-current" data-i18n="nav.blog">博客</span>
       </nav>
 
       <header class="page-header">
-        <h1 class="page-title">博客</h1>
-        <p class="page-desc">Python · 分布式系统 · Web 开发 · AI 应用</p>
+        <h1 class="page-title" data-i18n="blog.title">博客</h1>
+        <p class="page-desc" data-i18n="blog.description">Python · 分布式系统 · Web 开发 · AI 应用</p>
       </header>
 
       <main class="post-list">
         {posts.length === 0 ? (
           <div class="empty">
-            <p class="empty-title">文章正在路上</p>
-            <p class="empty-desc">持续更新中，敬请期待。</p>
+            <p class="empty-title" data-i18n="blog.emptyTitle">文章准备中...</p>
+            <p class="empty-desc" data-i18n="blog.emptyDesc">新内容即将上线，敬请期待。</p>
           </div>
         ) : (
           posts.map(post => (
-            <a href={`/blog/${post.id.replace('zh/', '')}`} class="post-item">
-              <span class="post-title">{post.data.title}</span>
-              <span class="post-date">{post.data.date}</span>
+            <a href={`/blog/zh/${post.slug}`} class="post-item" data-slug={post.slug}>
+              <span class="post-title"
+                    data-title-zh={post.title.zh}
+                    data-title-en={post.title.en}>
+                {post.title.zh}
+              </span>
+              <span class="post-date">{post.date}</span>
             </a>
           ))
         )}
@@ -273,5 +324,38 @@ const posts = allPosts
       </footer>
     </div>
   </div>
+
+  <script is:inline data-translations={clientTranslations} set:html={i18nClientScript} />
+  <script is:inline>
+    function updateBlogListing(lang) {
+      document.querySelectorAll('.post-item[data-slug]').forEach(function(el) {
+        var slug = el.getAttribute('data-slug');
+        el.setAttribute('href', '/blog/' + lang + '/' + slug);
+      });
+      document.querySelectorAll('[data-title-zh]').forEach(function(el) {
+        var text = el.getAttribute('data-title-' + lang);
+        if (text) el.textContent = text;
+      });
+    }
+
+    var langToggle = document.getElementById('langToggle');
+    var langText = langToggle.querySelector('.lang-text');
+
+    langToggle.addEventListener('click', function() {
+      var currentLang = localStorage.getItem('lang') || 'zh';
+      var newLang = currentLang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('lang', newLang);
+      langText.textContent = newLang === 'zh' ? 'EN' : '中';
+      if (window.__I18N__) window.__I18N__.updateAllText(newLang);
+      updateBlogListing(newLang);
+    });
+
+    var savedLang = localStorage.getItem('lang') || 'zh';
+    langText.textContent = savedLang === 'zh' ? 'EN' : '中';
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.__I18N__) window.__I18N__.updateAllText(savedLang);
+      updateBlogListing(savedLang);
+    });
+  </script>
 </body>
 </html>
