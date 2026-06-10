@@ -62,8 +62,8 @@ export default defineConfig({
             priority: lang === 'zh' ? 0.8 : 0.6,
             lastmod,
             links: [
-              { lang: 'zh', hreflang: 'zh-CN', url: `https://eric.run.place/blog/zh/${slug}/` },
-              { lang: 'en', hreflang: 'en-US', url: `https://eric.run.place/blog/en/${slug}/` },
+              { lang: 'zh-CN', url: `https://eric.run.place/blog/zh/${slug}/` },
+              { lang: 'en', url: `https://eric.run.place/blog/en/${slug}/` },
             ],
           };
         }
