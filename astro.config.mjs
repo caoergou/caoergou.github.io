@@ -27,6 +27,16 @@ function getBlogLastMods() {
 
 const blogLastMods = getBlogLastMods();
 
+// 首页 lastmod 取自最新一篇博客日期（内容驱动，避免每次构建都变动产生噪音）
+const latestContentDate = Object.values(blogLastMods).sort().pop();
+const homeLastMod = latestContentDate ? new Date(latestContentDate).toISOString() : undefined;
+
+// 首页中英双语 hreflang 互链
+const homeLinks = [
+  { lang: 'zh-CN', url: 'https://eric.run.place/' },
+  { lang: 'en', url: 'https://eric.run.place/en/' },
+];
+
 export default defineConfig({
   site: 'https://eric.run.place',
   base: '/',
@@ -40,8 +50,14 @@ export default defineConfig({
       serialize: (item) => {
         const path = new URL(item.url).pathname;
 
+        // 中文首页
         if (path === '/') {
-          return { ...item, changefreq: 'weekly', priority: 1.0 };
+          return { ...item, changefreq: 'weekly', priority: 1.0, lastmod: homeLastMod, links: homeLinks };
+        }
+
+        // 英文首页
+        if (path === '/en/' || path === '/en') {
+          return { ...item, changefreq: 'weekly', priority: 0.9, lastmod: homeLastMod, links: homeLinks };
         }
 
         // /blog/{slug}/ 是 301 重定向页，不应出现在 sitemap

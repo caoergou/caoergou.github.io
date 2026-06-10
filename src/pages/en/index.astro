@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const [profile, projects, thoughts, allPosts] = await Promise.all([
@@ -27,7 +27,7 @@ const posts = allPosts
 ---
 
 <BaseLayout
-  lang="zh"
+  lang="en"
   profile={profile[0]}
   projects={projects}
   thoughts={thoughts}

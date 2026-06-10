@@ -1,26 +1,29 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { t, getClientTranslations, getI18nClientScript, getTranslations, type Lang } from '../i18n';
+import { t, type Lang } from '../i18n';
 
 interface Props {
   profile: CollectionEntry<'profile'>;
   projects: CollectionEntry<'projects'>[];
   thoughts: CollectionEntry<'thoughts'>[];
   posts: { slug: string; date: string; title: { zh: string; en: string }; description: { zh: string; en: string } }[];
+  lang?: Lang;
 }
 
-const { profile, projects, thoughts, posts } = Astro.props;
+const { profile, projects, thoughts, posts, lang = 'zh' } = Astro.props;
 const siteUrl = 'https://eric.run.place';
 
-// i18n helper for server-side rendering
-const getTranslation = (lang: Lang, key: string) => t(lang, key);
+// i18n helper bound to this page's language (server-side render)
+const tr = (key: string) => t(lang, key);
 
-// Get translations for client-side injection
-const clientTranslations = getClientTranslations();
-const i18nClientScript = getI18nClientScript();
-
-// SSR default content (Chinese) for coming-soon section
-const zhComingSoonItems = getTranslations('zh').comingSoon.items;
+// Language-specific SEO values
+const htmlLang = lang === 'zh' ? 'zh-CN' : 'en-US';
+const ogLocale = lang === 'zh' ? 'zh_CN' : 'en_US';
+const ogLocaleAlt = lang === 'zh' ? 'en_US' : 'zh_CN';
+const zhUrl = `${siteUrl}/`;
+const enUrl = `${siteUrl}/en/`;
+const canonicalUrl = lang === 'zh' ? zhUrl : enUrl;
+const alternateUrl = lang === 'zh' ? enUrl : zhUrl;
 
 // Navigation items
 const navItems = [
@@ -30,25 +33,19 @@ const navItems = [
   { id: 'thoughts', label: '思考', labelEn: 'Thoughts', href: '#thoughts' },
   { id: 'blog', label: '博客', labelEn: 'Blog', href: '/blog/' },
 ];
-
-// Social links
-const socialLinks = [
-  { name: 'GitHub', url: 'https://github.com/caoergou', icon: 'github' },
-  { name: '即刻', url: 'https://jike.city/ergou', icon: 'jike' },
-  { name: 'Email', url: 'mailto:itsericsmail@gmail.com', icon: 'email' },
-];
 ---
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang={htmlLang}>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="site.title">{getTranslation('zh', 'site.title')}</title>
-  <meta name="description" content={getTranslation('zh', 'site.description')} data-i18n-content="site.description">
-  <meta name="keywords" content="Eric Cao, Python, AI Agent, Dify, Airflow, 大数据, 开源, TypeScript, React, Full-Stack, Developer">
+  <meta name="theme-color" content="#0a192f">
+  <title>{tr('site.title')}</title>
+  <meta name="description" content={tr('site.description')}>
+  <meta name="keywords" content={tr('site.keywords')}>
   <meta name="author" content="Eric Cao">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="googlebot" content="index, follow">
 
   <!-- Search Engine Verification -->
@@ -56,34 +53,36 @@ const socialLinks = [
   <meta name="baidu-site-verification" content="codeva-4Lwu94LneY" />
 
   <!-- Language -->
-  <meta property="og:locale" content="zh_CN" />
-  <meta name="language" content="zh-CN" />
+  <meta name="language" content={htmlLang} />
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href={canonicalUrl}>
+  <link rel="alternate" hreflang="zh-CN" href={zhUrl}>
+  <link rel="alternate" hreflang="en" href={enUrl}>
+  <link rel="alternate" hreflang="x-default" href={zhUrl}>
+  <link rel="alternate" type="application/rss+xml" title="Eric Cao Blog RSS" href="/rss.xml">
+  <link rel="sitemap" type="application/xml" href="/sitemap-index.xml">
 
   <!-- Open Graph / Social -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content={siteUrl}>
-  <meta property="og:title" content={getTranslation('zh', 'site.title')} data-i18n-content="site.title">
-  <meta property="og:description" content={getTranslation('zh', 'site.description')} data-i18n-content="site.description">
+  <meta property="og:url" content={canonicalUrl}>
+  <meta property="og:title" content={tr('site.title')}>
+  <meta property="og:description" content={tr('site.description')}>
   <meta property="og:site_name" content="Eric Cao">
-  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale" content={ogLocale}>
+  <meta property="og:locale:alternate" content={ogLocaleAlt}>
   <meta property="og:image" content={`${siteUrl}/og-image.png`}>
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Eric Cao 的个人网站 - Python 开发者与开源贡献者，专注于 AI Agent、大数据、Web 开发">
+  <meta property="og:image:alt" content="Eric Cao — Big Data & Full-Stack Engineer, focused on practical AI">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@caoergou">
-  <meta name="twitter:url" content={siteUrl}>
-  <meta name="twitter:title" content={getTranslation('zh', 'site.title')} data-i18n-content="site.title">
-  <meta name="twitter:description" content={getTranslation('zh', 'site.description')} data-i18n-content="site.description">
+  <meta name="twitter:url" content={canonicalUrl}>
+  <meta name="twitter:title" content={tr('site.title')}>
+  <meta name="twitter:description" content={tr('site.description')}>
   <meta name="twitter:image" content={`${siteUrl}/og-image.png`}>
-
-  <!-- Canonical URL -->
-  <link rel="canonical" href={siteUrl}>
-
-  <!-- Sitemap -->
-  <link rel="sitemap" type="application/xml" href="/sitemap-index.xml">
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json" set:html={JSON.stringify({
@@ -93,24 +92,27 @@ const socialLinks = [
     "alternateName": "caoergou",
     "url": siteUrl,
     "image": `${siteUrl}/avatar.png`,
+    "email": "mailto:itsericsmail@gmail.com",
     "sameAs": [
       "https://github.com/caoergou",
       "https://jike.city/ergou"
     ],
-    "jobTitle": "Full-Stack Developer",
-    "description": getTranslation('zh', 'site.description'),
-    "knowsAbout": ["Python", "TypeScript", "AI Agent", "Dify", "Airflow", "Big Data", "React"],
-    "inLanguage": {
-      "@type": "Language",
-      "name": "Chinese",
-      "alternateName": "zh-CN"
-    }
+    "jobTitle": lang === 'zh' ? "大数据与全栈工程师" : "Big Data & Full-Stack Engineer",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Shanghai",
+      "addressCountry": "CN"
+    },
+    "description": tr('site.description'),
+    "knowsAbout": ["AI Agent", "LLM Application", "Python", "TypeScript", "Big Data", "Data Engineering", "Dify", "Airflow", "React"],
+    "inLanguage": htmlLang
   })} />
 
-  <!-- Fonts -->
+  <!-- Fonts (async, non-render-blocking) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Newsreader:opsz,ital,wght@6..72,0,400..600;6..72,1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Newsreader:opsz,ital,wght@6..72,0,400..600;6..72,1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Newsreader:opsz,ital,wght@6..72,0,400..600;6..72,1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
   <style is:global>
     /* ===== CSS Variables - Brittany Chiang Style ===== */
@@ -556,9 +558,9 @@ const socialLinks = [
   <!-- Cursor spotlight (Brittany Chiang style) -->
   <div id="spotlight" class="spotlight" aria-hidden="true"></div>
 
-  <button class="lang-toggle" id="langToggle" aria-label="切换语言">
-    <span class="lang-text">EN</span>
-  </button>
+  <a class="lang-toggle" href={alternateUrl} hreflang={lang === 'zh' ? 'en' : 'zh-CN'} aria-label={lang === 'zh' ? 'Switch to English' : '切换到中文'}>
+    {lang === 'zh' ? 'EN' : '中'}
+  </a>
 
   <div class="layout">
     <!-- Left Side - Fixed Header -->
@@ -567,11 +569,11 @@ const socialLinks = [
         <h1 style="font-size: var(--fz-4xl); color: var(--lightest-slate); margin-bottom: var(--spacing-sm); font-weight: 700;">
           Eric Cao
         </h1>
-        <h2 style="font-size: var(--fz-xl); color: var(--light-slate); margin-bottom: var(--spacing-lg); font-weight: 500;" data-i18n="hero.title">
-          大数据与全栈出身，现在专注 AI 怎么落地
+        <h2 style="font-size: var(--fz-xl); color: var(--light-slate); margin-bottom: var(--spacing-lg); font-weight: 500;">
+          {tr('hero.title')}
         </h2>
-        <p style="font-size: var(--fz-lg); color: var(--slate); max-width: 400px; line-height: 1.6;" data-i18n="hero.subtitle">
-          大数据工程师出身，做过 Java 与 Python 全栈，也一头扎进过 LLM 应用。如今在认真琢磨：企业怎么用好 AI，哪些工作流真正该被 Agent 改变。
+        <p style="font-size: var(--fz-lg); color: var(--slate); max-width: 400px; line-height: 1.6;">
+          {tr('hero.subtitle')}
         </p>
 
         <!-- Desktop Navigation -->
@@ -581,7 +583,7 @@ const socialLinks = [
               <li>
                 <a href={item.href} class="nav-link">
                   <span>0{index + 1}.</span>
-                  <span data-i18n={`nav.${item.id}`}>{item.label}</span>
+                  <span>{lang === 'zh' ? item.label : item.labelEn}</span>
                 </a>
               </li>
             ))}
@@ -592,8 +594,8 @@ const socialLinks = [
       <!-- Mobile Navigation -->
       <div class="mobile-nav">
         {navItems.map((item) => (
-          <a href={item.href} class="nav-link-mobile" data-i18n={`nav.${item.id}`}>
-            {item.label}
+          <a href={item.href} class="nav-link-mobile">
+            {lang === 'zh' ? item.label : item.labelEn}
           </a>
         ))}
       </div>
@@ -624,19 +626,13 @@ const socialLinks = [
       <section id="about">
         <div class="section-title">
           <span class="section-number">01.</span>
-          <span data-i18n="sections.about">关于</span>
+          <span>{tr('sections.about')}</span>
           <span class="section-divider"></span>
         </div>
         <div style="font-size: var(--fz-lg); line-height: 1.8; color: var(--slate);">
-          <p style="margin-bottom: var(--spacing-lg);" data-i18n="about.p1">
-            我的工程底子是从大数据攒起来的——2021 到 2023 年在即刻做大数据工程师，和 Java、海量数据打交道，那段经历教会我什么是好工程。
-          </p>
-          <p style="margin-bottom: var(--spacing-lg);" data-i18n="about.p2">
-            之后我转向 Python 与全栈开发，也一头扎进 LLM 应用。从后端到产品、从调模型到拼工作流，我越来越确信：开发方式正在被 AI 重新定义。（私下里，我也是个乐在其中的 vibe coder。）
-          </p>
-          <p data-i18n="about.p3">
-            2026 年起，我把重心放在 AI 怎么在企业真正落地——重新考量哪些工作流该被 Agent 改变，也乐于把摸索出来的实践分享给更多人。好的工程从来不是炫技，而是让真正有用的东西被更多人用起来。
-          </p>
+          <p style="margin-bottom: var(--spacing-lg);">{tr('about.p1')}</p>
+          <p style="margin-bottom: var(--spacing-lg);">{tr('about.p2')}</p>
+          <p>{tr('about.p3')}</p>
         </div>
       </section>
 
@@ -644,20 +640,18 @@ const socialLinks = [
       <section id="experience">
         <div class="section-title">
           <span class="section-number">02.</span>
-          <span data-i18n="sections.experience">经历</span>
+          <span>{tr('sections.experience')}</span>
           <span class="section-divider"></span>
         </div>
 
         <div class="experience-list">
           <div class="experience-item" style="margin-bottom: var(--spacing-2xl);">
             <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--spacing-sm); flex-wrap: wrap; gap: var(--spacing-sm);">
-              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);" data-i18n="experience.recent.title">专注 AI 工程化落地</h3>
-              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);" data-i18n="experience.recent.period">2026 — 至今</span>
+              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);">{tr('experience.recent.title')}</h3>
+              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);">{tr('experience.recent.period')}</span>
             </div>
-            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);" data-i18n="experience.recent.company">企业 AI 落地 · 工作流改造</p>
-            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);" data-i18n="experience.recent.description">
-              琢磨 AI 怎么在企业真正落地，评估哪些工作流该被 Agent 改变，并把摸索出的实践分享给团队与社区。
-            </p>
+            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);">{tr('experience.recent.company')}</p>
+            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);">{tr('experience.recent.description')}</p>
             <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
               {['AI Agent', 'Claude Code', 'Workflow'].map((tech) => (
                 <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--slate); background: var(--green-tint); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius);">
@@ -668,13 +662,11 @@ const socialLinks = [
           </div>
           <div class="experience-item" style="margin-bottom: var(--spacing-2xl);">
             <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--spacing-sm); flex-wrap: wrap; gap: var(--spacing-sm);">
-              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);" data-i18n="experience.fullstack.title">Python & 全栈开发者</h3>
-              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);" data-i18n="experience.fullstack.period">2023 — 2025</span>
+              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);">{tr('experience.fullstack.title')}</h3>
+              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);">{tr('experience.fullstack.period')}</span>
             </div>
-            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);" data-i18n="experience.fullstack.company">全栈开发 · LLM 应用</p>
-            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);" data-i18n="experience.fullstack.description">
-              从后端走向全栈，深入 LLM 应用开发，并构建、维护多个开源项目。
-            </p>
+            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);">{tr('experience.fullstack.company')}</p>
+            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);">{tr('experience.fullstack.description')}</p>
             <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
               {['Python', 'TypeScript', 'LLM', 'React'].map((tech) => (
                 <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--slate); background: var(--green-tint); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius);">
@@ -685,13 +677,11 @@ const socialLinks = [
           </div>
           <div class="experience-item" style="margin-bottom: var(--spacing-2xl);">
             <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--spacing-sm); flex-wrap: wrap; gap: var(--spacing-sm);">
-              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);" data-i18n="experience.bigdata.title">大数据工程师</h3>
-              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);" data-i18n="experience.bigdata.period">2021 — 2023</span>
+              <h3 style="font-size: var(--fz-xl); color: var(--lightest-slate);">{tr('experience.bigdata.title')}</h3>
+              <span style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--light-slate);">{tr('experience.bigdata.period')}</span>
             </div>
-            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);" data-i18n="experience.bigdata.company">即刻 Jike</p>
-            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);" data-i18n="experience.bigdata.description">
-              负责大数据平台与海量数据处理，技术栈以 Big Data 与 Java 为主，打下了对复杂系统与好工程的判断力。
-            </p>
+            <p style="font-family: var(--font-mono); font-size: var(--fz-sm); color: var(--green); margin-bottom: var(--spacing-md);">{tr('experience.bigdata.company')}</p>
+            <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md);">{tr('experience.bigdata.description')}</p>
             <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
               {['Big Data', 'Java', 'Data Pipeline'].map((tech) => (
                 <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--slate); background: var(--green-tint); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius);">
@@ -707,7 +697,7 @@ const socialLinks = [
       <section id="projects">
         <div class="section-title">
           <span class="section-number">03.</span>
-          <span data-i18n="sections.projects">项目</span>
+          <span>{tr('sections.projects')}</span>
           <span class="section-divider"></span>
         </div>
 
@@ -737,10 +727,8 @@ const socialLinks = [
                   )}
                 </div>
               </div>
-              <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md); color: var(--slate);"
-                 data-desc-zh={project.data.description?.zh}
-                 data-desc-en={project.data.description?.en}>
-                {project.data.description?.zh}
+              <p style="font-size: var(--fz-md); line-height: 1.7; margin-bottom: var(--spacing-md); color: var(--slate);">
+                {project.data.description?.[lang]}
               </p>
               <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
                 {project.data.technologies?.map((tech: string) => (
@@ -758,25 +746,21 @@ const socialLinks = [
       <section id="thoughts">
         <div class="section-title">
           <span class="section-number">04.</span>
-          <span data-i18n="sections.thoughts">思考</span>
+          <span>{tr('sections.thoughts')}</span>
           <span class="section-divider"></span>
         </div>
 
         <div class="thoughts-list">
           {thoughts.map((thought) => (
             <div class="thought-item" style="margin-bottom: var(--spacing-xl);">
-              <h3 style="font-size: var(--fz-lg); color: var(--lightest-slate); font-weight: 500; margin-bottom: var(--spacing-xs);"
-                 data-title-zh={thought.data.title?.zh}
-                 data-title-en={thought.data.title?.en}>
-                {thought.data.title?.zh}
+              <h3 style="font-size: var(--fz-lg); color: var(--lightest-slate); font-weight: 500; margin-bottom: var(--spacing-xs);">
+                {thought.data.title?.[lang]}
               </h3>
-              <p style="font-size: var(--fz-sm); color: var(--slate); line-height: 1.6; margin-bottom: var(--spacing-sm);"
-                 data-desc-zh={thought.data.description?.zh || thought.data.excerpt?.zh}
-                 data-desc-en={thought.data.description?.en || thought.data.excerpt?.en}>
-                {thought.data.description?.zh || thought.data.excerpt?.zh}
+              <p style="font-size: var(--fz-sm); color: var(--slate); line-height: 1.6; margin-bottom: var(--spacing-sm);">
+                {thought.data.description[lang]}
               </p>
               <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--dark-slate);">
-                {new Date(thought.data.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short' })}
+                {new Date(thought.data.date).toLocaleDateString(htmlLang, { year: 'numeric', month: 'short' })}
               </span>
             </div>
           ))}
@@ -787,22 +771,18 @@ const socialLinks = [
       <section id="blog">
         <div class="section-title">
           <span class="section-number">05.</span>
-          <span data-i18n="nav.blog">博客</span>
+          <span>{lang === 'zh' ? '博客' : 'Blog'}</span>
           <span class="section-divider"></span>
         </div>
 
         <div class="thoughts-list">
           {posts.map((post) => (
             <div class="thought-item" style="margin-bottom: var(--spacing-xl);">
-              <a href={`/blog/zh/${post.slug}`} data-blog-link data-slug={post.slug} style="font-size: var(--fz-lg); color: var(--lightest-slate); font-weight: 500; margin-bottom: var(--spacing-xs); display: block;"
-                 data-title-zh={post.title.zh}
-                 data-title-en={post.title.en}>
-                {post.title.zh}
+              <a href={`/blog/${lang}/${post.slug}`} style="font-size: var(--fz-lg); color: var(--lightest-slate); font-weight: 500; margin-bottom: var(--spacing-xs); display: block;">
+                {post.title[lang]}
               </a>
-              <p style="font-size: var(--fz-sm); color: var(--slate); line-height: 1.6; margin-bottom: var(--spacing-sm);"
-                 data-desc-zh={post.description.zh}
-                 data-desc-en={post.description.en}>
-                {post.description.zh}
+              <p style="font-size: var(--fz-sm); color: var(--slate); line-height: 1.6; margin-bottom: var(--spacing-sm);">
+                {post.description[lang]}
               </p>
               <span style="font-family: var(--font-mono); font-size: var(--fz-xs); color: var(--dark-slate);">
                 {post.date}
@@ -821,11 +801,8 @@ const socialLinks = [
     </main>
   </div>
 
-  <!-- i18n runtime -->
-  <script is:inline data-translations={clientTranslations} set:html={i18nClientScript} />
-
   <script is:inline>
-    // Smooth scroll for navigation links
+    // Smooth scroll for in-page navigation links (skip external/route links)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -862,38 +839,6 @@ const socialLinks = [
 
     window.addEventListener('scroll', highlightNav);
     highlightNav();
-
-    // Language toggle
-    const langToggle = document.getElementById('langToggle');
-    const langText = langToggle.querySelector('.lang-text');
-
-    langToggle.addEventListener('click', () => {
-      const currentLang = localStorage.getItem('lang') || 'zh';
-      const newLang = currentLang === 'zh' ? 'en' : 'zh';
-      localStorage.setItem('lang', newLang);
-
-      // Update button text
-      langText.textContent = newLang === 'zh' ? 'EN' : '中';
-
-      // Update all i18n elements
-      if (window.__I18N__) {
-        window.__I18N__.updateAllText(newLang);
-      }
-    });
-
-    // Initialize language button
-    const savedLang = localStorage.getItem('lang') || 'zh';
-    langText.textContent = savedLang === 'zh' ? 'EN' : '中';
-
-    // Update blog post links based on language
-    function updateBlogLinks(lang) {
-      document.querySelectorAll('[data-blog-link]').forEach(el => {
-        const slug = el.getAttribute('data-slug');
-        if (slug) el.setAttribute('href', `/blog/${lang}/${slug}`);
-      });
-    }
-    updateBlogLinks(savedLang);
-    window.addEventListener('langChange', (e) => updateBlogLinks(e.detail.lang));
 
     // Cursor spotlight — smooth lerp follow
     (function () {
