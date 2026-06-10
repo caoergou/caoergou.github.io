@@ -14,6 +14,7 @@ const projects = defineCollection({
     url: z.string().optional(),
     github: z.string().optional(),
     demo_url: z.string().optional(),
+    guides_url: z.string().optional(),
     stars: z.number().optional(),
     tags: z.array(z.string()),
     technologies: z.array(z.string()).optional(),
