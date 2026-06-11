@@ -5,7 +5,7 @@ export type Lang = 'zh' | 'en';
 const translations = {
   zh: {
     site: {
-      title: "Eric Cao — 研究 AI 如何在企业真正落地",
+      title: "Eric Cao — 追问 AI 的设计逻辑",
       description: "从大数据工程师起步，如今专注 AI 怎么在企业真正落地。",
     },
     nav: {
