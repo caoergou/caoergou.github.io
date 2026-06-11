@@ -10,11 +10,14 @@ const posts = allPosts
   .map(zh => {
     const slug = zh.id.replace('zh/', '');
     const en = enPosts.find(e => e.id === `en/${slug}`);
+    const charCount = (zh.body || '').replace(/\s/g, '').length;
+    const readingMinutes = Math.max(1, Math.round(charCount / 500));
     return {
       slug,
       date: zh.data.date,
       title: { zh: zh.data.title, en: en?.data.title ?? zh.data.title },
       description: { zh: zh.data.description, en: en?.data.description ?? zh.data.description },
+      readingTime: readingMinutes,
     };
   });
 
@@ -211,31 +214,66 @@ const i18nClientScript = getI18nClientScript();
 
     .post-item {
       display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 2rem;
-      padding: 1.25rem 0;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1.5rem 0 1.5rem 0;
       border-bottom: 1px solid var(--border);
+      border-left: 2px solid transparent;
       text-decoration: none;
       color: inherit;
-      transition: all 0.2s ease;
+      transition: border-color 0.2s ease, padding-left 0.2s ease;
+    }
+
+    .post-item:hover {
+      border-left-color: var(--accent);
+      padding-left: 1rem;
     }
 
     .post-item:hover .post-title { color: var(--accent); }
 
     .post-title {
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--text-primary);
       font-weight: 400;
+      line-height: 1.4;
       transition: color 0.2s ease;
+    }
+
+    .post-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.25rem;
     }
 
     .post-date {
       font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
+    }
+
+    .post-meta-sep {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .post-reading-time {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
     }
 
     /* ── Empty state ── */
@@ -271,7 +309,7 @@ const i18nClientScript = getI18nClientScript();
 
     @media (max-width: 640px) {
       .container { padding: 0 1.25rem; }
-      .post-item { flex-direction: column; gap: 0.2rem; }
+      .post-item:hover { padding-left: 0.75rem; }
       .lang-toggle { top: 1rem; right: 1rem; }
     }
   </style>
@@ -296,7 +334,7 @@ const i18nClientScript = getI18nClientScript();
 
       <header class="page-header">
         <h1 class="page-title" data-i18n="blog.title">博客</h1>
-        <p class="page-desc" data-i18n="blog.description">Python · 分布式系统 · Web 开发 · AI 应用</p>
+        <p class="page-desc" data-i18n="blog.description">企业 AI 落地 · 开源框架 · 大数据工程</p>
       </header>
 
       <main class="post-list">
@@ -313,7 +351,22 @@ const i18nClientScript = getI18nClientScript();
                     data-title-en={post.title.en}>
                 {post.title.zh}
               </span>
-              <span class="post-date">{post.date}</span>
+              {post.description.zh && (
+                <span class="post-desc"
+                      data-desc-zh={post.description.zh}
+                      data-desc-en={post.description.en}>
+                  {post.description.zh}
+                </span>
+              )}
+              <div class="post-meta">
+                <span class="post-date">{post.date}</span>
+                <span class="post-meta-sep">·</span>
+                <span class="post-reading-time"
+                      data-time-zh={`约 ${post.readingTime} 分钟`}
+                      data-time-en={`~${post.readingTime} min`}>
+                  约 {post.readingTime} 分钟
+                </span>
+              </div>
             </a>
           ))
         )}
@@ -334,6 +387,14 @@ const i18nClientScript = getI18nClientScript();
       });
       document.querySelectorAll('[data-title-zh]').forEach(function(el) {
         var text = el.getAttribute('data-title-' + lang);
+        if (text) el.textContent = text;
+      });
+      document.querySelectorAll('[data-desc-zh]').forEach(function(el) {
+        var text = el.getAttribute('data-desc-' + lang);
+        if (text) el.textContent = text;
+      });
+      document.querySelectorAll('[data-time-zh]').forEach(function(el) {
+        var text = el.getAttribute('data-time-' + lang);
         if (text) el.textContent = text;
       });
     }

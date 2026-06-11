@@ -44,7 +44,7 @@ const translations = {
     },
     blog: {
       title: "📜 博客",
-      description: "Python · 分布式系统 · Web 开发 · AI 应用",
+      description: "企业 AI 落地 · 开源框架 · 大数据工程",
       emptyTitle: "新地图正在绘制中...",
       emptyDesc: "探险日志即将解锁，敬请期待。"
     }
@@ -90,7 +90,7 @@ const translations = {
     },
     blog: {
       title: "📜 Blog",
-      description: "Python · Distributed Systems · Web Development · AI Applications",
+      description: "Enterprise AI · Open Source · Data Engineering",
       emptyTitle: "New map is being drawn...",
       emptyDesc: "Adventure logs coming soon."
     }
