@@ -62,26 +62,26 @@ The wildly popular open-source project Edict, with its "Three Provinces and Six 
 
 ## 3. Human-AI Collaboration: A Deep Dive into Four Interaction Modes
 
-So the question becomes: if pure natural language isn't reliable, what's the right way to interact with AI?
+So the question becomes: if pure natural language isn't reliable, what's the right way to interact?
 
-I'll use a coordinate system to analyze this —
+I'll use a coordinate system to analyze this—
 
-- **Horizontal axis: AI execution autonomy** — how independently can the AI make decisions and act on its own
-- **Vertical axis: Human expression cost** — how much effort does a human need to invest to get the AI to execute on their intent
+- **Horizontal axis: AI Execution Autonomy** — how independently can the AI make decisions and act on its own
+- **Vertical axis: Human Expression Cost** — how much effort does a person need to invest to get the AI to act on their intent
 
 **The real point of this coordinate system is: who absorbs the ambiguity?**
 
-<iframe src="https://eric.run.place/MermZen/embed.html?text=quadrantChart%0A%20%20%20%20title%20AI%20Interaction%20Modes%3A%20Who%20Absorbs%20Ambiguity%3F%0A%20%20%20%20x-axis%20Low%20Autonomy%20--%3E%20High%20Autonomy%0A%20%20%20%20y-axis%20Low%20Expression%20Cost%20--%3E%20High%20Expression%20Cost%0A%20%20%20%20Drag-drop%20Workflow%3A%20%5B0.15%2C%200.2%5D%0A%20%20%20%20IDE%20Embedded%20AI%3A%20%5B0.48%2C%200.48%5D%0A%20%20%20%20AI%20Browser%3A%20%5B0.65%2C%200.28%5D%0A%20%20%20%20OpenClaw%3A%20%5B0.85%2C%200.82%5D&look=classic" style="width:100%;height:420px;border:none;border-radius:8px;"></iframe>
+<iframe src="https://eric.run.place/MermZen/embed.html?text=quadrantChart%0A%20%20%20%20title%20AI%20%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F%EF%BC%9A%E8%B0%81%E6%9D%A5%E6%89%BF%E6%8B%85%E6%A8%A1%E7%B3%8A%E6%80%A7%EF%BC%9F%0A%20%20%20%20x-axis%20%E4%BD%8E%E8%87%AA%E4%B8%BB%E6%80%A7%20--%3E%20%E9%AB%98%E8%87%AA%E4%B8%BB%E6%80%A7%0A%20%20%20%20y-axis%20%E4%BD%8E%E8%A1%A8%E8%BE%BE%E6%88%90%E6%9C%AC%20--%3E%20%E9%AB%98%E8%A1%A8%E8%BE%BE%E6%88%90%E6%9C%AC%0A%20%20%20%20%E6%8B%96%E6%8B%BD%E5%BC%8F%E5%B7%A5%E4%BD%9C%E6%B5%81%3A%20%5B0.15%2C%200.2%5D%0A%20%20%20%20IDE%20%E5%86%85%E5%B5%8C%20AI%3A%20%5B0.48%2C%200.48%5D%0A%20%20%20%20AI%20%E6%B5%8F%E8%A7%88%E5%99%A8%3A%20%5B0.65%2C%200.28%5D%0A%20%20%20%20OpenClaw%3A%20%5B0.85%2C%200.82%5D&look=classic" style="width:100%;height:420px;border:none;border-radius:8px;"></iframe>
 
-**Drag-and-drop workflows** (bottom-left): The human absorbs ambiguity upfront. Expression cost is low but so is autonomy, because the human has pre-structured their intent into a flowchart — essentially doing part of the "understanding" work on the AI's behalf. Ambiguity is eliminated before execution begins.
+**Drag-and-drop workflows** (bottom-left): humans resolve ambiguity upfront. Expression cost is low but so is autonomy, because the person has pre-structured their intent into a flowchart — they've essentially done part of the "understanding" work on the AI's behalf. Ambiguity is eliminated before execution even begins.
 
-**AI-native browsers** (bottom-right): Context absorbs the ambiguity. Expression cost is low because the task and context are naturally aligned — when you say "fill out this form for me" on a page, the AI can see exactly what you see, leaving almost no room for ambiguity. The visual context acts as an "implicit constraint."
+**AI-native browser** (bottom-right): context absorbs the ambiguity. Expression cost is low because the task and context are naturally aligned — you say "fill out this form for me" on a page, the AI sees exactly what you see, leaving almost no room for ambiguity. Visual context acts as an "implicit constraint."
 
-**IDE-embedded AI** (middle): Structure reduces ambiguity. Cost is moderate, because the "select + instruct" interaction pattern carries precise context by design — selecting a block of code tells the AI "I only care about this part." This structured input naturally narrows the ambiguity space, rather than leaving the AI to guess.
+**IDE-embedded AI** (center): structured input reduces ambiguity. Cost is moderate because the "select + instruct" interaction model carries precise context by design — when you highlight a block of code, you're telling the AI "this is all I care about." That structured input inherently narrows the ambiguity space, rather than leaving the AI to guess.
 
-**OpenClaw / pure natural language** (top-right): The AI repeatedly absorbs ambiguity on its own. Cost is high because the task chain is long and context must be manually constructed — the AI can't see the goal inside your head, so realignment is constantly required. Ambiguity keeps surfacing throughout execution, demanding user intervention at every turn.
+**OpenClaw / pure natural language** (top-right): the AI has to repeatedly work through ambiguity on its own. Cost is high because task chains are long, context must be constructed manually, and the AI can't see the goal in your head — so realignment is constantly required. Ambiguity keeps surfacing throughout execution, demanding user intervention at every turn.
 
-So the real question isn't "is the AI smart enough" — it's **"at what stage is ambiguity absorbed, and by whom?"** Drag-and-drop workflows push ambiguity resolution to the design stage. AI browsers let context do the absorbing. IDE-embedded AI uses structured input to reduce ambiguity — while OpenClaw leaves all ambiguity resolution to the execution phase, requiring users to repeatedly course-correct every time the AI misunderstands. No wonder the cost stays high.
+So the crux of the problem isn't "is the AI smart enough" — it's **"at what stage is ambiguity resolved, and by whom."** Drag-and-drop workflows push ambiguity resolution to the design phase. AI browsers let context do the heavy lifting. IDE-embedded AI uses structured input to shrink the ambiguity space. OpenClaw, on the other hand, defers all ambiguity resolution to runtime — leaving users to repeatedly correct the AI every time it misunderstands, which is why the cost stays stubbornly high.
 
 ---
 
