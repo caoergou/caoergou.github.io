@@ -376,6 +376,36 @@ const breadcrumbSchema = {
       color: var(--text-muted);
     }
 
+    .post-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.75rem 0;
+      font-size: 0.9rem;
+    }
+
+    .post-content th,
+    .post-content td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    .post-content th {
+      background: var(--light-navy);
+      color: var(--lightest-slate);
+      font-weight: 600;
+    }
+
+    .post-content tr:nth-child(even) { background: rgba(17, 34, 64, 0.4); }
+
+    .post-content iframe {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 1.75rem 0;
+      display: block;
+    }
+
     @media (max-width: 640px) {
       .container { padding: 0 1.25rem; }
       .post-header { padding: 2rem 0 2rem; }

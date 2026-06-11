@@ -16,33 +16,33 @@
     "thoughts": "Thoughts"
   },
   "hero": {
-    "title": "Big data & full-stack background, now focused on making AI actually land",
-    "subtitle": "Started out as a big data engineer, worked across Java and Python full-stack, and dove deep into LLM apps. Now I'm seriously working out how enterprises can put AI to good use, and which workflows Agents should truly reshape.",
+    "title": "After enough code, you start asking why systems are designed this way",
+    "subtitle": "Worked as a big data engineer, moved through Python full-stack, built LLM apps. But what truly fascinates me was never the technology itself — it's why a system is designed the way it is, where it quietly fails, and what work you can actually hand off to AI without regretting it.",
     "langToggle": "EN"
   },
   "about": {
-    "p1": "My engineering roots are in big data — from 2021 to 2023 I worked as a big data engineer at Jike, deep in Java and massive data pipelines. That's where I learned what good engineering really means.",
-    "p2": "Then I moved into Python and full-stack development, and dove headfirst into LLM apps. From backend to product, from tuning models to wiring up workflows, I grew convinced that the way we build software is being redefined by AI. (Off the clock, I'm also a vibe coder having a great time.)",
-    "p3": "Since 2026, I've focused on how AI actually lands in the enterprise — rethinking which workflows Agents should reshape, and sharing what I figure out along the way. Good engineering was never about showing off; it's about getting genuinely useful things into more hands."
+    "p1": "My first job was in big data engineering — and what that shaped wasn't a specific skill, but a way of seeing systems: at sufficient scale, small problems become fundamental problems. What looks like a performance issue is often data quality; what looks like a logic bug is rooted in the data model. That instinct of 'dig one level deeper' has left its mark on everything I've done since.",
+    "p2": "Later I moved into LLM applications — and that's where my engineering intuition got completely overturned for the first time. Traditional software bugs throw errors. LLM 'bugs' are hallucinations: they look right, then you realize they're wrong, and you can't capture them with tests. Performance isn't latency, it's recall — things with no ground truth. Understanding an AI system requires a completely different set of engineering instincts.",
+    "p3": "Now I spend a lot of time reading Dify's source code — not to chase PRs, but because I want to know what invisible engineering decisions a framework used daily by countless companies makes to be 'good enough'. How does state survive machine restarts? How does error handling hold up against the unpredictable? The answers to these questions are closer to the truth than any 'enterprise AI best practices' article."
   },
   "experience": {
     "recent": {
       "period": "2026 — Present",
       "title": "Focused on Practical AI",
       "company": "Enterprise AI adoption · workflow change",
-      "description": "Working out how AI actually lands in the enterprise, assessing which workflows Agents should reshape, and sharing the practices I find with teams and the community."
+      "description": "Reading source code, opening PRs, and asking what trade-offs drive the design decisions. The real challenges of enterprise AI live in the implementation details, not the slides."
     },
     "fullstack": {
       "period": "2023 — 2025",
       "title": "Python & Full-Stack Developer",
       "company": "Full-stack development · LLM apps",
-      "description": "Moved from backend to full-stack, dove deep into LLM application development, and built and maintained several open source projects."
+      "description": "Moving from traditional software into LLM apps was the first moment I had to rebuild my engineering intuition from scratch."
     },
     "bigdata": {
       "period": "2021 — 2023",
       "title": "Big Data Engineer",
       "company": "Jike (即刻)",
-      "description": "Owned big data platforms and large-scale data processing, working mainly with Big Data tooling and Java — building the judgment for complex systems and good engineering."
+      "description": "At Jike, scale forced me to look deeper — what looked like a performance problem turned out to be data quality; what looked like a logic issue was rooted in the data model design."
     }
   },
   "sections": {

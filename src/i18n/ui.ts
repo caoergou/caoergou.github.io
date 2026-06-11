@@ -13,7 +13,7 @@ const translations = {
       blog: "博客"
     },
     hero: {
-      title: "全栈探索者",
+      title: "代码写久了，会开始追问系统为什么这样设计",
       langToggle: "中"
     },
     stats: {
