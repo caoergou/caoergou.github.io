@@ -62,26 +62,26 @@ The wildly popular open-source project Edict, with its "Three Provinces and Six 
 
 ## 3. Human-AI Collaboration: A Deep Dive into Four Interaction Modes
 
-So here's the question: if pure natural language isn't reliable, what's the right way to interact?
+So the question becomes: if pure natural language isn't reliable, what's the right way to interact with AI?
 
-I use a two-axis framework to analyze this —
+I'll use a coordinate system to analyze this —
 
-- **Horizontal axis: AI execution autonomy** — How independently can the AI make decisions and act?
-- **Vertical axis: Human expression cost** — How much effort does a person need to invest to get the AI to execute their intent?
+- **Horizontal axis: AI execution autonomy** — how independently can the AI make decisions and act on its own
+- **Vertical axis: Human expression cost** — how much effort does a human need to invest to get the AI to execute on their intent
 
-**The real point of this framework is: who absorbs the ambiguity?**
+**The real point of this coordinate system is: who absorbs the ambiguity?**
 
 <iframe src="https://eric.run.place/MermZen/embed.html?text=quadrantChart%0A%20%20%20%20title%20AI%20Interaction%20Modes%3A%20Who%20Absorbs%20Ambiguity%3F%0A%20%20%20%20x-axis%20Low%20Autonomy%20--%3E%20High%20Autonomy%0A%20%20%20%20y-axis%20Low%20Expression%20Cost%20--%3E%20High%20Expression%20Cost%0A%20%20%20%20Drag-drop%20Workflow%3A%20%5B0.15%2C%200.2%5D%0A%20%20%20%20IDE%20Embedded%20AI%3A%20%5B0.48%2C%200.48%5D%0A%20%20%20%20AI%20Browser%3A%20%5B0.65%2C%200.28%5D%0A%20%20%20%20OpenClaw%3A%20%5B0.85%2C%200.82%5D&look=classic" style="width:100%;height:420px;border:none;border-radius:8px;"></iframe>
 
-**Drag-and-drop workflow** (bottom-left): The human absorbs ambiguity upfront. Cost is low but so is autonomy — because the person has pre-structured their intent into a flowchart, effectively doing part of the "understanding" work for the AI. Ambiguity is eliminated before execution ever begins.
+**Drag-and-drop workflows** (bottom-left): The human absorbs ambiguity upfront. Expression cost is low but so is autonomy, because the human has pre-structured their intent into a flowchart — essentially doing part of the "understanding" work on the AI's behalf. Ambiguity is eliminated before execution begins.
 
-**AI-native browser** (bottom-right): Context absorbs the ambiguity. Expression cost is low because the task and context are naturally aligned — when you're on a page and say "fill out this form for me," the AI can see exactly what you see, leaving almost no room for ambiguity. Visual context acts as an implicit constraint.
+**AI-native browsers** (bottom-right): Context absorbs the ambiguity. Expression cost is low because the task and context are naturally aligned — when you say "fill out this form for me" on a page, the AI can see exactly what you see, leaving almost no room for ambiguity. The visual context acts as an "implicit constraint."
 
-**IDE-embedded AI** (center): Structure reduces ambiguity. Cost is moderate because the "select + instruct" interaction pattern itself carries precise context — when you highlight a block of code, you're telling the AI "this is the only part I care about." This structured input naturally narrows the ambiguity space, rather than leaving the AI to guess.
+**IDE-embedded AI** (middle): Structure reduces ambiguity. Cost is moderate, because the "select + instruct" interaction pattern carries precise context by design — selecting a block of code tells the AI "I only care about this part." This structured input naturally narrows the ambiguity space, rather than leaving the AI to guess.
 
-**OpenClaw / pure natural language** (top-right): The AI has to repeatedly absorb ambiguity on its own. Cost is high because the task chain is long, context must be manually constructed, and the AI can't see the goal in your head — so realignment is constantly required. Ambiguity keeps surfacing throughout execution, demanding user intervention each time.
+**OpenClaw / pure natural language** (top-right): The AI repeatedly absorbs ambiguity on its own. Cost is high because the task chain is long and context must be manually constructed — the AI can't see the goal inside your head, so realignment is constantly required. Ambiguity keeps surfacing throughout execution, demanding user intervention at every turn.
 
-So the real question isn't "is the AI smart enough?" — it's **"at what stage is ambiguity absorbed, and by whom?"** Drag-and-drop workflows move ambiguity resolution to the design stage. AI browsers let context do the work. IDE-embedded AI uses structured input to keep ambiguity low. OpenClaw, on the other hand, pushes all ambiguity resolution into the execution phase — users end up repeatedly correcting the AI every time it misreads the intent, and the cost compounds accordingly.
+So the real question isn't "is the AI smart enough" — it's **"at what stage is ambiguity absorbed, and by whom?"** Drag-and-drop workflows push ambiguity resolution to the design stage. AI browsers let context do the absorbing. IDE-embedded AI uses structured input to reduce ambiguity — while OpenClaw leaves all ambiguity resolution to the execution phase, requiring users to repeatedly course-correct every time the AI misunderstands. No wonder the cost stays high.
 
 ---
 
@@ -174,29 +174,29 @@ OpenClaw showed me the potential of AI Agent deployment. It just hasn't crossed 
 
 ## VI. Extended Thinking: Harness Engineering
 
-The four patterns described above, viewed from a different angle, are really four distinct **harness designs**.
+Viewed from a different angle, the four modes above are really four different **harness designs**.
 
-The word "harness" comes from motorsport — seatbelts, HANS devices, roll cages. None of that equipment is meant to slow the driver down; it's meant to give them the confidence to push the car to its absolute limit. The AI harness follows the same logic: it's not about restricting AI, it's about giving AI a clearly defined structure to operate within — so you feel confident handing it greater authority.
+The word "harness" comes from motorsport — the seatbelt, HANS device, roll cage, the whole system. None of it is there to make the driver go slower; it's there to make the driver confident enough to push the car to its limits. The logic behind an AI harness is the same: it's not about constraining the AI — it's about giving the AI a clearly defined structure to operate within, so you feel safe handing it greater authority.
 
-The drag-and-drop workflow's harness is a **flowchart** — each node's inputs and outputs are precisely defined, and ambiguity is absorbed at the orchestration stage. The IDE-embedded AI's harness is **code context + plan confirmation** — the selected code snippet acts as an implicit constraint, and plan mode serves as a mandatory confirmation checkpoint. The AI-native browser's harness is **visual UI context** — the structure of the webpage itself shoulders the heavy lifting of resolving ambiguity on the user's behalf.
+The harness of a drag-and-drop workflow is the **flowchart** — inputs and outputs at every node are precisely defined, and ambiguity is absorbed during the orchestration phase. The harness of IDE-embedded AI is **code context + plan confirmation** — the selected code snippet acts as an implicit constraint, and plan mode serves as a mandatory confirmation checkpoint. The harness of an AI-native browser is **the visual context of the interface** — the structure of the webpage itself shoulders much of the ambiguity-resolution work on the user's behalf.
 
-OpenClaw's harness, by contrast, is nearly empty. Its AI operates in an almost unconstrained context, governed only by whatever implicit rules the user reconstructs in natural language each time.
+OpenClaw's harness is nearly empty. Its AI operates in an almost entirely unconstrained context, with nothing to go on except whatever implicit rules the user reconstructs through natural language each time.
 
 **Harness engineering** is therefore a concrete engineering discipline, not an abstract design philosophy. The question it asks is: what structures can you use to encode "context that still only exists in the user's head" into the system ahead of time?
 
-A few hallmark harness design moves:
+A few typical harness design moves:
 
-**Precise tool schemas.** The more precisely you define a tool for the AI, the more predictable its behavior becomes. `get_file_content(path: str) -> str` is orders of magnitude higher quality as a harness than `do_file_operation(instruction: str)` — the former eliminates ambiguity at the interface design stage; the latter defers it to runtime.
+**Precise tool schemas.** The more precisely you define a tool for the AI, the more predictable its behavior becomes. `get_file_content(path: str) -> str` is a far higher-quality harness than `do_file_operation(instruction: str)` — the former eliminates ambiguity at the interface design level; the latter defers it to runtime.
 
-**Structured context injection.** `CLAUDE.md`, Skills, project-level instructions — encode "who you are, what the rules are here, and what you must never do" into document structure, rather than relying on natural language to re-establish it every time. This is context harnessing: ensuring the AI launches with the same set of implicit constraints on every execution.
+**Structured context injection.** `CLAUDE.md`, Skills, project-level instructions — encode "who you are, what the rules are here, what you shouldn't do" into document structure, rather than re-explaining it in natural language every time. This is context harness: ensuring the AI starts every execution with the same set of implicit constraints already loaded.
 
-**Explicit execution boundaries.** Container mounts (access only `/groups/A`, never the host machine), allowlist permissions (only these specific MCP tools may be called) — turn "what the AI shouldn't do" into physical constraints rather than logical checks. What OpenClaw lacks isn't intelligence; it's this boundary layer.
+**Explicit execution boundaries.** Container mounts (access only `/groups/A`, not the host machine), allowlisted permissions (only these MCP tools can be called) — turn "what the AI shouldn't do" into physical constraints, not logical checks. What OpenClaw is missing isn't AI intelligence; it's this boundary layer.
 
-**Mandatory confirmation nodes.** Plan mode requires human approval before irreversible actions — this is the lowest-cost, highest-return safety mechanism in any harness. Its essence isn't "distrust of AI"; it's an acknowledgment that "language always carries ambiguity," and that wherever ambiguity can still be corrected, you should force a window for human intervention.
+**Mandatory confirmation nodes.** Plan mode requires human confirmation before irreversible actions — this is the lowest-cost, highest-return safety mechanism in any harness. Its essence isn't "distrust the AI"; it's an acknowledgment that "language always carries ambiguity," and a commitment to leaving a window for human intervention at every point where ambiguity can still be corrected.
 
-These four design moves correspond to four distinct engineering answers to the question "who absorbs the ambiguity?": absorb it at interface design, absorb it at context injection, absorb it at execution boundaries, absorb it at confirmation nodes.
+These four design moves correspond to four different engineering answers to the question of "who absorbs ambiguity": absorb it at interface design time, absorb it during context injection, absorb it at execution boundaries, absorb it at confirmation nodes.
 
-In early 2026, harness engineering gained formal recognition as a distinct engineering discipline — first named by Mitchell Hashimoto (creator of Terraform), then adopted by OpenAI, Anthropic, and Google as part of their AI engineering frameworks, with Martin Fowler (Thoughtworks) publishing a formal methodology. It has become the core variable separating "reliable AI tools" from "entertaining AI toys." OpenClaw is a very cool toy — but its harness is too thin. That is the engineering explanation for why it is "not yet the answer."
+In early 2026, harness engineering gained formal industry recognition as a standalone engineering discipline — first explicitly named by Mitchell Hashimoto (creator of Terraform), then incorporated into AI engineering practice frameworks by OpenAI, Anthropic, and Google, with Martin Fowler (Thoughtworks) also publishing a formal methodology. It has become the core variable that separates "reliable AI tools" from "entertaining AI toys." OpenClaw is a very cool toy — but its harness is too thin. That's the engineering explanation for why it's "not the answer yet."
 
 ## Afterward: Find Your Own AI Rhythm
 
