@@ -119,7 +119,7 @@ const breadcrumbSchema = {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
+  <style is:global>
     *, *::before, *::after {
       margin: 0; padding: 0; box-sizing: border-box;
     }
@@ -416,6 +416,108 @@ const breadcrumbSchema = {
       display: block;
     }
 
+    /* ── Strikethrough, mark, sup/sub ── */
+    .post-content del, .post-content s {
+      color: var(--dark-slate);
+      text-decoration: line-through;
+    }
+
+    .post-content mark {
+      background: rgba(100, 255, 218, 0.2);
+      color: var(--lightest-slate);
+      padding: 0.1em 0.25em;
+      border-radius: 3px;
+    }
+
+    .post-content sup, .post-content sub {
+      font-size: 0.75em;
+      line-height: 0;
+    }
+
+    /* ── Post footer ── */
+    .post-footer {
+      margin: 3rem 0 0;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .post-footer-author {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .post-footer-avatar {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background: var(--green-tint);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--accent);
+    }
+
+    .post-footer-bio {
+      flex: 1;
+    }
+
+    .post-footer-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--lightest-slate);
+      margin-bottom: 0.35rem;
+    }
+
+    .post-footer-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+
+    .post-footer-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .post-footer-link {
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .post-footer-link:hover { border-bottom-color: var(--accent); }
+
+    .post-footer-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .post-footer-nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+
+    .post-footer-nav a:hover { color: var(--accent); }
+
     @media (max-width: 640px) {
       .container { padding: 0 1.25rem; }
       .post-header { padding: 2rem 0 2rem; }
@@ -455,9 +557,34 @@ const breadcrumbSchema = {
         <slot />
       </article>
 
-      <footer class="footer">
-        <span class="footer-copy">© 2026 Eric Cao</span>
-      </footer>
+      <div class="post-footer">
+        <div class="post-footer-author">
+          <div class="post-footer-avatar">EC</div>
+          <div class="post-footer-bio">
+            <div class="post-footer-name">Eric Cao</div>
+            <div class="post-footer-desc">
+              {lang === 'zh'
+                ? '从大数据工程师到 LLM 应用开发，现专注研究 AI 工程化落地的真实瓶颈。参与贡献 Dify、lakeFS 等开源项目。'
+                : 'From big data engineering to LLM apps, now focused on where enterprise AI adoption actually breaks down. Open-source contributor to Dify, lakeFS, and others.'}
+            </div>
+            <div class="post-footer-links">
+              <a href="https://github.com/caoergou" class="post-footer-link" target="_blank" rel="noopener">GitHub</a>
+              <a href="https://jike.city/ergou" class="post-footer-link" target="_blank" rel="noopener">即刻</a>
+              <a href="/blog" class="post-footer-link">{lang === 'zh' ? '← 更多文章' : '← More articles'}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="post-footer-nav">
+          <a href="/blog">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            {lang === 'zh' ? '返回博客列表' : 'Back to blog'}
+          </a>
+          <span style="color:var(--text-muted);font-size:0.75rem;font-family:var(--font-mono)">© 2026 Eric Cao</span>
+        </div>
+      </div>
     </div>
   </div>
 </body>

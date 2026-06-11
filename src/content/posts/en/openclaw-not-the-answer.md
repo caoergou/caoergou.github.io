@@ -196,7 +196,7 @@ A few hallmark harness design moves:
 
 These four design moves correspond to four distinct engineering answers to the question "who absorbs the ambiguity?": absorb it at interface design, absorb it at context injection, absorb it at execution boundaries, absorb it at confirmation nodes.
 
-Harness engineering has yet to be recognized as a standalone discipline, but it has already become the core variable separating "reliable AI tools" from "entertaining AI toys." OpenClaw is a very cool toy — but its harness is too thin. That is the engineering explanation for why it is "not yet the answer."
+In early 2026, harness engineering gained formal recognition as a distinct engineering discipline — first named by Mitchell Hashimoto (creator of Terraform), then adopted by OpenAI, Anthropic, and Google as part of their AI engineering frameworks, with Martin Fowler (Thoughtworks) publishing a formal methodology. It has become the core variable separating "reliable AI tools" from "entertaining AI toys." OpenClaw is a very cool toy — but its harness is too thin. That is the engineering explanation for why it is "not yet the answer."
 
 ## Afterward: Find Your Own AI Rhythm
 

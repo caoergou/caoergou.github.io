@@ -191,7 +191,7 @@ OpenClaw 能快速掀起热潮，我觉得本质是两大基础条件的成熟�
 
 这四种设计动作，对应的正是「谁来消化歧义」这个问题的四种不同工程化答案：在接口设计时消化、在上下文注入时消化、在执行边界时消化、在确认节点时消化。
 
-Harness engineering 还没有成为一个公认的独立学科，但它已经是区分「靠谱 AI 工具」和「有趣 AI 玩具」的核心变量。OpenClaw 是一个很酷的玩具，但它的 harness 太薄——这才是它「还不是答案」的工程学解释。
+2026 年初，harness engineering 作为一个独立工程方向获得了业界正式认可——Mitchell Hashimoto（Terraform 作者）首次明确命名，OpenAI、Anthropic、Google 随后将其纳入各自的 AI 工程实践框架，Martin Fowler（Thoughtworks）也发表了正式方法论。它已经是区分「靠谱 AI 工具」和「有趣 AI 玩具」的核心变量。OpenClaw 是一个很酷的玩具，但它的 harness 太薄——这才是它「还不是答案」的工程学解释。
 
 ## 写在最后：与其追 AI 热点，不如找到自己的 AI 节奏
 
