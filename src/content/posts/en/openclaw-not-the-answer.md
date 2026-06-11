@@ -1,8 +1,11 @@
 ---
-title: "OpenClaw Is Not the Answer"
-description: "A technical complexity analysis of an AI personal assistant project: when your security model relies on a whitelist instead of isolation, when 52 modules replace code you should understand, what exactly are you trusting?"
-author: "Eric Cao"
-date: "2026-03-01"
+title: OpenClaw Is Not the Answer
+description: "A technical complexity analysis of an AI personal assistant
+  project: when your security model relies on a whitelist instead of isolation,
+  when 52 modules replace code you should understand, what exactly are you
+  trusting?"
+author: Eric Cao
+date: 2026-03-01
 ---
 
 Before I adopt a tool, I have one habit: read the source code.
