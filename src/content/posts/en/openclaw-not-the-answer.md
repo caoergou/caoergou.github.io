@@ -1,88 +1,180 @@
 ---
-title: OpenClaw Is Not the Answer
-description: "A technical complexity analysis of an AI personal assistant
-  project: when your security model relies on a whitelist instead of isolation,
-  when 52 modules replace code you should understand, what exactly are you
-  trusting?"
-author: Eric Cao
-date: 2026-03-01
+title: "OpenClaw Is Not the Answer: After Burning 300 Million Tokens in a Week"
+description: "After a week of deep testing and 300 million tokens burned: the problem isn't that AI isn't smart enough. It's that pure natural language interaction has a fundamental flaw for execution-type tasks. A framework of four interaction modes, analyzed through one question: who absorbs the ambiguity?"
+author: "Eric Cao"
+date: "2026-03-10"
 ---
 
-Before I adopt a tool, I have one habit: read the source code.
+OpenClaw is everywhere right now. After a week of deep testing and burning through roughly 300 million tokens, my conclusion: it's not the answer yet.
 
-[OpenClaw](https://github.com/openclaw/openclaw) is one of the most complete projects in this space — WhatsApp integration, multi-channel support, task scheduling, Agent execution. The feature list is long, the star count is high. But after spending a few hours trying to understand its architecture, I realized: **I can't comfortably hand my message history and filesystem access to a system I can't fully read.**
+OpenClaw ignited expectations for real AI Agent deployment. But its current interaction design isn't mature enough. The problem isn't "AI isn't smart enough." The problem is that pure natural language interaction has a fundamental flaw in execution-type tasks.
 
-This isn't a critique of OpenClaw. It solves real problems, and its maintainers have done significant work. The issue is that its design philosophy and my criteria for whether a tool is "worth trusting" are fundamentally different.
+I've mapped AI tools into four interaction modes, each suited to different scenarios. By the end, you'll be able to judge: Is OpenClaw right for you? And if not, what should you use instead?
 
-## The Cost of Complexity
+## 1. The Gap: What Actually Happened After a Week with OpenClaw
 
-OpenClaw has 52+ modules, 8 config management files, 45+ dependencies, and an abstraction layer designed for 15 channel providers. This isn't a criticism — it's where any codebase aiming to be a "universal AI assistant platform" inevitably ends up.
+OpenClaw has been everywhere — GitHub stars exploding, meetups filling up, even peripheral services can't keep up. The underlying expectation is real: who doesn't want their own Jarvis?
 
-The problem is that complexity and auditability are in direct tension.
+I went in with that expectation during the Spring Festival holiday, ran it hard for a week, burned about 300 million tokens. The result: a significant gap between expectation and reality.
 
-<iframe src="https://eric.run.place/MermZen/embed.html?text=quadrantChart%0A%20%20%20%20title%20AI%20%E5%8A%A9%E6%89%8B%E5%B7%A5%E5%85%B7%EF%BC%9A%E5%A4%8D%E6%9D%82%E5%BA%A6%20vs%20%E5%8F%AF%E7%90%86%E8%A7%A3%E6%80%A7%0A%20%20%20%20x-axis%20%E4%BD%8E%E5%A4%8D%E6%9D%82%E5%BA%A6%20--%3E%20%E9%AB%98%E5%A4%8D%E6%9D%82%E5%BA%A6%0A%20%20%20%20y-axis%20%E9%9A%BE%E4%BB%A5%E7%90%86%E8%A7%A3%20--%3E%20%E5%AE%B9%E6%98%93%E7%90%86%E8%A7%A3%0A%20%20%20%20OpenClaw%3A%20%5B0.85%2C%200.15%5D%0A%20%20%20%20NanoClaw%3A%20%5B0.15%2C%200.85%5D%0A%20%20%20%20%E5%85%B8%E5%9E%8B%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%3A%20%5B0.1%2C%200.9%5D%0A%20%20%20%20%E8%87%AA%E5%BB%BA%20RAG%20%E7%B3%BB%E7%BB%9F%3A%20%5B0.6%2C%200.4%5D&look=classic" style="width:100%;height:400px;border:none;border-radius:8px;"></iframe>
+It uploaded my work files to GitHub without authorization. I explained the rules sentence by sentence, and it still couldn't produce what I wanted. When I asked friends, they'd hit similar issues.
 
-A system you can't audit in a reasonable amount of time is a black box you can only choose to trust blindly. For a tool that has access to your messages and can execute code on your machine, that's a significant tradeoff.
+Why did OpenClaw generate so much buzz? Two structural reasons: first, competitive pressure between domestic open-source model providers has driven token costs down sharply, making 24-hour AI Agents economically viable. Second, natural language interaction's zero-learning-curve aligns perfectly with the core desire to "command lightly, free your hands" — which gave everyone unlimited imagination about what OpenClaw could do.
 
-## A Fundamental Difference in Security Models
+Before analyzing OpenClaw, we need to distinguish two fundamentally different types of AI:
 
-OpenClaw's security model is **application-layer**: whitelists and pairing codes. This means its trust boundary is maintained by code logic, not the OS kernel. Everything — message parsing, Agent execution, file operations — runs in the same Node.js process, sharing the same memory space and filesystem access.
+**Conversational AI** (like ChatGPT): An advisor that gives suggestions, writes copy, answers questions — but "whether to use it" and "how to apply it" are still your decisions. Its output is *information*. You can easily verify correctness. Error cost is nearly zero.
 
-This doesn't mean it's insecure. But its security has a prerequisite: you trust that its access control code is correct.
+**Execution AI Agent** (like OpenClaw): An assistant that directly *does things* — operates your computer, organizes files, accesses your work systems. Its output is *action*. It may modify your data, send your emails. Error cost can be very high.
 
-<iframe src="https://eric.run.place/MermZen/embed.html?text=flowchart%20TD%0A%20%20%20%20subgraph%20OpenClaw%5B%22OpenClaw%EF%BC%9A%E5%BA%94%E7%94%A8%E5%B1%82%E5%AE%89%E5%85%A8%22%5D%0A%20%20%20%20%20%20A%5B%E7%94%A8%E6%88%B7%E6%B6%88%E6%81%AF%5D%20--%3E%20B%5B%E7%99%BD%E5%90%8D%E5%8D%95%E6%A3%80%E6%9F%A5%5D%0A%20%20%20%20%20%20B%20--%3E%20C%5B%E9%85%8D%E5%AF%B9%E7%A0%81%E9%AA%8C%E8%AF%81%5D%0A%20%20%20%20%20%20C%20--%3E%20D%5BNode.js%20%E8%BF%9B%E7%A8%8B%E6%89%A7%E8%A1%8C%5D%0A%20%20%20%20%20%20D%20--%3E%20E%5B%E5%AE%BF%E4%B8%BB%E6%9C%BA%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%5D%0A%20%20%20%20end%0A%20%20%20%20subgraph%20NanoClaw%5B%22NanoClaw%EF%BC%9AOS%20%E5%B1%82%E9%9A%94%E7%A6%BB%22%5D%0A%20%20%20%20%20%20F%5B%E7%94%A8%E6%88%B7%E6%B6%88%E6%81%AF%5D%20--%3E%20G%5B%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%5D%0A%20%20%20%20%20%20G%20--%3E%20H%5B%E5%AE%B9%E5%99%A8%E5%AE%9E%E4%BE%8B%5D%0A%20%20%20%20%20%20H%20--%3E%20I%5B%E6%8C%82%E8%BD%BD%E7%9A%84%E7%9B%AE%E5%BD%95%5D%0A%20%20%20%20%20%20H%20-.%20%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%20.-%3E%20J%5B%E5%AE%BF%E4%B8%BB%E6%9C%BA%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%5D%0A%20%20%20%20end%0A%20%20%20%20style%20OpenClaw%20fill%3A%23112240%2Cstroke%3A%2364ffda%2Ccolor%3A%23ccd6f6%0A%20%20%20%20style%20NanoClaw%20fill%3A%23112240%2Cstroke%3A%2364ffda%2Ccolor%3A%23ccd6f6&look=classic" style="width:100%;height:440px;border:none;border-radius:8px;"></iframe>
+The core problem: most users are trying to command execution AI with the conversational AI patterns they've internalized. It's like asking an assistant to interpret "use your judgment" without any context — the results are naturally unsatisfying.
 
-The fundamental difference between container isolation and a whitelist is this: the former is a **structural constraint** enforced by the kernel; the latter is a **logical constraint** that may have gaps. Not because OpenClaw's code is buggy, but because logical boundaries are inherently weaker than process boundaries.
+## 2. The Guessing Game: Three Core Flaws of Natural Language Control
 
-## NanoClaw's Approach
+Natural language feels like the most intuitive way to direct AI — say a sentence, it does the thing. But the problem is exactly there: natural language is too vague, and AI execution needs precise instructions. This mismatch is OpenClaw's biggest weakness right now.
 
-I ended up using [NanoClaw](https://nanoclaw.dev) — a project with the exact opposite design goal: you can read its entire source code in 8 minutes.
+An example: "Organize my desktop files."
 
-The core architecture:
+<iframe src="https://eric.run.place/MermZen/embed.html?text=flowchart%20LR%0A%20%20%20%20A%5B%22%F0%9F%97%A3%EF%B8%8F%20%E6%95%B4%E7%90%86%E4%B8%80%E4%B8%8B%E6%A1%8C%E9%9D%A2%E6%96%87%E4%BB%B6%22%5D%20--%3E%20B%7BAI%20%E7%B1%BB%E5%9E%8B%7D%0A%20%20%20%20B%20--%3E%7C%E5%AF%B9%E8%AF%9D%E5%9E%8B%7C%20C%5B%22%E6%8F%90%E4%BE%9B%E4%B8%89%E7%A7%8D%E6%96%B9%E6%A1%88%0A%E7%94%B1%E4%BD%A0%E9%80%89%E6%8B%A9%E6%89%A7%E8%A1%8C%22%5D%0A%20%20%20%20B%20--%3E%7C%E6%89%A7%E8%A1%8C%E5%9E%8B%7C%20D%5B%22%E7%9B%B4%E6%8E%A5%E6%8C%89%E6%9F%90%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%95%B4%E7%90%86%0A%E6%93%8D%E4%BD%9C%E5%B7%B2%E5%8F%91%E7%94%9F%22%5D%0A%20%20%20%20C%20--%3E%20E%5B%22%E2%9C%85%20%E9%94%99%E8%AF%AF%E6%88%90%E6%9C%AC%EF%BC%9A%E5%87%A0%E4%B9%8E%E4%B8%BA%E9%9B%B6%22%5D%0A%20%20%20%20D%20--%3E%20F%5B%22%E2%9A%A0%EF%B8%8F%20%E9%94%99%E8%AF%AF%E6%88%90%E6%9C%AC%EF%BC%9A%E5%8F%AF%E8%83%BD%E4%B8%8D%E5%8F%AF%E9%80%86%22%5D&look=classic" style="width:100%;height:360px;border:none;border-radius:8px;"></iframe>
 
-<iframe src="https://eric.run.place/MermZen/embed.html?text=flowchart%20LR%0A%20%20%20%20A%5BWhatsApp%5D%20--%3E%20B%5B(SQLite)%5D%0A%20%20%20%20B%20--%3E%20C%5B%E8%BD%AE%E8%AF%A2%E5%BE%AA%E7%8E%AF%5D%0A%20%20%20%20C%20--%3E%20D%7B%E7%BE%A4%E7%BB%84%E8%B7%AF%E7%94%B1%7D%0A%20%20%20%20D%20--%3E%20E%5B%E5%AE%B9%E5%99%A8%20A%0A%E6%8C%82%E8%BD%BD%3A%20%2Fgroups%2FA%5D%0A%20%20%20%20D%20--%3E%20F%5B%E5%AE%B9%E5%99%A8%20B%0A%E6%8C%82%E8%BD%BD%3A%20%2Fgroups%2FB%5D%0A%20%20%20%20E%20--%3E%20G%5BClaude%20Agent%20SDK%5D%0A%20%20%20%20F%20--%3E%20G%0A%20%20%20%20G%20--%3E%20H%5B%E5%9B%9E%E5%A4%8D%E6%B6%88%E6%81%AF%5D&look=classic" style="width:100%;height:360px;border:none;border-radius:8px;"></iframe>
+This is the core distinction between conversational and execution AI: one produces *suggestions*, the other produces *actions*. Actions require much higher controllability, because actions are often irreversible.
 
-A single Node.js process. Message queuing via SQLite. Each group's Agent runs in its own container, with access only to the explicitly mounted `/groups/{group_id}` directory — not the entire filesystem.
+**Flaw 1: The fundamental conflict between natural language ambiguity and execution precision**
 
-The key code is in `src/container-runner.ts`, roughly:
+Words like "organize," "optimize," and "process" carry implicit context built from industry experience and work scenarios — context AI cannot infer. The same instruction produces completely different outcomes depending on interpretation. You say "improve this presentation," and the AI doesn't know if you mean visual layout, content reduction, or structural logic. A conversational AI gives you three options; an execution AI might just apply its own interpretation — and get it completely wrong.
 
-```typescript
-async function runAgentInContainer(groupId: string, message: string) {
-  const mountPath = path.join(GROUPS_DIR, groupId);
-  
-  await exec(`docker run --rm \
-    -v ${mountPath}:/workspace \
-    -e CLAUDE_API_KEY=${process.env.CLAUDE_API_KEY} \
-    nanoclaw-agent \
-    --message "${message}"`);
-}
-```
+**Flaw 2: Conversation can't carry complex workflow requirements**
 
-There's no "trust this check logic" anywhere. The container is the boundary, enforced by the kernel. Even if an Agent is manipulated into running `rm -rf /`, it can only delete what's inside `/workspace` — it can't touch anything on the host.
+For multi-step tasks requiring interruption, backtracking, or parallel execution, users can't track AI progress in real time. You can't tell if it's stuck, and you can't course-correct in time. You ask AI to "summarize my week's work and send a status update to the group" — the AI might finish the first two steps but fail on the sending step, and you have no idea where it got stuck.
 
-## The Real Tradeoffs
+**Flaw 3: Black-box execution can't build trust**
 
-| Dimension | OpenClaw | NanoClaw |
-|-----------|----------|----------|
-| Security model | Application-layer (whitelist, pairing) | OS-layer (container isolation) |
-| Codebase size | 52+ modules, 45+ dependencies | 8 key files, single process |
-| Auditability | Requires significant time | Readable in ~8 minutes |
-| Customization | Config files + plugin system | Fork + modify code directly |
-| Multi-channel | Built-in (15 provider abstractions) | Add via Skills as needed |
-| Best for | Teams needing complete out-of-box features | Solo users who want full control |
+An AI with system-level access has unpredictable execution logic. Accidental file deletion and erroneous system operations have become common failure modes. Trust depends on transparency and controllability. An AI whose behavior you can't predict is one you'll never feel comfortable delegating core work to.
 
-This doesn't mean NanoClaw is simply "better." If you need multi-channel, multi-user, complex permission management — OpenClaw's abstractions make sense. The complexity is justified by the scope.
+The explosion of the Edict "Three Provinces and Six Ministries" open-source project — which imposed classic bureaucratic review and execution logic onto AI to force workflow control — is a sideways confirmation of the problem. It cleverly addresses some flow-control issues, but it also reveals a deeper limitation: current AI Agents lack built-in controllable workflow mechanisms.
 
-But if you're a solo user who needs a handful of core features, OpenClaw's complexity is overhead you'll never use. More importantly, you're running a system you can't audit in reasonable time, one that has access to your private data.
+## 3. Four Interaction Paradigms: A Deep Comparison
 
-## The Real Question: What Are You Trusting?
+If pure natural language is unreliable, what's the right interaction model?
 
-I have a personal heuristic for tools I actually adopt: **to what degree do you actually understand and control this tool?**
+I use a coordinate system:
 
-Understanding doesn't mean "roughly know what it does." It means "when something goes wrong, you know where to look." Control doesn't mean "I can change a config value." It means "when the behavior is wrong, I know which file to edit."
+- **Horizontal axis: AI execution autonomy** — how independently can AI make decisions and execute?
+- **Vertical axis: human expression cost** — how much effort does the human need to expend to get AI to act on their intent?
 
-OpenClaw falls short on this measure — not because it did anything wrong, but because its goal (universal platform) and this standard (fully auditable) are in fundamental tension.
+**The real question this axis captures: who absorbs the ambiguity?**
 
-NanoClaw isn't perfect either. Its ecosystem is smaller, initial setup requires manual steps, and debugging means asking Claude to investigate logs. But it gives me something OpenClaw can't: **I know what it's doing, because I've read all the code.**
+<iframe src="https://eric.run.place/MermZen/embed.html?text=quadrantChart%0A%20%20%20%20title%20AI%20%E5%B7%A5%E5%85%B7%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F%EF%BC%9A%E8%B0%81%E6%9D%A5%E6%B6%88%E5%8C%96%E6%AD%A7%E4%B9%89%EF%BC%9F%0A%20%20%20%20x-axis%20%E4%BD%8E%E8%87%AA%E4%B8%BB%E6%80%A7%20--%3E%20%E9%AB%98%E8%87%AA%E4%B8%BB%E6%80%A7%0A%20%20%20%20y-axis%20%E4%BD%8E%E8%A1%A8%E8%BE%BE%E6%88%90%E6%9C%AC%20--%3E%20%E9%AB%98%E8%A1%A8%E8%BE%BE%E6%88%90%E6%9C%AC%0A%20%20%20%20%E5%8F%AF%E6%8B%96%E6%8B%BD%E5%B7%A5%E4%BD%9C%E6%B5%81%3A%20%5B0.15%2C%200.2%5D%0A%20%20%20%20IDE%20%E5%86%85%E5%B5%8C%E5%BC%8F%20AI%3A%20%5B0.48%2C%200.48%5D%0A%20%20%20%20AI%20%E5%8E%9F%E7%94%9F%E6%B5%8F%E8%A7%88%E5%99%A8%3A%20%5B0.65%2C%200.28%5D%0A%20%20%20%20OpenClaw%3A%20%5B0.85%2C%200.82%5D&look=classic" style="width:100%;height:420px;border:none;border-radius:8px;"></iframe>
 
-That certainty is worth more than any feature list.
+**Draggable workflows** (bottom-left): The human absorbs ambiguity up front. Lower autonomy because the human pre-structured their intent as a flowchart — the human already did part of the "understanding" work for the AI. Ambiguity is eliminated before execution.
+
+**AI-native browsers** (bottom-right): Context absorbs ambiguity. Expression cost is low because the task and context naturally align — you say "fill in this form" while looking at a form, and the AI sees what you see. Visual context acts as implicit constraint.
+
+**IDE-embedded AI** (middle): Structured input reduces ambiguity. Moderate cost, because "select + instruct" naturally carries precise context — selecting a code block tells the AI exactly which part you care about. Structured input reduces the ambiguity space rather than leaving AI to guess.
+
+**OpenClaw / pure natural language** (top-right): AI absorbs ambiguity throughout execution. Cost is high because the task chain is long and context must be manually constructed. The AI can't see your goals, so it requires constant realignment. Ambiguity keeps surfacing during execution; each recurrence requires user intervention.
+
+The question isn't "is the AI smart enough?" It's **"where does ambiguity get absorbed, and by whom?"** Draggable workflows front-load ambiguity to the design phase. AI browsers use context to absorb it. IDE-embedded AI uses structured input to eliminate it. OpenClaw leaves all ambiguity absorption to runtime — requiring constant user correction every time the AI's interpretation drifts.
+
+---
+
+**Mode 1: Pure Natural Language (OpenClaw)**
+
+User describes needs in plain language → AI infers intent and executes → execution invisible → result appears directly.
+
+Strengths: zero learning curve, maximum theoretical flexibility, 24/7 availability.
+
+Problems: the intent "guessing game" (every task needs supplementary clarification); execution black box (problems may be discovered after irreversible actions); error recovery困境 (cleanup often costs more than the task).
+
+Best for: tasks where output is easily verifiable (copywriting, translation, Q&A). Low error cost, no material damage if wrong.
+
+---
+
+**Mode 2: IDE-Embedded AI (Claude Code, Cursor, Windsurf)**
+
+Deep integration into the work environment → user describes intent via "select + instruct" → AI presents a plan, user confirms, then executes → process visible in real time, user can take over at any point.
+
+Strengths: precise context injection (selecting code tells AI exactly what you care about); plan mode — see before doing (AI shows what it will do, you review before execution, effectively giving AI a "brake"); transparent execution (every step logged, can interrupt at any time).
+
+Core insight: it's not that the AI is smarter — it's that the interaction mode is more controllable. This approach converts "AI guesses your intent" into "human expresses intent precisely."
+
+**Extension: Claude Cowork — from code to knowledge work**
+
+In January 2026, Anthropic released Claude Cowork, positioned as "Claude Code for the rest of your work." It extends Claude Code's controllable interaction design from programming to knowledge work scenarios — give Claude a folder, describe the outcome you want, it plans and executes steps autonomously.
+
+Why is it more controllable than OpenClaw? It inherits Claude Code's framework: plan mode (show what it will do, confirm before executing); real-time logs (every step visible, you can take over); explicit scope (operates within the specified folder, doesn't "overstep").
+
+This is exactly what OpenClaw is missing — not AI intelligence, but a controllable interaction framework.
+
+---
+
+**Mode 3: AI-Native Browsers (Dia, Tabbit)**
+
+AI "sees" the webpage and operates like a human — clicking, inputting, scrolling → user describes tasks in natural language → AI executes in the browser.
+
+Strengths: web page becomes context, drastically reducing expression cost; theoretically handles tasks like "book a flight" or "fill a form."
+
+Problems: product category is new and trajectory is unclear — the Doubao AI phone's blocking by Chinese device manufacturers illustrates that this category's business model and ecosystem acceptance are still being established.
+
+Best for: information retrieval, web browsing, simple automation tasks. Good for early adopters.
+
+---
+
+**Mode 4: Draggable Workflows (Coze, Dify, n8n, Zapier)**
+
+Visual flowchart design → each node defines explicit input/output → AI only executes specified tasks at specified nodes.
+
+<iframe src="https://eric.run.place/MermZen/embed.html?text=flowchart%20LR%0A%20%20%20%20A%5B%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6%5D%20--%3E%20B%5B%22%E8%8A%82%E7%82%B9%201%0A%E8%8E%B7%E5%8F%96%E8%BE%93%E5%85%A5%22%5D%0A%20%20%20%20B%20--%3E%20C%5B%22%E8%8A%82%E7%82%B9%202%0AAI%20%E5%A4%84%E7%90%86%22%5D%0A%20%20%20%20C%20--%3E%20D%7B%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%7D%0A%20%20%20%20D%20--%3E%7C%E6%BB%A1%E8%B6%B3%7C%20E%5B%22%E8%8A%82%E7%82%B9%203a%0A%E5%8F%91%E9%80%81%E9%80%9A%E7%9F%A5%22%5D%0A%20%20%20%20D%20--%3E%7C%E4%B8%8D%E6%BB%A1%E8%B6%B3%7C%20F%5B%22%E8%8A%82%E7%82%B9%203b%0A%E8%AE%B0%E5%BD%95%E6%97%A5%E5%BF%97%22%5D&look=classic" style="width:100%;height:360px;border:none;border-radius:8px;"></iframe>
+
+Strengths: full process visibility (debug and test individual nodes); clear scope (what AI can and can't do is defined in the flow); reusable (design once, run repeatedly).
+
+Problems: low flexibility (can only handle cases within the predefined flow); high design cost (requires thinking through every step in advance, bad for ad-hoc or rapidly changing tasks).
+
+Best for: fixed, repeating workflows with a dedicated team to design and maintain them.
+
+---
+
+Back to OpenClaw: it chose "high autonomy + high expression cost" without solving the expression cost problem. Users must repeatedly explain their intent, the AI still misinterprets, the execution process is invisible, and results are consistently unsatisfying.
+
+**What AI actually needs to reliably "do the work" isn't higher autonomy. It's lower expression cost and higher transparency.**
+
+## 4. A Practical Guide: How to Choose the Right AI Tool
+
+| What you need | Recommended tool | Why |
+|------|------|------|
+| Information output (copy, translation, Q&A) | Conversational AI (ChatGPT, Claude) | Low error cost, verifiable output |
+| Executing operations (code, files) | Claude Code / Claude Cowork | High controllability, transparent process |
+| Web operations (browsing, comparison) | AI browser (Dia, Tabbit) | Visual understanding, web interaction |
+| Repeating processes (batch tasks) | Draggable workflows (Coze, Dify) | Fixed flow, reusable |
+
+**Who is OpenClaw for right now?**
+
+Honestly, before its interaction design is fundamentally improved, I wouldn't rush to install it.
+
+Good fit: curious users who want to experience "what AI Agents can do"; exploratory tasks that don't involve sensitive data.
+
+Not a good fit yet: production work requiring precise execution; operations involving sensitive data.
+
+If you want to try "AI doing real work," start with Claude Cowork — it inherits a controllable interaction framework and is significantly more reliable.
+
+## 5. Core Conclusion: Why OpenClaw Isn't the Final Answer
+
+First, credit where it's due: OpenClaw is an undisputed pioneer in the AI Agent space. It gave millions of users their first direct experience of what AI Agents can actually do. It accelerated the spread of Skills, MCP, and other core infrastructure. It's genuinely a cool product.
+
+But at the end of the day, OpenClaw is still just a starting point. It demonstrated "AI can do work" as a possibility — it hasn't delivered "AI can do work reliably, at scale."
+
+The core issue is the interaction design: a lack of low-cost, high-control interaction modes. Pure natural language forces users to pay high communication costs while still failing to guarantee accurate execution. In contrast, IDE-embedded AI uses "select + instruct," plan preview, and real-time logs to deliver high-control execution at moderate cost.
+
+OpenClaw showed me the potential of AI Agent deployment. It just hasn't crossed the gap from "capable" to "reliable, scalable, production-ready." That's exactly why it's not the final answer.
+
+## Afterward: Find Your Own AI Rhythm
+
+After burning three hundred million tokens, my biggest takeaway: OpenClaw isn't the answer yet — but it showed us clearly where the problem is.
+
+The problem isn't "is AI strong enough?" It's "how are we collaborating with AI?" Pure natural language is a black box — you speak, it acts, and you're left guessing at the result. A genuinely reliable AI tool should let you see the process, stay in control, and keep expression cost low.
+
+**Different AI interaction modes are all trying to find cheaper, more reliable ways to inject more context — to get dependable output. But more context still lives in our heads. We still need to express it precisely, clearly, to AI or to other people.**
+
+OpenClaw? Wait for 2.0, when it adds a controllable interaction framework.
+
+*Written after a week of intense AI use, Hangzhou.*

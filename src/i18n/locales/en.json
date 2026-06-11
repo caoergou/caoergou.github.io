@@ -1,6 +1,6 @@
 {
   "site": {
-    "title": "Eric Cao — Big Data & Full-Stack Engineer, focused on practical AI",
+    "title": "Eric Cao — Researching how AI actually lands in the enterprise",
     "description": "Started as a big data engineer, worked across Java and Python full-stack and LLM apps; now focused on how AI actually lands in the enterprise and which workflows Agents should reshape.",
     "author": "Eric Cao",
     "keywords": "Eric Cao, AI Agent, Agent Workflow, Claude Code, Big Data, Data Engineering, LLM, Python, Full-Stack, Enterprise AI",
@@ -23,7 +23,7 @@
   "about": {
     "p1": "My first job was in big data engineering — and what that shaped wasn't a specific skill, but a way of seeing systems: at sufficient scale, small problems become fundamental problems. What looks like a performance issue is often data quality; what looks like a logic bug is rooted in the data model. That instinct of 'dig one level deeper' has left its mark on everything I've done since.",
     "p2": "Later I moved into LLM applications — and that's where my engineering intuition got completely overturned for the first time. Traditional software bugs throw errors. LLM 'bugs' are hallucinations: they look right, then you realize they're wrong, and you can't capture them with tests. Performance isn't latency, it's recall — things with no ground truth. Understanding an AI system requires a completely different set of engineering instincts.",
-    "p3": "Now I spend a lot of time reading Dify's source code — not to chase PRs, but because I want to know what invisible engineering decisions a framework used daily by countless companies makes to be 'good enough'. How does state survive machine restarts? How does error handling hold up against the unpredictable? The answers to these questions are closer to the truth than any 'enterprise AI best practices' article."
+    "p3": "Now I spend a lot of time on one question: where does enterprise AI adoption actually fail? The answer is counterintuitive — it's rarely the model. It's the absence of standardized processes. Layer AI onto a workflow with no clear inputs and outputs, and you only amplify the existing chaos. MIT and McKinsey research keeps arriving at the same conclusion; I've verified it in real projects too: AI generates measurable returns almost exclusively where the process was clarified first, and AI was introduced gradually — not the other way around."
   },
   "experience": {
     "recent": {

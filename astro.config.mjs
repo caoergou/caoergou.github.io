@@ -97,5 +97,8 @@ export default defineConfig({
     shikiConfig: {
       theme: 'nord',
     },
+    remarkRehype: {
+      allowDangerousHtml: true,
+    },
   },
 });
