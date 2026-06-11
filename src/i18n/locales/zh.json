@@ -1,6 +1,6 @@
 {
   "site": {
-    "title": "Eric Cao — 追问 AI 的设计逻辑",
+    "title": "Eric Cao — 往 AI 底层看一层",
     "description": "从大数据工程师起步，做过 Java 与 Python 全栈，深入过 LLM 应用；如今专注于 AI 怎么在企业真正落地，哪些工作流该被 Agent 改变。",
     "author": "Eric Cao",
     "keywords": "Eric Cao, AI Agent, Agent 工作流, Claude Code, 大数据, 数据工程, LLM 应用, Python, 全栈开发, 企业 AI",
