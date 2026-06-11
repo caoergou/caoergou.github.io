@@ -70,7 +70,7 @@ To explain that design clearly, it helps to borrow an example from a system you'
 
 ## Part 3: The Core Idea: Hash as Identity
 
-<iframe src="https://eric.run.place/MermZen/embed.html#eJyrVipTsjLSUUpWslJKL0osyFAIcYnJU1BQUAjKzy-JjlHyTS3KzkkF897v6XjaNvPF_tlPe3Y9nTv96ZIt7_d0xijFQtR7GBpFxyh5JBZnaIRUGGqHVBhpIuSMTRByxtohFSYIuRDD6BilkApDhIARWMAIIWAMFjBGCJiABUzgAiDXKejq2oEcgS5ibAJ3H1ggxBCNbwR3I4RvjMY3UdJRKlGyUkpJLMpWqgUARXFYyg" title="Blockchain Merkle Tree: O(log N) Verification" loading="lazy" style="width:100%;height:420px;border:1px solid rgba(148,163,184,0.2);border-radius:8px;" allow="fullscreen"></iframe>
+<iframe src="https://eric.run.place/MermZen/embed.html#eJxdkD0LwjAURf9KeFPFdsjH1MHJoUsXyWYcYhtMSUkkBi2I_92YQiJ92z2HC5f3hie0pIYBWrh5edeIH4VF8U7OhbOAXnkzq5RQ9fJTCMqiyQaHrrMbDNJKjsrvBFzWWodJbHXyoSu-4D1fyJ-jrDgaHSuO46hiowCSACmAJkALYAmwDNLIpjn8RmwJZXlfAhxvMskb10w3mUENIX5plN7A5wu8v1Oo" title="Blockchain Merkle Tree: O(log N) Verification" loading="lazy" style="width:100%;height:420px;border:1px solid rgba(148,163,184,0.2);border-radius:8px;" allow="fullscreen"></iframe>
 
 That system is the blockchain. One manages money, the other manages files — so why do they share the same mathematics? Because the underlying problem they solve is identical: **in an environment where no one is fully trusted, how do you let anyone independently verify that a piece of data hasn't been tampered with?** The blockchain's answer is content-addressing.
 
@@ -126,7 +126,7 @@ fileID        = h( valueRecordID_1 || valueRecordID_2 || ... || valueRecordID_N 
 
 ## 5. The Two-Level Merkle Tree: Flat by Design, Efficient by Nature
 
-<iframe src="https://eric.run.place/MermZen/embed.html#eJxVzz9Lw0AYBvCv8vLOLaXpFrSQP2uWQ7LkRM7kqCE2DSEWjBgCClZwcxMcXDI4uBpKJz9KSOzYryDeYeJt9_D8nuPuBteoayP0UcdFypILOLFpDADgEI-iwzMGhMULftht2rps63fwV8tlmMExdB93-5f77nnT1U-H3SPFU7kkhkdRjM6Mo_N0MmeMNWUFBXDOm7IaoNlDU0DZQwFRFCnQ6qEloOyhgCRJFGj30BZQ9lBAnuf_oTv1KLrs8ooT7q_SQN7Kr-HrE8KAx1mYifP6lwwrTV0Nxcyj2JTVfluBBm398P36NhHv6IlDYDyeAzHUaKrRUqP9938R3akaNTXOcIQZ6hiwNMLbH5gCoaM" title="Graveler Two-Level Merkle Tree" loading="lazy" style="width:100%;height:480px;border:1px solid rgba(148,163,184,0.2);border-radius:8px;" allow="fullscreen"></iframe>
+<iframe src="https://eric.run.place/MermZen/embed.html#eJxV0U1OwzAQBeCrjGYFUqvSdFdBpSbZZmOhbAhCQzJqItMkckwlgqg4DVdgz1E4CYMtEuyVn95nyz-veMJttMASt3gw1NdwmxYtyMjUXYEZWwJF7YHhomsZyu54bCzcQGMHqGmoLwu8917txTv6sL9-NKsdEX2_f8AZmFkmM4wnGDvoe4Fa6wAmE0wc9L3Avu8DmE4wddD3Asdx_A_ztcCcnp5ZcdmZyu_KL_D1CU3FrW2sm59-ybwqClfNxUYK2f8cXWkwrhtW7hwTyRQslzt5nDDGYUzCmP7d38V8HcYojBtcoJXfq8hofPsBocKSug" title="Graveler Two-Level Merkle Tree" loading="lazy" style="width:100%;height:480px;border:1px solid rgba(148,163,184,0.2);border-radius:8px;" allow="fullscreen"></iframe>
 
 A single Range file is typically kept between 1–10 MiB and stores all the ValueRecords within a **contiguous key space** — that is, a continuous segment carved out of all file paths sorted alphabetically (for example, paths starting with `a` through paths starting with `e`).
 
@@ -166,7 +166,7 @@ Keep this mechanism in mind — it is the very foundation of the "miracle" descr
 
 ## 6. The Write Amplification Miracle: 99% Reuse, and the Moment Graveler Parts Ways with Blockchain
 
-<iframe src="https://eric.run.place/MermZen/embed.html#eJyrVipTsjLSUUpWslJKL0osyFAIcYnJU1BQUPANcoqOUfowf8oWBd_UkkSFoMS89NRHDZve7-l4Nm3D09273u_pjFGKtbKyKiqH6AhyhusAK453xqvcN8gxOkYJYfb7PR3J-bm5mSUKjhC1UFNBqh7N3P1-Rz_UWEeEnBO6nBNCzjk6Rgnqjvd7Ol4sWv1s9v5nvYuez2p5Nn35884OFEtc0A1ygcv5Bjkq6OraKQQ5ovGd0PjOaHxEQKLpd0LTD-U7owtADUjOSSwudklNUygqV0jLzMmxUk42MLY0StIpLinKz061Uk41N0k2TtZJzs_JL7JSTktLs1bSUSpRslJKSSzKVqoFAI-hq1g" title="99% Reuse: A Single Commit Rewrites Only 2 Files" loading="lazy" style="width:100%;height:460px;border:1px solid rgba(148,163,184,0.2);border-radius:8px;" allow="fullscreen"></iframe>
+<iframe src="https://eric.run.place/MermZen/embed.html#eJyrVipTsjLSUUpWslJKL0osyFAIcYnJUwAC3yCn6BilD_OnbFHwTS1JVAhKzEtPfdSwSUEjL7VcM0Yp1srKqqgcojbIGa4WrCzeGYdC3yBHoEKEeQoayfm5uZklCo4ghVDDQEoezdz9fkc_1DRHhJwTupwTQs4ZKAe1XkEjPydFR6EotSAnMTk1BclwF3QDXOByQMcp6OraAR2AxndC4zuj8REhhqbfCU0_lO-MLgA1IDknsbjYJTVNoahcIS0zJ8dKOdnA2NIoSae4pCg_O9VKOdXcJNk4WSc5Pye_yEo5LS3NWklHqQQYdSmJRdlKtQAxSY0o" title="99% Reuse: A Single Commit Rewrites Only 2 Files" loading="lazy" style="width:100%;height:460px;border:1px solid rgba(148,163,184,0.2);border-radius:8px;" allow="fullscreen"></iframe>
 
 Now let's put all the pieces together and walk through a real commit.
 
@@ -217,7 +217,7 @@ Merge works the same way (lakeFS implements it internally as a three-way diff: i
 
 Remember the contradiction planted in Section III? The power of content addressing rests on "immutability," yet the very nature of version control is "constant change." How does Graveler have both at once?
 
-<iframe src="https://eric.run.place/MermZen/embed.html#eJxlj89LwmAYx_-Vh-dUoAh1kxRSQUKntZWXvR2mjhXhFnMFkR2SUA_mRKaIEhEEeTHJQ_5IEPpb9k491Z8QbqfZe_x8n-d5v59bvEb_jgcz6EdJFS7PIM4SGQAgf5V2AHNyzBP8fTYegOoDqrfNcWvRrML3COisuTB65rhmdYq03yZ46uyuX4jlCdJKyTIGVrW8alTAB3lNkMQsmPN3y5i4pmMpfotgLAWcpqjiXlr1BQ-VvCapIncUBx9EbmQhp0RCdhLe58Cc1JdvxZVxT3Db9St4vUGIpRwkytkNmwOGcWwaYI4f_wmNhpZeN6evrnLMWoURNQFYQZZEV8YmojxBm4PVKptfn644ya296GCy_Hih_TYt9mwDbhd8EA1z7vKMU55NRF33bZjkNoxCLAQCwQLBjJLLnWs_sw4tP9HudDnv0lqJ6kOCBWBY9KCGfswK6gXe_QHIxrqx" title="Immutable / Mutable Two-Track Architecture" loading="lazy" style="width:100%;height:420px;border:1px solid rgba(148,163,184,0.2);border-radius:8px;" allow="fullscreen"></iframe>
+<iframe src="https://eric.run.place/MermZen/embed.html#eJxdkbFOwzAQhl_ldAMCqVEl2Craoa1UVW0oJFCGmsGJncSQ2JXtIlWUjSdA7DwGO0_EI3BJpuTG__zf_d_5DV9xdDnAFEeYW74vYB0xDVTukLRC-HC_Y_j3_fUB4cHzpJTwaGwp4PcHIpk5OIPY81zpnOFT661rGpFrarlOC9gbpb20MARHL6WAtOA6l65jWG135wxXW5pmrLxO7HBya5zPrYzv1mSdHzWvzHzadFJT7bmVAdcicNIzvOishiCY0MBWklr0kJZh2CJ9wrKq-lAzU1XKeyk68cKaJ5SeQ1Rn7_SimwU1Gx0yVfbANnENtkmeZeobODpBAxFfEdZiFnfTh216mtlZ0IibuIdEqOPx5MQwbUKPwJlSCZUpOjLd3EChHG08MjzRYBygp48W3L7g-z9765qu" title="Immutable / Mutable Two-Track Architecture" loading="lazy" style="width:100%;height:420px;border:1px solid rgba(148,163,184,0.2);border-radius:8px;" allow="fullscreen"></iframe>
 
 The answer is to split data **into two worlds based on mutability**, each using the storage best suited for it:
 

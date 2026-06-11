@@ -66,7 +66,7 @@ OpenClaw 能快速掀起热潮，我觉得本质是两大基础条件的成熟�
 
 **这个坐标系真正的重点是：谁来消化歧义？**
 
-<iframe src="https://eric.run.place/MermZen/embed.html?text=quadrantChart%0A%20%20%20%20title%20AI%20%E5%B7%A5%E5%85%B7%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F%EF%BC%9A%E8%B0%81%E6%9D%A5%E6%B6%88%E5%8C%96%E6%AD%A7%E4%B9%89%EF%BC%9F%0A%20%20%20%20x-axis%20%E4%BD%8E%E8%87%AA%E4%B8%BB%E6%80%A7%20--%3E%20%E9%AB%98%E8%87%AA%E4%B8%BB%E6%80%A7%0A%20%20%20%20y-axis%20%E4%BD%8E%E8%A1%A8%E8%BE%BE%E6%88%90%E6%9C%AC%20--%3E%20%E9%AB%98%E8%A1%A8%E8%BE%BE%E6%88%90%E6%9C%AC%0A%20%20%20%20%E5%8F%AF%E6%8B%96%E6%8B%BD%E5%B7%A5%E4%BD%9C%E6%B5%81%3A%20%5B0.15%2C%200.2%5D%0A%20%20%20%20IDE%20%E5%86%85%E5%B5%8C%E5%BC%8F%20AI%3A%20%5B0.48%2C%200.48%5D%0A%20%20%20%20AI%20%E5%8E%9F%E7%94%9F%E6%B5%8F%E8%A7%88%E5%99%A8%3A%20%5B0.65%2C%200.28%5D%0A%20%20%20%20OpenClaw%3A%20%5B0.85%2C%200.82%5D&look=classic" style="width:100%;height:420px;border:none;border-radius:8px;"></iframe>
+<iframe src="https://eric.run.place/MermZen/embed.html?text=quadrantChart%0A%20%20%20%20title%20AI%20Interaction%20Modes%3A%20Who%20Absorbs%20Ambiguity%3F%0A%20%20%20%20x-axis%20Low%20Autonomy%20--%3E%20High%20Autonomy%0A%20%20%20%20y-axis%20Low%20Expression%20Cost%20--%3E%20High%20Expression%20Cost%0A%20%20%20%20Drag-drop%20Workflow%3A%20%5B0.15%2C%200.2%5D%0A%20%20%20%20IDE%20Embedded%20AI%3A%20%5B0.48%2C%200.48%5D%0A%20%20%20%20AI%20Browser%3A%20%5B0.65%2C%200.28%5D%0A%20%20%20%20OpenClaw%3A%20%5B0.85%2C%200.82%5D&look=classic" style="width:100%;height:420px;border:none;border-radius:8px;"></iframe>
 
 **可拖拽工作流**（左下）：人提前消化歧义。成本低但自主性也低，因为人把意图提前结构化成了流程图，实际上是人替 AI 做了一部分「理解」的工作。歧义在执行前就被消除了。
 
