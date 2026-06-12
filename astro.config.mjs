@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import remarkCjkFriendly from 'remark-cjk-friendly';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
@@ -94,6 +95,10 @@ export default defineConfig({
     }),
   ],
   markdown: {
+    // CJK-friendly emphasis: makes **bold** / *italic* render even when the
+    // closing delimiter sits flush against a Chinese character (no space),
+    // which CommonMark's flanking rules otherwise reject.
+    remarkPlugins: [remarkCjkFriendly],
     shikiConfig: {
       theme: 'nord',
     },

@@ -170,6 +170,51 @@ const breadcrumbSchema = {
         radial-gradient(60% 50% at 100% 100%, rgba(87, 203, 255, 0.04), transparent 60%);
     }
 
+    /* ── Slowly-drifting ambient aurora behind everything ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: -25%;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(38% 38% at 22% 28%, rgba(100, 255, 218, 0.06), transparent 62%),
+        radial-gradient(42% 42% at 78% 72%, rgba(87, 203, 255, 0.055), transparent 62%);
+      filter: blur(40px);
+      animation: aurora-drift 28s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+
+    @keyframes aurora-drift {
+      0%   { transform: translate3d(-2%, -1%, 0) scale(1); }
+      50%  { transform: translate3d(3%, 2%, 0)  scale(1.08); }
+      100% { transform: translate3d(-1%, 3%, 0) scale(1.04); }
+    }
+
+    /* ── Cursor spotlight (Brittany Chiang style) ── */
+    .spotlight {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      pointer-events: none;
+      --spot-x: 50%;
+      --spot-y: 0%;
+      background: radial-gradient(
+        600px circle at var(--spot-x) var(--spot-y),
+        rgba(100, 255, 218, 0.06),
+        transparent 70%
+      );
+      will-change: background;
+    }
+
+    @media (hover: none), (prefers-reduced-motion: reduce) {
+      .spotlight { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::after { animation: none; }
+    }
+
     .page {
       position: relative;
       z-index: 1;
@@ -526,6 +571,7 @@ const breadcrumbSchema = {
   </style>
 </head>
 <body>
+  <div id="spotlight" class="spotlight" aria-hidden="true"></div>
   <div class="page">
     <div class="container">
       {hasAlternate && alternateUrl && (
@@ -587,5 +633,37 @@ const breadcrumbSchema = {
       </div>
     </div>
   </div>
+
+  <script>
+    // Cursor spotlight — smooth lerp follow (matches the home page)
+    (function () {
+      const spot = document.getElementById('spotlight');
+      if (!spot) return;
+      const noHover = window.matchMedia('(hover: none)').matches;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (noHover || reduced) return;
+
+      let targetX = window.innerWidth / 2, targetY = 0;
+      let curX = targetX, curY = targetY, raf = null;
+
+      function tick() {
+        curX += (targetX - curX) * 0.14;
+        curY += (targetY - curY) * 0.14;
+        spot.style.setProperty('--spot-x', curX + 'px');
+        spot.style.setProperty('--spot-y', curY + 'px');
+        if (Math.abs(targetX - curX) > 0.5 || Math.abs(targetY - curY) > 0.5) {
+          raf = requestAnimationFrame(tick);
+        } else {
+          raf = null;
+        }
+      }
+
+      window.addEventListener('mousemove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+        if (raf === null) raf = requestAnimationFrame(tick);
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>
