@@ -1,8 +1,13 @@
 ---
-title: "Can an AI Get Smarter on Its Own, the Way an Intern Does?"
-description: "Hermes Agent's pitch is 'the agent that grows with you' — an AI that gets smarter on its own, like an intern who learns. I took it literally: with the model frozen, can the agent make itself smarter just by writing its own skills? The answer is counter-intuitive — a human-written skill takes the same model from 10% to 74%, but the skill the agent writes itself closes less than half that gap."
-author: "Eric Cao"
-date: "2026-06-12"
+title: Can an AI Get Smarter on Its Own, the Way an Intern Does?
+description: "Hermes Agent's pitch is 'the agent that grows with you' — an AI
+  that gets smarter on its own, like an intern who learns. I took it literally:
+  with the model frozen, can the agent make itself smarter just by writing its
+  own skills? The answer is counter-intuitive — a human-written skill takes the
+  same model from 10% to 74%, but the skill the agent writes itself closes less
+  than half that gap."
+author: Eric Cao
+date: 2026-06-12
 ---
 
 Hermes Agent ships under a line that's genuinely appealing: **the agent that grows with you** — an AI that gets better the more you use it, like a good intern who learns the ropes and stops needing to be told twice.
