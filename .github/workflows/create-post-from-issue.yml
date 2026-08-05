@@ -6,8 +6,10 @@ on:
 
 jobs:
   create-post:
-    # Only run when the 'thought' or 'post' label is added
-    if: github.event.label.name == 'thought' || github.event.label.name == 'post'
+    # Only run when the 'thought' or 'post' label is added by the repo owner
+    if: |
+      (github.event.label.name == 'thought' || github.event.label.name == 'post') &&
+      github.event.sender.login == github.repository_owner
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,7 +25,7 @@ jobs:
             const issue = context.payload.issue;
             const body = issue.body || '';
 
-            // Parse a section from GitHub issue form output
+            // Parse a section from GitHub issue form output.
             // Sections look like: "### Heading\n\nContent\n"
             function extractSection(text, heading) {
               const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -40,28 +42,33 @@ jobs:
             const titleEn = extractSection(body, 'Title (English)') || issue.title;
             const descZh  = extractSection(body, '描述（中文）');
             const descEn  = extractSection(body, 'Description (English)');
+            const tagsRaw = extractSection(body, '标签 Tags（可选）');
             const content = extractSection(body, '正文内容（可选）');
 
             if (!titleZh || !titleEn || !descZh || !descEn) {
-              core.setFailed(
-                'Missing required fields. Please fill in all required fields in the issue form.'
-              );
+              core.setFailed('Missing required fields (title or description).');
               return;
             }
 
-            // Generate slug from English title
+            // Parse tags into an array
+            const tags = tagsRaw
+              ? tagsRaw.split(',').map(t => t.trim().toLowerCase()).filter(Boolean)
+              : [];
+
+            // Generate slug: english title + issue number for uniqueness
             const date = new Date().toISOString().split('T')[0];
-            const slug = titleEn
+            const baseSlug = titleEn
               .toLowerCase()
               .replace(/[^a-z0-9\s-]/g, '')
               .replace(/\s+/g, '-')
               .replace(/-{2,}/g, '-')
               .replace(/^-|-$/g, '')
-              .substring(0, 50);
+              .substring(0, 45);
+            const slug = `${baseSlug}-${issue.number}`;
 
             const filepath = `src/content/thoughts/${slug}.md`;
 
-            // Escape double quotes for YAML
+            // Escape double quotes for YAML inline strings
             const esc = s => s.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 
             let md = [
@@ -74,6 +81,7 @@ jobs:
               `  en: "${esc(descEn)}"`,
               'author: "Eric Cao"',
               `date: "${date}"`,
+              ...(tags.length > 0 ? [`tags: [${tags.map(t => `"${esc(t)}"`).join(', ')}]`] : []),
               '---',
               '',
             ].join('\n');
@@ -107,17 +115,17 @@ jobs:
               branch: 'main',
             });
 
-            console.log(`✅ Created: ${filepath}`);
-            core.setOutput('filepath', filepath);
             core.setOutput('slug', slug);
+            core.setOutput('filepath', filepath);
 
-      - name: Comment on issue
+      - name: Comment success and close issue
         if: success()
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const slug = '${{ steps.create-post.outputs.slug }}';
+            const filepath = '${{ steps.create-post.outputs.filepath }}';
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -126,16 +134,36 @@ jobs:
               body: [
                 '✅ **文章已创建，正在部署...**',
                 '',
-                `文件路径：\`src/content/thoughts/${slug}.md\``,
+                `文件：[\`${filepath}\`](../blob/main/${filepath})`,
                 '',
                 '站点将在几分钟内更新，部署进度可在 [Actions](../actions) 中查看。',
               ].join('\n'),
             });
 
-            // Close the issue after post is created
             await github.rest.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.issue.number,
               state: 'closed',
+            });
+
+      - name: Comment on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: [
+                '❌ **文章创建失败**',
+                '',
+                '请检查以下几点：',
+                '- 中英文标题、描述是否都已填写',
+                '- 正文内容是否包含非法 YAML 字符',
+                '',
+                `详细错误信息：[查看 Actions 日志](../actions/runs/${{ github.run_id }})`,
+              ].join('\n'),
             });

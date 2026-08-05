@@ -40,14 +40,23 @@ body:
     validations:
       required: true
 
+  - type: input
+    id: tags
+    attributes:
+      label: 标签 Tags（可选）
+      description: 用英文逗号分隔，例如：python, ai, tools
+      placeholder: python, ai, tools
+    validations:
+      required: false
+
   - type: textarea
     id: content
     attributes:
       label: 正文内容（可选）
-      description: 支持 Markdown 格式，留空则仅展示描述
+      description: 支持 Markdown 格式，可直接拖入图片，留空则仅展示描述
       placeholder: |
         ## 详细内容
 
-        支持 **Markdown** 格式...
+        支持 **Markdown** 格式，可以直接从剪贴板粘贴或拖拽上传图片...
     validations:
       required: false

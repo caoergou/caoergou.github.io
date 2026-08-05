@@ -29,6 +29,7 @@ const thoughts = defineCollection({
     description: i18nText,
     author: z.string(),
     date: z.string(),
+    tags: z.array(z.string()).optional(),
   }),
 });
 
